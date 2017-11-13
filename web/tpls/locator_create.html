@@ -1,0 +1,183 @@
+<div id="container" ng-controller="LocatorCreateCtrl">
+
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <form class="form-horizontal form-validate " name="locatorcreatform" novalidate
+          ng-submit="submitForm(locatorcreatform)" >
+    <div id="main-content">
+
+        <h1 ng-bind="'NPR.CreateLocation' | translate"></h1>
+        <!--<div class="base-box base-box-search">
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr50 pricelist">
+                        <label><span ng-bind="'PRICE_LIST.PriceList' | translate"></span></label>
+                        <select   select2="" class="form-control mb15-1024" ng-model="list_header_id" ng-keypress=" enter($event)" ng-change="choicePriceList(list_header_id)"  get-focus="">
+                            <option ng-repeat="item in priceList" value="{{item.list_header_id}}">{{item.pricelist_name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'PRICE_LIST.Description' | translate"></label>
+                        <input id="serial_number" readonly="readonly" type="text" ng-model="description" ng-change="saveSerialNumber()" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="ipt-item flexbox">
+                &lt;!&ndash;<div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'PRICE_LIST.OperatingUnit' | translate"></label>
+                        <input type="text" readonly="readonly" ng-model="org_name" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>&ndash;&gt;
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'PRICE_LIST.EffectiveDates' | translate"></label>
+                        <input type="text" readonly="readonly" ng-model="start_date_active" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                        <label style="min-width:0px;margin:0 5px;">----</label>
+                        <input id="serial_number" readonly="readonly" ng-model="end_date_active" type="text"   class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'PRICE_LIST.Currency' | translate"></label>
+                        <input id="serial_number" readonly="readonly" type="text" ng-model="currency_code" ng-change="saveSerialNumber()" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+            </div>
+
+            &lt;!&ndash; <div class="ipt-item flexbox">
+                 <div class="fex1 mr50">
+                     <div class="flexbox mr-l">
+                         <label ng-bind="'PRICE_LIST.EffectiveDates' | translate"></label>
+                         <input type="text" readonly="readonly" ng-model="start_date_active" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                         <label style="min-width:0px;margin:0 5px;">----</label>
+                         <input id="serial_number" readonly="readonly" ng-model="end_date_active" type="text"   class="form-control input-small fex1" ng-keypress="enter($event)" >
+                     </div>
+                 </div>
+                 <div class="fex1">
+                     <div class="flexbox mr50">
+                         &lt;!&ndash;<label ng-bind="'PRICE_LIST.EndDate' | translate"></label>
+                         <input id="serial_number" readonly="readonly" type="text" ng-model="serial_number" ng-change="saveSerialNumber()" class="form-control input-small fex1" ng-keypress="enter($event)" >&ndash;&gt;
+                     </div>
+                 </div>
+             </div>&ndash;&gt;
+
+            &lt;!&ndash;<div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'PRICE_LIST.Item' | translate"></label>
+                        <i class="icon-search add-btn icon-color" ng-click="itemlov(1)"></i>
+                        <i class="icon-remove-sign icon-color"></i>
+                        <input  type="text" name="price_item" ng-model="price_item"  class="form-control fex1" select3 not-allow>
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'PRICE_LIST.ItemDescription' | translate"></label>
+                        <input id="serial_number" readonly="readonly" type="text" ng-model="serial_number" ng-change="saveSerialNumber()" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+            </div>&ndash;&gt;
+
+            &lt;!&ndash;<div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="text-right">
+                        <button type="button" id="sub" class="btn btn-primary" ng-click="DoCtrlPagingAct(1)"><span ng-bind="'PUBLIC.Search' | translate"></span>
+                        </button>
+                        <button type="button" class="btn btn-default mr50" ng-click="reset()"><span ng-bind="'PUBLIC.Reset' | translate"></span></button>
+                    </div>
+                </div>
+            </div>&ndash;&gt;
+        </div>-->
+
+        <!--<div class="fex1 ml15 mb10">-->
+        <!--<button type="button"  class="btn btn-primary btn-large" ng-if="searchIbData" ng-click="goUpdateIB()">-->
+        <!--<span ng-bind="'PUBLIC.Update' | translate"></span>-->
+        <!--</button>-->
+        <!--<button type="button"  class="btn btn-primary btn-large" ng-if="searchIbData && ex_change_flag == 'Y'" ng-click="goExChangeIB()">-->
+        <!--<span ng-bind="'PUBLIC.ExChange' | translate"></span>-->
+        <!--</button>-->
+        <!--</div>-->
+
+
+
+        <div class="ml15 mr15 mt20">
+            <table class="table table-striped table-bordered table-hover text-center table-search table-summary table-condensed" ng-show="!loadingFlag" style="table-layout: fixed;">
+                <tr role="row" class="active">
+                    <th style="width: 50px;" class="sorting" role="columnheader" ng-bind="'PRICE_LIST.Delete' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.Subinventory' | translate" style=";"></th>
+                    <th class="sorting" role="columnheader"><span ng-bind="'NPR.Description' | translate" style=""></span></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.Location' | translate" style=""></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.LocationDescription' | translate" style=""></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.InactiveOn' | translate" style=""></th>
+                </tr>
+                <tr ng-repeat="item in pricelistnumberwrap">
+                    <td style="text-align: center;" ng-click="removepricelist($index)"><span style="margin-left: 0px;" class="icon-minus-sign red" ></span></td>
+                    <td style="padding: 0px;">
+                        <select class="form-control" style="height: 28px !important;"
+                                ng-model="pricelistnumberwrap[$index].subinventory_desc"
+                                ng-change="getV(pricelistnumberwrap[$index],$index)"
+                                name="subinventory"
+                                ng-class="{'bd-red':submitted && sform.subinventory.$invalid}"
+                                ng-options="m.subinventory_desc as m.subinventory_code for m in inventory"
+                                >
+                        </select>
+
+                    </td>
+                    <td style="background-color: #eee;" title="{{item.item_desc}}"><div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" ng-bind="item.item_desc"></div></td>
+                    <td style="background-color: #fff;padding: 0px;width:40px;overflow: hidden;" title="{{item.location_code}}">
+                        <ng-form name="codeform">
+                            <input type="text" style="height:29px !important;" ng-change="chargeLocator(pricelistnumberwrap,pricelistnumberwrap[$index],pricelistnumberwrap[$index].location_code,$index)" class="form-control fex1" ng-model="item.location_code"  name="location_code"
+                                   required ng-class="{'bd-red':submitted && codeform.location_code.$invalid}" />
+                        </ng-form>
+                    </td>
+                    <td style="padding: 0px;width:40px;overflow: hidden;" title="{{item.location_desc}}">
+                        <!--<input ng-model="item.newprice" style="display:block;width:100%;height:100%;text-align:center;">-->
+                        <ng-form name="descform">
+                            <input type="text" style="height:29px !important;" class="form-control fex1" ng-model="item.location_desc"  name="location_desc"
+                                   required ng-class="{'bd-red':submitted && descform.location_desc.$invalid}" />
+                        </ng-form>
+                    </td>
+                    <td class="newpricedatepickerwrap" style="padding: 0px;" title="{{item.close_date}}">
+                        <!--<input ng-model="item.close_date"  datetimepicker  >-->
+                        <!--<ng-form name="wform">-->
+                            <input type="text" style="height:29px !important;" class="form-control fex1" ng-model="item.close_date"  name="close_date" datetimepicker
+                                    />
+                        <!--</ng-form>-->
+                    </td>
+                    <!--<td style="text-align: center;" ng-click="removepricelist($index)"><div class="price_new_remove"><span></span></div></td>-->
+                </tr>
+
+            </table>
+
+            <!--<div class="btn-row ml15 text-center page-list" ng-show="!loadingFlag">
+                <div paging page="currentPage" page-size="10" total="totalPage*10" show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)">
+                </div>
+            </div>-->
+        </div>
+        <div class="flexbox footer-btn mt10"  style="border: none;">
+            <div class="fex1" ></div>
+            <div class="mr15 mt20">
+                <button type="button" class="btn btn-primary mr5 fts16  btn-large" ng-click="addpricelist()"  style="font-size:12px;" ng-bind="'PUBLIC.Add' | translate"></button>
+                <button type="submit" class="btn btn-primary mr5 fts16  btn-large" style="font-size:12px;"  ng-bind="'PUBLIC.Submit' | translate"></button>
+                <!--<button type="submit" class="btn btn-primary mr5 fts16  btn-large" ng-bind="'PUBLIC.NewPrice' | translate"></button>-->
+                <a class="btn btn-default btn-large " style="font-size: 12px !important;" back-button=""><span ng-bind="'PUBLIC.Cancel' | translate"  ng-bind="'PUBLIC.Cancel'"></span></a>
+            </div>
+        </div>
+        <!--无数据提示-->
+        <!--<div class="emptyData" ng-if="emptyData">No results found. </div>-->
+    </div>
+    </form>
+</div>
+
+

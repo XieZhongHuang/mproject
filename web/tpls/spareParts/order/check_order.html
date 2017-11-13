@@ -1,0 +1,143 @@
+<section id="container" ng-controller="CheckOrderCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'NPR.Consign Fulfillment Order' | translate"></h1>
+
+        <form class="form-validate form-validate" name="add_order_form" method="get" novalidate
+              ng-submit="submitForm(add_order_form)">
+            <div class="base-box">
+                <h2 ng-bind="'NPR.Requirement Information' | translate"></h2>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.Order Number' | translate"></label>
+                            <input type="text" ng-model="order_Number" requied class="form-control fex1" not-allow>
+                            <input type="hidden" value="dirty">
+                        </div>
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.Status' | translate"></label>
+                            <input type="text" ng-model="status" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox">
+                            <label ng-bind="'NPR.Description' | translate"></label>
+            <textarea type="text" class="area-form" ng-model="description" ng-disabled="!is_show"
+                      placeholder="input your reply here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.Source Inventory' | translate"></label>
+                            <input type="text" ng-model="source_inventory" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+
+                        <div class="flexbox mr-l">
+                            <label class="red">*<span ng-bind="'NPR.Destination Inventory' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color"></i>
+                            <input type="text" required name="destination_in" class="form-control" ng-disabled="true"
+                                   ng-model="destination_in" readonly select3=""
+                                   ng-class="{'bd-red':submitted && add_order_form.destination_in.$invalid}">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.Date Required' | translate"></label>
+                            <input datetimepicker ng-model="required_date"
+                                   ng-keypress="enter($event)" class="form-control fex1" name="required_date" ng-disabled="!is_show"
+                                   placeholder="choose_date"
+                                   style="cursor: pointer;z-index:999;position:relative;">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                    </div>
+                </div>
+
+                <div class="pos-relative mt20">
+                    <h2 style="margin-bottom: 0;" ng-bind="'NPR.Item Information' | translate"></h2>
+                </div>
+
+                <div class="mb12 ml15 mr15">
+                    <table id="parts-table"
+                           class="table table-striped table-bordered table-hover text-center table-search table-condensed">
+                        <tr role="row" class="active">
+                            <th class="sorting id" role="columnheader" style="width: 216px"><label
+                                    class="red">*</label><span
+                                    ng-bind="'NPR.Item Required' | translate"></span></th>
+                            <th class="sorting su" role="columnheader" style="width: 153px"><label
+                                    class="red">*</label><span
+                                    ng-bind="'NPR.Quantity' | translate"></span></th>
+                            <th class="sorting oh" role="columnheader" ng-bind="'NPR.UOM' | translate"
+                                style="width: 105px"></th>
+                            <th class="sorting tt" role="columnheader" ng-bind="'NPR.Description' | translate"
+                                style="width: 200px"></th>
+                        </tr>
+
+                        <tr class="trtd" ng-repeat="item in arr">
+                            <td>
+                                <ng-form name="nform">
+                                    <div class="ipt-item" style="padding: 0px;">
+                                        <div class="fex1 zz">
+                                            <div class="flexbox zz">
+                                                <i class="icon-search add-btn icon-color"
+                                                   ng-click="itemLov(1,$index)"></i>
+                                                {{lov}}
+                                                <input type="text" ng-model="$parent.arr[$index].item_num"
+                                                       name="item_number"
+                                                       class="form-control fex1 ng-isolate-scope ng-pristine ng-valid notAllow"
+                                                       select3=""
+                                                       not-allow="" readonly="readonly" required
+                                                       ng-class="{'bd-red':submitted && nform.item_number.$invalid}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-form>
+                            </td>
+                            <td>
+                                <ng-form name="wform">
+                                    <input type="number" class="form-control fex1" ng-model="$parent.arr[$index].quantity"
+                                           ng-blur="getV(arr,$index)" name="quantity" required ng-disabled="!is_show"
+                                           ng-class="{'bd-red':submitted && wform.quantity.$invalid}">
+                                </ng-form>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control fex1 notAllow bno"
+                                       ng-model="$parent.arr[$index].unit_code" readonly>
+                            </td>
+                            <td><input type="text" class="form-control fex1 notAllow bno"
+                                       ng-model="$parent.arr[$index].item_desc" readonly>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="btn-row ml25 text-center page-list mt10"  ng-show="arr.length>0">
+                        <div paging page="currentPage" page-size="10" total="totalPage*10" show-prev-next="{{showPrevNext}}"
+                             paging-action="DoCtrlPagingAct(page)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flexbox ">
+                <div class="fex1"></div>
+                <div class="mr15 mt20">
+                    <a class="btn btn-default btn-large" back-button=""><span
+                            ng-bind="'PUBLIC.Cancel' | translate" ng-bind="'PUBLIC.Cancel'"></span></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+

@@ -1,0 +1,11 @@
+<div ng-class="{'sidebar-closed':isclose}" >
+    <div ng-include="'tpls/header.html'"></div>
+    <div id="portal-main" class="row"  >
+        <div ng-include="'tpls/menu.html'" class="menu-box"></div>
+        <div ui-view="">
+            <div ui-view="main">
+
+            </div>
+        </div>
+    </div>
+</div>

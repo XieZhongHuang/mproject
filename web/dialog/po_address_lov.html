@@ -1,0 +1,125 @@
+<style>.ajax-tip{margin-left: 0;margin-top:-50px;}</style>
+<div ng-click="hideSelectDrop()" class="datatable" drag-drop>
+    <div class="modal-header">
+        <h4 class="modal-title" ng-bind="'PO.{{title}}' | translate"></h4>
+    </div>
+    <div class="ipt-item mt5 flexbox ml15 mr15">
+        <div class="fex1" >
+            <div class="flexbox" >
+                <div class="fex1" >
+                    <div class="flexbox">
+                        <label class="control-label title" style="min-width:140px;"  ng-bind="'PO.AddressLine' | translate"></label>
+                        <div class="fex1">
+                            <input type="text" style="height: 26px!important;width:50%;" ng-change="changeAddressLine(address_line)" ng-model="address_line" class="form-control fex1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ipt-item flexbox mt5 ml15 mr15 mb5">
+        <div class="fex1">
+            <div class="flexbox">
+                <div class="fex1">
+                    <div class="flexbox">
+                        <label class="control-label title" style="min-width:140px;"  ng-bind="'PO.City' | translate"></label>
+                        <div class="fex1" style="padding:0">
+                            <input ng-model="city" ng-change="changeCity(city)" style="width:50%;"  class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ipt-item flexbox mt5 ml15 mr15 mb5">
+        <div class="fex1">
+            <div class="flexbox">
+                <div class="fex1">
+                    <div class="flexbox">
+                        <label class="control-label title" style="min-width:140px;"  ng-bind="'PO.County' | translate"></label>
+                        <div class="fex1" style="padding:0">
+                            <input ng-model="county"  ng-change="changeCounty(county)" style="width:50%;"  class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ipt-item flexbox mt5 ml15 mr15 mb5">
+        <div class="fex1">
+            <div class="flexbox">
+                <div class="fex1">
+                    <div ng-show="flagCountry == 'US'" class="flexbox">
+                        <label  class="control-label title" style="min-width:140px;"  ng-bind="'PO.State' | translate"></label>
+                        <select  ng-change="changeState(state)" select2 data-search=1 style="height:28px !important;width:41%;"  class="form-control" name="state" ng-model="state">
+                            <option ng-value="item.obj_code" ng-repeat="item in states">
+                                {{item.obj_name}}
+                            </option>
+                        </select>
+                        <!--<div ng-show="flagCountry == 'CA'" class="fex1" style="padding:0">-->
+                        <!--<input ng-model="state" ng-change="changeState(state)" style="width:50%;"  class="form-control">-->
+                        <!--</div>-->
+                    </div>
+                    <div ng-show="flagCountry == 'CA'" class="flexbox">
+                        <label class="control-label title" style="min-width:140px;"  ng-bind="'PO.State' | translate"></label>
+                        <!--<select ng-show="flagCountry == 'US'" ng-change="changeState(state)" select2 data-search=1 style="height:28px !important;width:41%;"  class="form-control" name="state" ng-model="state" >-->
+                        <!--<option value="{{item.obj_code }}" ng-repeat="item in states">-->
+                        <!--{{item.obj_name}}-->
+                        <!--</option>-->
+                        <!--</select>-->
+                        <div  class="fex1" style="padding:0">
+                            <input ng-model="state" ng-change="changeState(state)" style="width:50%;"  class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="flagCountry == 'CA'" class="ipt-item flexbox mt5 ml15 mr15 mb5">
+        <div class="fex1">
+            <div class="flexbox">
+                <div class="fex1">
+                    <div class="flexbox">
+                        <label class="control-label title" style="min-width:140px;"  ng-bind="'PO.Province' | translate"></label>
+                        <div class="fex1" style="padding:0">
+                            <input ng-model="province" ng-change="changeProvince(province)" style="width:50%;"  class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ipt-item flexbox mt5 ml15 mr15 mb5">
+        <div class="fex1">
+            <div class="flexbox">
+                <div class="fex1">
+                    <div class="flexbox">
+                        <label class="control-label title" style="min-width:140px;"  ng-bind="'PO.PostalCode' | translate"></label>
+                        <div class="fex1" style="padding:0">
+                            <input ng-model="postal_code" ng-change="changePostalCode(postal_code)" style="width:50%;"  class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flexbox footer-btn mt10"  style="border: none;">
+        <div class="fex1" ></div>
+        <div class="mr15 mt20">
+            <button type="button" class="btn btn-primary mr5 fts16  btn-large" ng-click="closeThisDialog(0)"  style="font-size:12px;" ng-bind="'PUBLIC.OK' | translate"></button>
+            <span >
+                <button type="button" class="btn btn-default mr5 fts16  btn-large mr50" ng-click="address_line='';city='';county='';postal_code='';state='';province=''"  style="font-size:12px;"  ng-bind="'PUBLIC.Clear' | translate"></button>
+            </span>
+        </div>
+    </div>
+
+    <section style="min-height: 250px;">
+
+    </section>
+
+</div>

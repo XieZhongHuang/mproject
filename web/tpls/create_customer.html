@@ -1,0 +1,507 @@
+<style type="text/css">
+    .address_info .form-tips {
+        margin-top: -17px !important;
+    }
+
+    .lh26 {
+        line-height: 26px !important;
+    }
+</style>
+
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="CreateCustomerCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <form class="form-horizontal form-validate " method="get" name="addcustform" novalidate
+          ng-submit="submitForm(addcustform)" dirty-form="">
+        <section id="main-content">
+            <h1 ng-bind="'customer.CreateCustomer' | translate"></h1>
+
+            <div class="base-box">
+                <h2 ng-bind="'customer.AccountInformation' | translate"></h2>
+
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && addcustform.org_name.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'customer.CustomerType' | translate"></label>
+                            <select select2 class="form-control" ng-model="customer_type">
+                                <option value="PERSON">PERSON</option>
+                                <option ng-if="profile.instance_code =='MSA'||profile.instance_code =='MZA'" value="ORGANIZATION">ORGANIZATION</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <style>
+                        .form-tips {
+                            margin-left: 0px !important;
+                        }
+                    </style>
+
+                    <div class="fex1" ng-if="customer_type=='ORGANIZATION'">
+                        <div class="flexbox mr50">
+                            <label ng-class="{'red':instance_code=='MSA'||instance_code=='MZA'}" style="min-width:80px;margin-right:10px;"><span
+                                    ng-bind="'customer.Name' | translate"></span></span></label>
+                            <input type="text" red class="form-control fex1" ng-required="instance_code=='MSA'||instance_code=='MZA'" ng-model="$parent.org_name"
+                                   name="org_name" maxlength="100" ng-disabled="instance_code=='MET'||instance_code=='MPI'"
+                                   ng-class="{'bd-red':submitted && addcustform.org_name.$invalid}">
+                            <formtips title="This field is required"
+                                      ng-show="submitted && addcustform.org_name.$invalid&&(instance_code!='MET'||instance_code!='MPI')"></formtips>
+                        </div>
+                    </div>
+
+                    <div class="fex1" ng-if="customer_type=='PERSON'">
+                        <div class="flexbox mr50 mr20-media">
+                            <div class="fex1">
+                                <div class="flexbox ">
+                                    <label style="min-width: 80px;margin-right:10px;"><span
+                                            ng-bind="'customer.FirstName' | translate"></span></label>
+                                    <input type="text" class="form-control fex1" ng-model="$parent.first_name"
+                                           name="first_name" maxlength="100">
+                                </div>
+                            </div>
+
+                            <div class="fex1" style="text-indent: 15px"
+                                 ng-class="{'mb30':submitted && addcustform.last_name.$invalid}">
+                                <div class="flexbox ">
+                                    <label style="min-width:91px;text-align: center;margin-left:10px;"
+                                           class="red">*<span ng-bind="'customer.LastName' | translate"></span></label>
+                                    <input type="text" red class="form-control fex1" required
+                                           ng-model="$parent.last_name" name="last_name"
+                                           ng-class="{'bd-red':submitted && addcustform.last_name.$invalid}">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ipt-item flexbox mb8" ng-class="{'mb30':submitted && addcustform.phone.$invalid}">
+                    <div class="fex1 mr50 mb30">
+                        <div class="flexbox mr-l">
+                            <label>Email</label>
+                            <input type="email" class="form-control" ng-model="email" name="email" maxlength="100"/>
+                            <formtips title="Your email address is incorrect"
+                                      ng-show="addcustform.email.$dirty  && addcustform.email.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50 mr20-media">
+                            <label class="red" style="min-width: 80px;margin-right:10px;">*<span ng-bind="'customer.Phone' | translate"></span></label>
+                            <input type="text" class="form-control " style="width: 45px;text-align: center" required
+                                   ng-model="phone_country_code" name="phone_country_code"
+                                   ng-class="{'bd-red':submitted && addcustform.phone_country_code.$invalid}"/>
+                            <span style="border-bottom:#cacaca solid 1px;width: 5%;height: 16px;margin: 0 5px 5px"></span>
+                            <input type="text" class="form-control " required ng-model="phone" name="phone"
+                                   ng-class="{'bd-red':submitted && addcustform.phone.$invalid}"/>
+                            <formtips title="This field is required"
+                                      ng-show="submitted && (addcustform.phone.$invalid ||  addcustform.phone_country_code.$invalid ||  addcustform.phone_area_code.$invalid)"></formtips>
+                            <!--<formtips title="Your phone is incorrect"-->
+                                      <!--ng-show="addcustform.phone.$dirty && addcustform.phone.$invalid"></formtips>-->
+                        </div>
+                    </div>
+                </div>
+                <!--Contact Information-->
+                <section ng-if="customer_type=='ORGANIZATION'" ng-init="$parent.c_type='EMPLOYEE_OF'">
+                    <h2 ng-bind="'customer.ContactInformation' | translate"></h2>
+
+                    <div class="ipt-item flexbox" ng-class="{'mb30':submitted && addcustform.c_name.$invalid}">
+                        <div class="fex1 mr50">
+                            <div class="flexbox mr-l">
+                                <label class="cust-contact-lab" ng-bind="'customer.AccountType' | translate"></label>
+                                <select select2 class="form-control" ng-model="$parent.c_type">
+                                    <option value="EMPLOYEE_OF">EMPLOYEE_OF</option>
+                                    <option value="CUSTOMER_OF">CUSTOMER_OF</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50">
+
+                                <div class="fex1 mr10">
+                                    <div class="flexbox">
+                                        <label class="cust-contact-lab" style="min-width:80px;margin-right:10px;"><span
+                                                ng-bind="'customer.FirstName' | translate"></span></span></label>
+                                        <input type="text" red class="form-control fex1" ng-model="$parent.c_first_name"
+                                               name="c_first_name" maxlength="100">
+                                    </div>
+                                </div>
+                                <div class="fex1" style="text-indent: 5px">
+                                    <div class="flexbox">
+                                        <label class="red cust-contact-lab" style="min-width:91px;text-align: center;margin-left:10px;">*<span
+                                                ng-bind="'customer.LastName' | translate"></span></span></label>
+                                        <input type="text" red class="form-control fex1" required
+                                               ng-model="$parent.c_last_name" name="c_last_name" maxlength="100"
+                                               ng-class="{'bd-red':submitted && addcustform.c_last_name.$invalid}">
+                                        <formtips title="This field is required"
+                                                  ng-show="submitted && addcustform.c_last_name.$invalid"></formtips>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox" ng-class="{'mb30':submitted && addcustform.c_phone.$invalid}">
+                        <div class="fex1 mr50 mb30">
+                            <div class="flexbox mr-l">
+                                <label class="cust-contact-lab" ng-bind="'customer.Email' | translate"></label>
+                                <input ng-model="$parent.c_email" type="email" name="c_email" class="form-control fex1">
+                                <formtips title="Your email address is incorrect"
+                                          ng-show="addcustform.c_email.$dirty  && addcustform.c_email.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50 mr20-media">
+                                <label class="red cust-contact-lab" style="min-width: 80px;margin-right:10px;">*<span
+                                        ng-bind="'customer.Phone' | translate"></span></label>
+                                <input type="text" ng-model="$parent.c_phone_country_code"
+                                       style="width: 45px;text-align: center; height:28px"
+                                       ng-init="$parent.c_phone_country_code=phone_country_code" required
+                                       name="c_phone_country_code" class="form-control"
+                                       ng-class="{'bd-red':submitted && addcustform.c_phone_country_code.$invalid}">
+                                <!--<span style="border-bottom:#cacaca solid 1px;width: 5%;height: 16px;margin: 0 5px 5px"></span>-->
+                                <!--<input type="text" ng-model="$parent.c_phone_area_code" style="width: 20%"  required name="c_phone_area_code" class="form-control" ng-class="{'bd-red':submitted && addcustform.c_phone_area_code.$invalid}">-->
+                                <!---->
+                                <span style="border-bottom:#cacaca solid 1px;width: 5%;height: 16px;margin: 0 5px 5px"></span>
+                                <input type="text" ng-model="$parent.c_phone" required name="c_phone"
+                                       class="form-control"
+                                       ng-class="{'bd-red':submitted && addcustform.c_phone.$invalid}">
+                                <formtips title="This field is required"
+                                          ng-show="submitted && (addcustform.c_phone.$invalid || addcustform.c_phone_country_code.$invalid || addcustform.c_phone_area_code.$invalid)"></formtips>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section ng-if="instance_code=='MET'||instance_code=='MPI'||instance_code=='MZA'||instance_code=='MVN'"> <!--泰国 印尼 南非三个国家显示这一段-->
+                    <h2 ng-bind="'customer.AddressInformation' | translate"></h2>
+                    <div class="ipt-item flexbox">
+
+                        <div class="fex1 mr50" ng-if="addressInfo.address.display_flag=='Y'">
+                            <div class="flexbox">
+                                <label ng-class="{'red':addressInfo.address.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.address.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.Address' | translate"></span></label>
+                                <input type="text" class="form-control" ng-change="changeAddress(address)" ng-model="address" maxlength="240"
+                                       ng-required="addressInfo.address.require_flag =='Y'" name="address"
+                                       ng-class="{'bd-red':submitted && addcustform.address.$invalid}"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.address.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50">
+                                <label class="red" style="min-width: 80px;margin-right:10px;">*<span
+                                        ng-bind="'customer.Country' | translate"></span></label>
+                                <select select2="" class="form-control long-select2" ng-model="country_name"
+                                        ng-change="countrychange(country_name)">
+                                    <option value="{{item.country_code}}" ng-repeat="item in countrys">
+                                        {{item.country_name}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="ipt-item flexbox">
+                        <!--State-->
+                        <div class="fex1 mr50" ng-if="profile.instance_code =='MET'">
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.state.type=='T' && addressInfo.state.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.state.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.state.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.State' | translate"></span></label>
+                                <input type="text" class="form-control" name="state" ng-model="$parent.$parent.s_name2"
+                                       ng-required="addressInfo.state.require_flag =='Y'" maxlength="240"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.state.$invalid"></formtips>
+                            </div>
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.state.type=='L' && addressInfo.state.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.state.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.state.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.State' | translate"></span></label>
+
+                                <i class="icon-search add-btn icon-color" ng-click="stateData()"></i>
+                                <i class="icon-remove-sign icon-color"></i>
+                                <input ng-model="$parent.$parent.s_name2" class="form-control" type="text" readonly select3 name="state"
+                                       ng-required="addressInfo.state.require_flag =='Y'"
+                                       ng-class="{'bd-red':submitted && addcustform.state.$invalid}"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.state.$invalid"></formtips>
+                            </div>
+                        </div>
+
+                        <div class="fex1 mr50" ng-if="profile.instance_code =='MVN' || profile.instance_code =='MPI'|| profile.instance_code == 'MSA'||profile.instance_code == 'MZA'">
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.province.type=='T' && addressInfo.province.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.province.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.province.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.province' | translate"></span></label>
+                                <input type="text" class="form-control" name="province"
+                                       ng-model="$parent.$parent.province"
+                                       ng-required="addressInfo.province.require_flag =='Y'" maxlength="240"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.province.$invalid"></formtips>
+                            </div>
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.province.type=='L' && addressInfo.province.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.province.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.province.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.province' | translate"></span></label>
+
+                                <i class="icon-search add-btn icon-color" ng-click="province_lov(1)"></i>
+                                <i class="icon-remove-sign icon-color" ng-click="removeProvince()"></i>
+                                <input ng-model="$parent.$parent.province" class="form-control fex1" type="text" readonly select3
+                                       name="province" ng-required="addressInfo.province.require_flag =='Y'"
+                                       ng-class="{'bd-red':submitted && addcustform.province.$invalid}"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.province.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <!--city-->
+                        <div class="fex1">
+                            <div class="create-cust-city flexbox mr50 mr20-media"
+                                 ng-if="addressInfo.city.type=='T' && addressInfo.city.display_flag=='Y'">
+                                <label ng-if="!(profile.instance_code == 'MSA'||profile.instance_code == 'MZA')" ng-class="{'red':addressInfo.city.require_flag =='Y'}"
+                                       style="min-width: 80px;margin-right:10px;"><i
+                                        ng-if="addressInfo.city.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.city' | translate"></span></label>
+                                <label ng-if="profile.instance_code == 'MSA'||profile.instance_code == 'MZA'" ng-class="{'red':addressInfo.city.require_flag =='Y'}"
+                                       style="min-width: 80px;margin-right:10px;"><i
+                                        ng-if="addressInfo.city.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.city' | translate"></span></label>
+                                <input type="text" class="form-control" name="city" ng-model="$parent.$parent.city_desc"
+                                       ng-required="addressInfo.city.require_flag =='Y'" maxlength="240"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.city.$invalid"></formtips>
+                            </div>
+                            <div class="create-cust-city flexbox mr50 mr20-media"
+                                 ng-if="addressInfo.city.type=='L' && addressInfo.city.display_flag=='Y'">
+                                <label ng-if="!(profile.instance_code == 'MSA'||profile.instance_code == 'MZA')" ng-class="{'red':addressInfo.city.require_flag =='Y'}"
+                                       style="min-width: 80px;margin-right:10px;"><i
+                                        ng-if="addressInfo.city.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.city' | translate"></span></label>
+                                <label ng-if="profile.instance_code == 'MSA'||profile.instance_code == 'MZA'" ng-class="{'red':addressInfo.city.require_flag =='Y'}"
+                                       style="min-width: 80px;margin-right:10px;"><i
+                                        ng-if="addressInfo.city.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.district' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="city_lov(1)"></i>
+                                <i class="icon-remove-sign icon-color"></i>
+                                <input ng-model="$parent.$parent.city_desc" class="form-control fex1" type="text" readonly select3
+                                       name="city" ng-required="addressInfo.city.require_flag =='Y'"
+                                       ng-class="{'bd-red':submitted && addcustform.city.$invalid}"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.city.$invalid"></formtips>
+                            </div>
+                        </div>
+                    </div>
+                     <!--MVN State--> 
+                     <div class="ipt-item flexbox">
+                        <div class="fex1 mr50" ng-if="profile.instance_code =='MVN'">
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.state.type=='T' && addressInfo.state.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.state.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.state.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.State' | translate"></span></label>
+                                <input type="text" class="form-control" name="state" ng-model="$parent.$parent.s_name2"
+                                       ng-required="addressInfo.state.require_flag =='Y'" maxlength="240"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.state.$invalid"></formtips>
+                            </div>
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.state.type=='L' && addressInfo.state.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.state.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.state.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.Region' | translate"></span></label>
+
+                                <i class="icon-search add-btn icon-color" ng-click="region_lov(1)"></i>
+                                <i class="icon-remove-sign icon-color"></i>
+                                <input ng-model="$parent.$parent.Region" class="form-control" type="text" readonly select3 name="region"
+                                       ng-required="addressInfo.state.require_flag =='Y'"
+                                       ng-class="{'bd-red':submitted && addcustform.state.$invalid}"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.state.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50" ng-if="profile.instance_code =='MET'">
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.province.type=='T' && addressInfo.province.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.province.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.province.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.province' | translate"></span></label>
+                                <input type="text" class="form-control" name="province"
+                                       ng-model="$parent.$parent.province"
+                                       ng-required="addressInfo.province.require_flag =='Y'" maxlength="240"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.province.$invalid"></formtips>
+                            </div>
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.province.type=='L' && addressInfo.province.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.province.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.province.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.province' | translate"></span></label>
+
+                                <i class="icon-search add-btn icon-color" ng-click="province_lov(1)"></i>
+                                <i class="icon-remove-sign icon-color" ng-click="removeProvince()"></i>
+                                <input ng-model="$parent.$parent.province" class="form-control fex1" type="text" readonly select3
+                                       name="province" ng-required="addressInfo.province.require_flag =='Y'"
+                                       ng-class="{'bd-red':submitted && addcustform.province.$invalid}"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.province.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1 mr50" ng-if="profile.instance_code =='MPI'">
+                            <div class="flexbox mr-l"
+                                 ng-if="addressInfo.district.type=='T' && addressInfo.district.display_flag =='Y'">
+                                <label ng-class="{'red':addressInfo.district.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.district.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.District' | translate"></span></label>
+                                <input type="text" class="form-control" name="district"
+                                       ng-model="$parent.$parent.district"
+                                       ng-required="addressInfo.district.require_flag =='Y'" maxlength="240"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.district.$invalid"></formtips>
+                            </div>
+                            <div class="flexbox mr-l "
+                                 ng-if="addressInfo.district.type=='L' && addressInfo.district.display_flag =='Y'">
+                                <label ng-class="{'red':addressInfo.district.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.district.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.District' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="district_lov(1)"></i>
+                                <i class="icon-remove-sign icon-color"></i>
+                                <input ng-model="district" class="form-control fex1" type="text" readonly select3
+                                       name="district" ng-required="addressInfo.district.require_flag =='Y'"
+                                       ng-class="{'bd-red':submitted && addcustform.district.$invalid}"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.district.$invalid"></formtips>
+                            </div>
+                        </div>
+
+                        <div class="fex1">
+                            <div class="flexbox mr50 mr20-media"
+                                 ng-if="addressInfo.district.type=='T' && addressInfo.district.display_flag =='Y' && profile.instance_code !='MPI'">
+                                <label ng-class="{'red':addressInfo.district.require_flag =='Y'}"
+                                       style="min-width: 80px;margin-right:10px;"><i
+                                        ng-if="addressInfo.district.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.district' | translate"></span></label>
+                                <input type="text" class="form-control" name="district"
+                                       ng-model="$parent.$parent.district"
+                                       ng-required="addressInfo.district.require_flag =='Y'" maxlength="240"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.district.$invalid"></formtips>
+                            </div>
+                            <div class="flexbox mr50 mr20-media"
+                                 ng-if="addressInfo.district.type=='L' && addressInfo.district.display_flag =='Y' && profile.instance_code !='MPI'">
+                                <label ng-class="{'red':addressInfo.district.require_flag =='Y'}"
+                                       style="min-width: 80px;margin-right:10px;"><i
+                                        ng-if="addressInfo.district.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.district' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="district_lov(1)"></i>
+                                <i class="icon-remove-sign icon-color"></i>
+                                <input ng-model="district" class="form-control fex1" type="text" readonly select3
+                                       name="district" ng-required="addressInfo.district.require_flag =='Y'"
+                                       ng-class="{'bd-red':submitted && addcustform.district.$invalid}"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.district.$invalid"></formtips>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox mr-l" ng-if="addressInfo.postal_code.display_flag=='Y'">
+                                <label ng-class="{'red':addressInfo.postal_code.require_flag =='Y'}"><i
+                                        ng-if="addressInfo.postal_code.require_flag =='Y'">*</i><span
+                                        ng-bind="'customer.PostalCode' | translate"></span></label>
+
+                                <input type="text" class="form-control" name="postalcode" ng-model="$parent.postal_code"
+                                       ng-required="addressInfo.postal_code.require_flag =='Y'" maxlength="240"/>
+                                <formtips title="This field is required"
+                                          ng-show="submitted && addcustform.postalcode.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+
+                        </div>
+                    </div>
+                </section>
+                <!----------------------------------美国显示这一段---------------------------------------------------------------------------------->
+                <section ng-if="instance_code=='MAC'">
+                    <h2 ng-bind="'customer.AddressInformation' | translate"></h2>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox">
+                                <label class="red">
+                                    *<span ng-bind="'customer.Address' | translate"></span>
+                                </label>
+                                <input type="text" required="" ng-class="{'bd-red':submitted && addcustform.address.$invalid}"
+                                       class="form-control" ng-model="$parent.address" maxlength="240" name="address"/>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50">
+                                <label style="min-width: 80px;margin-right:10px;">
+                                    <span ng-bind="'customer.city' | translate"></span>
+                                </label>
+                                <input type="text" class="form-control" name="city" ng-model="$parent.city" maxlength="240"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50" >
+                            <div class="flexbox mr-l">
+                                <label><span ng-bind="'customer.County' | translate"></span></label>
+                                <input type="text" class="form-control" name="County" ng-model="$parent.county"
+                                        maxlength="240"/>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50">
+                                <label class="red" style="min-width: 80px;margin-right:10px;">*<span ng-bind="'customer.State' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="stateData()"></i>
+                                <i class="icon-remove-sign icon-color"></i>
+                                <input type="text" required="" ng-class="{'bd-red':submitted && addcustform.state.$invalid}"
+                                     readonly  class="form-control" select3 name="state" ng-model="$parent.s_name2" maxlength="240"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox mr-l">
+                                <label class="red">
+                                    *<span ng-bind="'customer.PostalCode' | translate"></span>
+                                </label>
+                                <input type="text" required="" ng-class="{'bd-red':submitted && addcustform.postalcode.$invalid}"
+                                       class="form-control" name="postalcode" ng-model="$parent.postal_code" maxlength="240"/>
+                            </div>
+                        </div>
+                        <div class="fex1">
+
+                        </div>
+                    </div>
+                </section>
+                <div class="footer-btn mt10">
+                    <div class="flexbox mt20">
+                        <div class="fex1 text-right ">
+                            <button type="submit" class="btn btn-large btn-primary mr5 fts16">
+                                <span ng-bind="'PUBLIC.Submit' | translate"></span>
+                            </button>
+                            <button type="button" class="btn  btn-default mr100 mr35-media" style="margin-right: 120px;"
+                                    back-button>
+                                <span ng-bind="'PUBLIC.Cancel' | translate"
+                                      ng-bind="'PUBLIC.Cancel' | translate"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    </form>
+</section>

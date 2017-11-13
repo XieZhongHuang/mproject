@@ -1,0 +1,127 @@
+<div id="container" ng-controller="IbSummaryCtrl">
+
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+
+        <h1 ng-bind="'IB.InstallBaseSummary' | translate"></h1>
+        <div class="base-box base-box-search">
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'IB.Instance' | translate"></label>
+                        <input type="text" ng-model="install_number" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+                <div class="fex1">
+                    <!--<div class="flexbox mr-l">
+                        <label ng-bind="'IB.CustomerName' | translate"></label>
+                        <input type="text" ng-model="customer_name" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>-->
+                    <div class="flexbox mr50">
+                        <label ng-bind="'IB.CustomerName' | translate"></label>
+                        <i class="icon-search add-btn icon-color" ng-click="namelov(1)"></i>
+                        <i class="icon-remove-sign icon-color"></i>
+                        <input  type="text" name="customer_name" ng-model="customer_name"  class="form-control fex1" select3 not-allow>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <!--<div class="flexbox mr50">
+                        <label ng-bind="'CHARGE.ItemNumber' | translate"></label>
+                        <input type="text" ng-model="item_number" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>-->
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'IB.ItemNumber' | translate"></label>
+                        <i class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                        <i class="icon-remove-sign icon-color"></i>
+                        <input  type="text" name="item_number" ng-model="item_number"  class="form-control fex1" select3 not-allow>
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'IB.SerialNumber' | translate"></label>
+                        <input id="serial_number" type="text" ng-model="serial_number" ng-change="saveSerialNumber()" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'IB.LotNumber' | translate"></label>
+                        <input type="text" ng-model="lot_number" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="text-right">
+                        <button type="button" id="sub" class="btn btn-primary" ng-click="DoCtrlPagingAct(1)"><span ng-bind="'PUBLIC.Search' | translate"></span>
+                        </button>
+                        <button type="button" class="btn btn-default mr50" ng-click="reset()"><span ng-bind="'PUBLIC.Reset' | translate"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fex1 ml15 mb10">
+            <button type="button"  class="btn btn-primary btn-large" style="font-size:12px;" ng-disabled="up_ex_ib" ng-if="totalPage>0" ng-click="goUpdateIB()">
+                <span ng-bind="'PUBLIC.Detail' | translate"></span>
+            </button>
+            <button type="button"  class="btn btn-primary btn-large" style="font-size:12px;" ng-disabled="up_ex_ib" ng-if="totalPage>0&&ex_change_flag=='Y'" ng-click="goExChangeIB()">
+                <span ng-bind="'PUBLIC.ExChange' | translate"></span>
+            </button>
+            <button type="button"  class="btn btn-primary btn-large" style="font-size:12px;" ng-if="(totalPage>0||searchIbData.length==0)&&ex_change_flag=='Y'" ng-click="goNewIB()">
+                <span ng-bind="'PUBLIC.Create' | translate"></span>
+            </button>
+        </div>
+
+        <div class="ml15 mr15" ng-show="totalPage>0">
+            <table style="table-layout: fixed;" class="table table-striped table-bordered table-hover text-center table-search table-summary table-condensed" ng-show="!loadingFlag">
+                <tr role="row" class="active">
+                    <th style="width: 70px;" class="sorting" role="columnheader" ng-bind="'IB.Action' | translate"></th>
+                    <th style="width: 120px;" class="sorting" role="columnheader"><span ng-bind="'IB.Instance' | translate"></span></th>
+                    <th class="sorting" role="columnheader" ng-bind="'IB.ParentInstanceNumber' | translate"></th>
+                    <th style="width:100px;" class="sorting" role="columnheader" ng-bind="'IB.InstallationDate' | translate"></th>
+                    <th style="width:230px;" class="sorting" role="columnheader" ng-bind="'IB.Item' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'IB.ItemDesc' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'IB.CustomerName' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'IB.SerialNumber' | translate"></th>
+                    <th style="width:80px;" class="sorting" role="columnheader" ng-bind="'IB.LotNumber' | translate"></th>
+                </tr>
+
+
+                <tr ng-repeat=" item in searchIbData">
+                    <td>
+                        <input type="radio" name="updateIb" ng-click="queryObj(searchIbData[$index],searchIbData[$index].instance_id)">
+                       <!-- <a ui-sref="ib_update({instance_id:'{{item.instance_id | urlFilter}}'})">
+                            <i class="icon-edit"></i>
+                        </a>-->
+                    </td>
+                    <td title="{{item.instance_number}}"><div ng-bind="item.instance_number"></div></td>
+                    <td title="{{item.parent_instance_num}}"><div ng-bind="item.parent_instance_num"></div></td>
+                    <td title="{{item.instance_date.slice(0,10)}}"><div ng-bind="item.instance_date.slice(0,10)"></div></td>
+                    <td title="{{item.item_number}}"><div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" ng-bind="item.item_number" class="text-left" style="min-width: 193px;"></div></td>
+                    <td title="{{item.item_desc}}"><div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" ng-bind="item.item_desc" style="width: 150px"></div></td>
+                    <td title="{{item.customer_name}}"><div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" ng-bind="item.customer_name"></div></td>
+                    <td title="{{item.serial_number}}"><div ng-bind="item.serial_number" ></div></td>
+                    <td title="{{item.lot_number}}"><div ng-bind="item.lot_number" ></div></td>
+                </tr>
+
+            </table>
+
+            <div class="btn-row ml15 text-center page-list" ng-show="!loadingFlag">
+                <div paging page="currentPage" page-size="10" total="totalPage*10" show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)">
+                </div>
+            </div>
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="emptyData&&searchIbData.length==0">No results found. </div>
+    </div>
+</div>
+
+

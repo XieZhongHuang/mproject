@@ -1,0 +1,168 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="CreatePoCtrl"
+         xmlns="http://www.w3.org/1999/html">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+
+    <section id="main-content" style="overflow-x: hidden;">
+        <form class="form-validate form-validate" method="get" name="po_form" novalidate  dirty-form=""
+              ng-submit="submitForm(po_form)" ng-show="!loadingFlag">
+
+            <h1 ng-bind="'PO.CreatePo' | translate"></h1>
+
+            <div class="base-box sr-box">
+
+                <h2 class="sr-header" ng-bind="'PO.PoInfo' | translate"></h2>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'PO.MideaSN' | translate"></label>
+                            <input type="text" ng-model="sr_number" class="form-control fex1 mr-l" not-allow="">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'PO.PONO' | translate"></label>
+                            <input type="text" ng-model="po_number" class="form-control fex1">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'PO.MideaSRStatus' | translate"></label>
+                            <input type="text" ng-model="Status" class="form-control fex1 mr-l" not-allow="">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'PO.CreationDate' | translate"></label>
+                            <input type="text" class="form-control fex1" not-allow="">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="red">*<span ng-bind="'PO.BilltoAddress' | translate"></span></label>
+                            <div class="select2-arrow-box">
+                                <select select2="" required="" ng-class="{'bd-red':submitted && po_form.BilltoAddress.$invalid}" name="BilltoAddress" class="form-control" ng-change="changeBillAddress(bill_site_use_id)" ng-model="bill_site_use_id">
+                                    <option value="{{item.site_use_id }}" ng-repeat="item in billAddress">
+                                        {{item.address}}
+                                    </option>
+                                </select>
+                            </div>
+                            <span ui-sref="po_address_update({address_flag:'{{'BILL_TO' | urlFilter}}',update_flag:'{{'N' | urlFilter}}'})" class="icon-plus" style="position:absolute;right:-17px;top:6px;font-size: 16px;cursor: pointer; "></span>
+                            <i ui-sref="po_address_update({address_flag:'{{'BILL_TO' | urlFilter}}',update_flag:'{{'Y' | urlFilter}}'})" class="icon-edit" style="position:absolute;right:-40px;top:6px;font-size: 16px;cursor: pointer; "></i>
+                        </div>
+                        <div class="flexbox mr-l">
+                            <label class="red">*<span ng-bind="'PO.ShiptoAddress' | translate"></span></label>
+                            <div class="select2-arrow-box">
+                                <select select2="" style="height:28px !important;" ng-change="changeShipAddress(ship_site_use_id)" ng-class="{'bd-red':submitted && po_form.ShiptoAddress.$invalid}" required="" class="form-control" name="ShiptoAddress" ng-model="ship_site_use_id" >
+                                    <option value="{{item.site_use_id }}" ng-repeat="item in shipAddress">
+                                        {{item.address}}
+                                    </option>
+                                </select>
+                            </div>
+                            <span ui-sref="po_address_update({address_flag:'{{'SHIP_TO' | urlFilter}}',update_flag:'{{'N' | urlFilter}}'})" class="icon-plus" style="position:absolute;right:-17px;top:6px;font-size: 16px;cursor: pointer; "></span>
+                            <i ui-sref="po_address_update({address_flag:'{{'SHIP_TO' | urlFilter}}',update_flag:'{{'Y' | urlFilter}}'})" class="icon-edit" style="position:absolute;right:-40px;top:6px;font-size: 16px;cursor: pointer; "></i>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label class="red">*<span ng-bind="'PO.PoDescription' | translate"></span></label>
+                            <textarea ng-class="{'bd-red':submitted && po_form.PoDescription.$invalid}" style="height:57px !important;" ng-model="PoDescription" name="PoDescription" type="text" class="form-control" required="">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'PO.PoPrice' | translate"></label>
+                            <input type="text" class="form-control fex1" not-allow="">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                        </div>
+                    </div>
+                </div>
+
+                <h2 ng-bind="'PO.ItemInfo' | translate"></h2>
+                <div class="ml15 mr15">
+                    <table class="table table-striped table-bordered text-center table-search table-summary table-condensed" ng-show="!loadingFlag" style="table-layout: fixed;">
+                        <tr role="row" class="active">
+                            <th style="width: 50px;" class="sorting" role="columnheader" ng-bind="'PO.Delete' | translate"></th>
+                            <th style="width: 280px;" class="sorting" role="columnheader" ng-bind="'PO.Item' | translate"></th>
+                            <th style="width: 300px;" class="sorting" role="columnheader"><span ng-bind="'PO.ItemDescription' | translate"></span></th>
+                            <th style="width: 50px;" class="sorting" role="columnheader" ng-bind="'PO.UOM' | translate"></th>
+                            <th style="width: 90px;" class="sorting" role="columnheader" ng-bind="'PO.UnitPrice' | translate"></th>
+                            <th style="width: 70px;" class="sorting" role="columnheader" ng-bind="'PO.MyOnHandQty' | translate"></th>
+                            <th style="" class="sorting" role="columnheader" ng-bind="'PO.AvailableQty' | translate"></th>
+                            <th style="" class="sorting" role="columnheader" ng-bind="'PO.PurchaseQty' | translate"></th>
+                            <th style="" class="sorting" role="columnheader" ng-bind="'PO.TotalPrice' | translate"></th>
+                        </tr>
+                        <tr ng-repeat="item in poiteminfo">
+                            <td style="text-align: center;" ng-click="removepoiteminfo($index)">
+                                <span style="margin-left: 0px;" class="icon-minus-sign red" ></span>
+                            </td>
+                            <td style="padding: 0px;">
+                                <div class="fex1" style="height: 100%;">
+                                    <ng-form name="itemform">
+                                        <div class="flexbox" style="height: 100%;">
+                                            <i class="icon-search add-btn icon-color" style="line-height: 27px;" ng-click="itemLov(1,$index)"></i>
+                                            <i class="icon-remove-sign icon-color"></i>
+                                                <input data-index="{{$index}}" style="height: 100% !important;"   required=""
+                                                       ng-class="{'bd-red':submitted&&itemform.item_num.$invalid}"  type="text" name="item_num" ng-model="item.item_num"  class="form-control fex1" select3 not-allow="">
+                                        </div>
+                                    </ng-form>
+                                </div>
+                            </td>
+                            <td style="background-color: #eee;" title="{{item.item_desc}}">
+                                <div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" ng-bind="item.item_desc"></div>
+                            </td>
+                            <td style="background-color: #eee;" title="{{item.uom_code}}">
+                                <div ng-bind="item.uom_code"></div>
+                            </td>
+                            <td style="background-color: #eee;" title="{{item.price}}">
+                                <div ng-bind="item.price"></div>
+                            </td>
+                            <td class="bc-e" style="padding: 0px;width:40px;overflow: hidden;" title="{{item.onhand_qty}}">
+                                <div ng-bind="item.onhand_qty"></div>
+                            </td>
+
+                            <td style="background-color: #eee;" title="{{item.Available_Qty}}">
+                                <div ng-bind="item.Available_Qty"></div>
+                            </td>
+                            <td class="newpricedatepickerwrap" style="padding: 0px;" title="{{item.qty}}">
+                                <ng-form name="purform">
+                                    <input data-index="{{$index}}" type="text"
+                                           ng-class="{'bd-red': submitted&&purform.qty.$invalid}"
+                                           style="height:29px !important;" class="form-control fex1" ng-model="item.qty"
+                                           name="qty" required
+                                            ng-change="changePurchaseQty(item.qty,$index)"
+                                           onkeyup="if(this.value == 0){this.value = ''} if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                           >
+                                </ng-form>
+                            </td>
+                            <td class="bc-e" title="{{item.totalprice}}">
+                                <div ng-bind="item.totalprice"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="flexbox footer-btn mt10"  style="border: none;">
+                    <div class="fex1" ></div>
+                    <div class="mr15 mt20">
+                        <button type="button" class="btn btn-primary mr5 fts16  btn-large" ng-click="addpoiteminfo()"  style="font-size:12px;" ng-bind="'PUBLIC.Add' | translate"></button>
+                        <button type="submit" class="btn btn-primary mr5 fts16  btn-large" style="font-size:12px;"  ng-bind="'PUBLIC.Submit' | translate"></button>
+                        <!--<button type="submit" class="btn btn-primary mr5 fts16  btn-large" ng-bind="'PUBLIC.NewPrice' | translate"></button>-->
+                        <a class="btn btn-default btn-large mr50" style="font-size: 12px !important;" back-button=""><span ng-bind="'PUBLIC.Cancel' | translate"  ng-bind="'PUBLIC.Cancel'"></span></a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</section>
+

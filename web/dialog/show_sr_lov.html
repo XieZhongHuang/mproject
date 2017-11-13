@@ -1,0 +1,40 @@
+<style>.ajax-tip{margin-left: 0;margin-top:-120px;}</style>
+<div class="datatable" drag-drop>
+    <div class="modal-header">
+        <h4 class="modal-title" ng-bind="'CLAIM.{{title}}' | translate"></h4>
+    </div>
+    <section class="panel tableBodyScroll" style="height: 332px;">
+        <div ng-if="!loadingFlag" style="height: 350px;width:800px;overflow: hidden;" class="panel tableBodyScroll">
+            <!--serial number start-->
+            <table class="table table-bordered table-hover table-search table-condensed">
+                <thead>
+                <tr>
+                    <th ng-bind="'CLAIM.NO' | translate"></th>
+                    <th ng-bind="'CLAIM.ServiceActivity' | translate"></th>
+                    <th ng-bind="'CLAIM.Item' | translate"></th>
+                    <th ng-bind="'CLAIM.ItemDesc' | translate"></th>
+                    <th ng-bind="'CLAIM.QTY' | translate"></th>
+                    <th ng-bind="'CLAIM.Price' | translate"></th>
+                    <th ng-bind="'CLAIM.Amount' | translate"></th>
+                </tr>
+                <tr ng-repeat="item in data" class="text-center">
+                    <td title="{{$index}}"><div ng-bind="$index"></div></td>
+                    <td title="{{item.activity}}"><div ng-bind="item.activity"></div></td>
+                    <td title="{{item.item_name}}"><div ng-bind="item.item_name"></div></td>
+                    <td title="{{item.item_desc}}"><div ng-bind="item.item_desc"></div></td>
+                    <td title="{{item.qty}}"><div ng-bind="item.qty"></div></td>
+                    <td title="{{item.price}}"><div ng-bind="item.price | number"></div></td>
+                    <td title="{{item.amount}}"><div ng-bind="item.amount | number"></div></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</div>
+<!-- noData-->
+<div class="noData" ng-if="noData">
+    <span class="icon-warning-sign fts48"></span>
+    <p class="fts14" ng-bind="'PUBLIC.noData' | translate"></p>
+</div>
+<!-- noData-->
+
+

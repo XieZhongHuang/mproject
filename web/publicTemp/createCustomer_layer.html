@@ -1,0 +1,187 @@
+<div class="datatable">
+    <div class="modal-header">
+        <h4 class="modal-title" ng-bind="publicTempTitle"></h4>
+    </div>
+    <section id="container" ng-controller="CreateCustomerCtrl">
+        <section id="main-content"  >
+            <section class="wrapper">
+                <!--Account Information-->
+                <div class="col-lg-12">
+                    <form class="form-horizontal form-validate " method="get"  name="addcustform" novalidate ng-submit="submitForm(addcustform.$valid,1)">
+                        <section class="panel bor">
+                            <header class="panel-heading">
+                                Account Information
+                            </header>
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <label class="control-label col-xs-2" >Customer Type</label>
+                                    <div class="col-xs-10">
+                                        <select class="form-control input-lg m-bot15" ng-model="customer_type" ng-change="req()">
+                                            <option value="PERSON">Person</option>
+                                            <option value="ORGANIZATION">Organization</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback">
+                                    <label class="col-sm-2 control-label red"  >*Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" required ng-model="obj_name" name="obj_name" maxlength="100">
+                                        <span ng-show="submitted && addcustform.obj_name.$invalid" class="red">This field is required</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"  >Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" ng-model="email" name="email"  maxlength="100">
+                                        <span ng-show="addcustform.email.$dirty && addcustform.email.$invalid" class="red">Your email address is incorrect</span>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label red"  >*Phone</label>
+                                    <div class="col-sm-10">
+                                        <input  type="text" class="form-control" required ng-model="phone"  name="phone">
+                                        <span ng-show="submitted && addcustform.phone.$invalid" class="red">This field is required</span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </section>
+
+                        <!--Contact Information-->
+                        <section class="panel bor"  ng-if="customer_type=='ORGANIZATION'">
+                            <header class="panel-heading">
+                                Contact Information
+                            </header>
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2" >Account Type</label>
+                                    <div class="col-lg-10">
+
+                                        <select class="form-control input-lg m-bot15" ng-model="$parent.c_type">
+                                            <option>EMPLOYEE_OF</option>
+                                            <option>CUSTOMER_OF</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label red" >*Name</label>
+                                    <div class="col-sm-10" >
+                                        <input type="text" class="form-control" ng-model="$parent.c_name" value=""
+                                               maxlength="100"  name="c_name"  required="" >
+                                        <span ng-show="submitted && addcustform.c_name.$invalid" class="red">This field is required</span>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label ">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" ng-model="$parent.c_email" maxlength="100"  name="c_email">
+                                        <span ng-show="addcustform.c_email.$dirty  && addcustform.c_email.$invalid" class="red">Your email address is incorrect</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label red">*Phone</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control"     required="" ng-model="phone"  name="c_phone">
+                                        <span ng-show="submitted && addcustform.c_phone.$invalid" class="red">This field is required</span>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                        <!--Address Information-->
+                        <section class="panel bor">
+                            <header class="panel-heading">
+                                Address Information
+                            </header>
+
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label red">*Address</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" ng-model="address" maxlength="240" required="" name="address">
+                                        <span ng-show="submitted && addcustform.address.$invalid" class="red">This field is required</span>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" clear-contact="">
+                                    <label class="col-sm-2 control-label red">*Country</label>
+                                    <div class="col-sm-10">
+                                        <i class="icon-ellipsis-horizontal add-btn"  ng-click="countryData()"></i>
+                                        <input type="text" class="form-control" ng-model="country_name" readonly>
+                                        <input type="hidden" value="" ng-model="country" name="country" required=""  >
+                                        <span ng-show="submitted && addcustform.country.$invalid" class="red">This field is required</span>
+                                    </div>
+                                </div>
+
+                                <!--<div class="form-group">-->
+                                <!--<label class="col-sm-2 control-label red">*state</label>-->
+                                <!--<div class="col-sm-10">-->
+                                <!--<i class="icon-ellipsis-horizontal add-btn" ng-click="stateData()"></i>-->
+                                <!--<input type="text" class="form-control" value="{{s_name2}}" ng-model="stateValue" id="stateValue" readonly>-->
+                                <!--<input type="hidden" value="" ng-model="state" name="state" required="" >-->
+                                <!--<span ng-show="submitted && addcustform.state.$invalid" class="red">This field is required</span>-->
+                                <!--</div>-->
+                                <!--</div>-->
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label ">province</label>
+                                    <div class="col-sm-10">
+                                        <i class="icon-ellipsis-horizontal add-btn" ng-click="province_lov(1)"></i>
+                                        <input type="text" class="form-control"  ng-model="province"  >
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">City</label>
+                                    <div class="col-sm-10">
+                                        <i class="icon-ellipsis-horizontal add-btn" ng-click="city_lov(1)"></i>
+                                        <input type="text" class="form-control" ng-model="city" maxlength="60" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label ">district</label>
+                                    <div class="col-sm-10">
+                                        <i class="icon-ellipsis-horizontal add-btn" ng-click="district_lov(1)"></i>
+                                        <input type="text" class="form-control" ng-model="district"  ng-change="clearAddr_code()">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label ">Address Code</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control"  ng-model="postal_code"  readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </section>
+
+                        <div class="form-group clearfix">
+                            <div class="col-sm-offset-2 col-lg-10"  style="position: relative;left: 11px">
+                                <button class="btn btn-primary" type="submit" >Save</button>
+                                <button class="btn btn-default" type="button" ng-click="reload()">Refresh</button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </section>
+        </section>
+    </section>
+</div>

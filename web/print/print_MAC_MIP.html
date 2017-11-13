@@ -1,0 +1,427 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Print</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        @font-face {
+            font-family: DeliciousRoman;
+            src: url('timesbd.ttf'), url('TimesLTStd-Roman.otf');
+        }
+
+        body {
+            background-color: #ffffff;
+            /*color: #000 !important;*/
+            font-family: Microsoft YaHei, Geneva, "sans-serif", SimSun;
+            font-size: 12px;
+        }
+
+        .mask {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background-color: #fff;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: none;
+        }
+
+        .load {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1001;
+            margin-top: -18px;
+            margin-left: -18px;
+            display: none;
+        }
+
+        h1 {
+            margin: 0 200px;
+            padding: 10px 0;
+        }
+
+        .tc {
+            text-align: center;
+        }
+
+        .fs24 {
+            font-size: 24px;
+        }
+
+        .fs12 {
+            font-size: 12px;
+        }
+
+
+        .print-logo {
+            position: absolute;
+            top:50px;
+            left: 0;
+            color:#000;
+        }
+
+        img {
+            border: 0;
+        }
+
+        .print-container {
+            position: relative;
+            /*width: 900px;*/
+            width:100%;
+            height: auto;
+            background: #fff;
+            margin: 0 auto;
+        }
+
+        .print-time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .print-head {
+            height: 73px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        tr th {
+            height: 20px;
+            background: #fcfcfc;
+            border: 1px solid #e8e8e8;
+            /*width: 50%;*/
+            text-align: center;
+        }
+
+        tr th.bort0, tr td.bort0 {
+            border-top: 0;
+        }
+
+        tr td {
+            border: 1px solid #e8e8e8;
+            vertical-align: top;
+        }
+
+        tr td.borb0 {
+            border-bottom: 0;
+        }
+
+        .mb10 {
+            margin-bottom: 10px;
+        }
+
+        .ml10 {
+            margin-left: 10px;
+        }
+
+        table tr td p strong {
+            color: #000;
+            margin-right: 10px;
+        }
+
+        table tr td p {
+            color: #000;
+            padding: 0 10px;
+            height: 33px;
+            line-height: 30px;
+            margin-bottom: 0;
+        }
+
+        table tr td p.last {
+            border-bottom: 0;
+        }
+
+        .write-table tr td {
+            border-left: 0;
+            height: 35px;
+            border-bottom: 0;
+        }
+
+        .write-area {
+            height: 120px;
+        }
+
+        .write-table tr th {
+            border-left: 0;
+        }
+
+        .Parts-table tr td {
+            height: 28px;
+            line-height: 30px;
+        }
+
+        .report-table input {
+            height: 28px;
+            width: 80px;
+            border: 1px solid #666;
+            border-radius: 3px;
+        }
+
+        table tr td .report-table tr th, table tr td .report-table tr td {
+            border: 0;
+        }
+
+        table tr td .report-table tr th, table tr td .report-table tr td {
+            border: 0;
+            line-height: 30px;
+        }
+
+        tr .report-l {
+            width: 50%;
+            border: 0;
+        }
+
+        tr .report-r {
+            border: 0;
+        }
+
+        .report-r table tr td {
+            line-height: 39px;
+            border-left: 0;
+        }
+
+        .report-r table tr td.item {
+            width: 90px;
+            *width: 92px;
+        }
+
+        .report-tip {
+            margin-top: 10px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .mt10 {
+            margin-top: 10px;
+        }
+        tr td {
+            text-align: center;
+        }
+
+        .pl5 {
+            padding-left: 5px;
+        }
+
+        .report-r tr th.bort0 {
+            border: 0;
+        }
+
+        .dashedLine {
+            border: 0;
+            border-bottom: 1px dashed #e8e8e8;
+            height: 26px;
+            width: 100%;
+        }
+
+        .dashedLine2 {
+            border: 0;
+            border-bottom: 1px dashed #e8e8e8;
+            height: 26px;
+            width: 90px;
+        }
+
+        .dashedLine3 {
+            width: 30px;
+            margin-top: 5px;
+            height: 30px;
+            border-radius: 3px;
+            border: 1px solid #666;
+        }
+        .dashedLine4 {
+            border: 0;
+            border-bottom: 1px dashed #e8e8e8;
+            height: 20px;
+        }
+
+        .solidLine {
+            border: 0;
+            border-bottom: 1px solid #e8e8e8;
+            height: 18px;
+            width: 230px;
+        }
+
+        .solidLine2 {
+            border: 0;
+            border-bottom: 1px solid #e8e8e8;
+            height: 16px;
+            width: 190px;
+            max-width: 190px;
+        }
+
+        .solidLine3 {
+            border: 0;
+            border-bottom: 1px solid #e8e8e8;
+            height: 16px;
+            width: 230px;
+            max-width: 220px;
+            right: 20px;
+        }
+
+        .solidLine4 {
+            border:0;
+            border-bottom: 1px solid #e8e8e8;
+            height: 16px;
+            width: 300px;
+            max-width: 300px;;
+        }
+
+
+        .print-footer td p {
+            text-align: center;
+            border-top: 0;
+        }
+
+        input {
+            *line-height: 25px;
+        }
+
+        .tab-content{
+            width: 100%;
+
+        }
+        .tab-content ul{
+            list-style: none;
+        }
+
+        .left-content{
+            float: left;
+        }
+
+        .middle-content{
+            float:left ;
+
+
+        }
+
+        .right-content{
+            float:left ;
+            margin-top: 10px;
+        }
+
+        .info-l {
+            float: left;
+        }
+
+        .info-r {
+            float: left;
+        }
+
+    </style>
+</head>
+<body>
+<div class="print-container">
+    <div class="print-head" style=" border-left: 1px solid #e8e8e8; border-right: 1px solid #e8e8e8;border-top: 1px solid #e8e8e8">
+        <h1 class="fs24 tc"></h1>
+    </div>
+    <table class="Parts-table">
+        <tr>
+            <th class="bort0">SR Number</th>
+            <th class="bort0">Status</th>
+            <th class="bort0">Customer Name</th>
+            <th class="bort0">Create Date</th>
+        </tr>
+        <tr class="tc srdata">
+            <td></td>
+            <td></td>
+            <td ></td>
+            <td></td>
+        </tr>
+    </table>
+    <div style="height:40px;border-right: 1px solid #e8e8e8;border-left: 1px solid #e8e8e8;"></div>
+    <table class="Parts-table chargedata">
+        <tr>
+            <th class="bort0">Charge Lines</th>
+            <th class="bort0">Service Activity</th>
+            <th class="bort0">SP Item</th>
+            <th class="bort0">Item Description</th>
+            <th class="bort0">List Price</th>
+            <th class="bort0">Override Price</th>
+            <th class="bort0">Qty</th>
+            <th class="bort0">Net Price</th>
+            <th class="bort0">Exceed Rate(+/-)</th>
+        </tr>
+    </table>
+</div>
+<div class="mask"></div>
+<div class="load"><img src="load.gif"></div>
+<script src="../api/apiconfig.js"></script>
+<script src="../framework/jquery-1.8.3.min.js"></script>
+<script>
+    $(function () {
+        var sendData = window.location.href;
+        if (sendData.indexOf('=') > -1) {
+            sendData = sendData.substring(sendData.indexOf('=') + 1);
+        } else {
+            alert('Can not get document ID!');
+            return false;
+        }
+
+        $.ajax({
+            type: "get",
+            async: false,
+            url: partalConfig+"mipCharge?document_id="+sendData+"&language=US&doc_type=SR",
+            dataType: "jsonp",
+            jsonp: "callback",
+            success: function (res) {
+                console.log(res);
+                var response = res.sr_info;
+                $('.srdata td').eq(0).html(response.incident_number);
+                $('.srdata td').eq(1).html(response.incident_status_name);
+                $('.srdata td').eq(2).html(response.customer_name);
+                $('.srdata td').eq(3).html(response.creation_date);
+
+                var $table = $('.chargedata');
+                var len = response.chage?response.chage.length:0;
+                for(var k=0;k<len;k++){
+                    var $tr = $('<tr>');
+                    for(var i=0;i<9;i++){
+                        var $td = $('<td>');
+                        if(i==0){
+                            $td.html(response.chage[k].charge_lines);
+                        }else if(i==1){
+                            $td.html(response.chage[k].transaction_type_name);
+                        }else if(i==2){
+                            $td.html(response.chage[k].sp_item);
+                        }else if(i==3){
+                            $td.html(response.chage[k].item_desc);
+                        }else if(i==4){
+                            $td.html(response.chage[k].list_price);
+                        }else if(i==5){
+                            $td.html(response.chage[k].override_price);
+                        }else if(i==6){
+                            $td.html(response.chage[k].quantity);
+                        }else if(i==7){
+//                            $td.html(response.chage[k].sp_item);
+                        }else if(i==8){
+                            $td.html(response.chage[k].exceed_rate);
+                        }
+                        $tr.append($td);
+                    }
+                    $table.append($tr);
+                }
+
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

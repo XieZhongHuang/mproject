@@ -1,0 +1,125 @@
+
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="TaskSummaryCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <section id="main-content">
+        <div class="base-box">
+            <h2>Search Task</h2>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr10">
+                    <div class="flexbox mr50">
+                        <label style="min-width: 80px">View</label>
+                        <select select2="" class="form-control" ng-model="view_id" ng-keypress="enter($event)"  get-focus="">
+                            <option value=""></option>
+                            <option value="1">Today's Task</option>
+                            <option value="2">Open Task</option>
+                            <option value="3">Closed Task</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label>Task Number</label>
+                        <input type="text" ng-model="task_number" class="form-control fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+            </div>
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr10"></div>
+                <div class="flexbox text-right mr50">
+                    <button class="btn btn-primary btn-mini" style="padding-top:4px;padding-bottom:4px;" type="submit" ng-click="DoCtrlPagingAct(1)">Search
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ml15 mr15" ng-show="totalPage>0">
+            <table class="table table-striped table-bordered table-hover text-center data-list table-search table-condensed table-summary" ng-show="!loadingFlag">
+                <thead>
+                <tr role="row">
+                    <th class="sorting" role="columnheader" style="width: 77px">
+                        Action
+                    </th>
+                    <th class="sorting" role="columnheader">
+                        Task Number
+                    </th>
+
+                    <th class="sorting" role="columnheader">
+                        Service Request
+                    </th>
+                    <th class="sorting" role="columnheader">
+                        Task Status
+                    </th>
+                    <th class="sorting" role="columnheader">
+                        Assignee
+                    </th>
+                    <th class="sorting" role="columnheader">
+                        Subject
+                    </th>
+
+                    <th class="sorting" role="columnheader">
+                        Actual Start Date
+                    </th>
+                    <th class="sorting" role="columnheader">
+                        Actual End Date
+                    </th>
+                </tr>
+
+                </thead>
+
+                <tbody role="alert" aria-live="polite" aria-relevant="all">
+
+                <tr class="gradeX odd" ng-repeat=" item in taskSummary">
+
+                    <td class=" sorting_1">
+                        <a ui-sref="sr_update({sr_id:'{{item.sr_id | urlFilter}}',scrollFlag:'1'})">
+                            <i class="icon-edit"></i>
+                        </a>
+                    </td>
+                    <td title="{{item.task_number}}">
+                        <div ng-bind="item.task_number" style="text-align: center"></div>
+
+                    </td>
+                    <td title="{{item.sr_number}}" class="text-center">
+                        <div ng-bind="item.sr_number" style="text-align: center"></div>
+                    </td>
+                    <td title="{{item.task_status}}">
+                        <div ng-bind="item.task_status" style="text-align: center"></div>
+
+                    </td>
+                    <td title="{{item.asignee}}">
+                        <div ng-bind="item.asignee"></div>
+
+                    </td>
+                    <td title="{{item.task_name}}">
+                        <div ng-bind="item.task_name"></div>
+
+                    </td>
+                    <td title="{{item.actual_start_date}}">
+                        <div ng-bind="item.actual_start_date"></div>
+
+                    </td>
+                    <td title="{{item.actual_end_date}}">
+                        <div ng-bind="item.actual_end_date"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="btn-row  text-right" ng-show="!loadingFlag">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)"
+                     ng-show="totalPage>0"
+                        >
+                </div>
+
+            </div>
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="notaskSummary">No results found. </div>
+    </section>
+</section>

@@ -1,0 +1,461 @@
+<style type="text/css">
+    .address_info .form-tips{ margin-top: -17px!important;}
+    .lh26{ line-height: 26px!important;}
+</style>
+
+<section id="container"  ng-controller="UpdateCustomerCtrl">
+    <div ng-include="'tpls/header.html'" ></div>
+    <div ng-include="'tpls/menu.html'" ></div>
+    <section id="main-content" >
+        <!--<div class="mask" ng-if="cmDetail.update_flag=='N'"></div>-->
+
+        <h1 ng-bind="'customer.UpdateInformation' | translate"></h1>
+        <div class="base-box" >
+            <form class="form-horizontal form-validate" method="get" name="updateForm"  novalidate ng-submit="submitForm(updateForm)" dirty-form="">
+            <h2 ng-bind="'customer.CustomerInformation' | translate"></h2>
+            <!--Account Information-->
+                <div ng-if="instance_code!='MET'&&instance_code!='MPI'&& !(instance_code=='MSA'||instance_code=='MZA')">
+                    <div class="ipt-item flexbox" ng-class="{'mb30':submitted && updateForm.obj_name.$invalid}">
+                        <div class="fex1 mr50">
+                            <div class="flexbox mr-l">
+                                <label ng-bind="'customer.CustomerType'|translate"></label>
+                                <input   ng-model="cmDetail.customer_type" type="text"  class="form-control fex1 notAllow">
+                            </div>
+                        </div>
+                        <div class="fex1" ng-if="cmDetail.customer_type=='ORGANIZATION'">
+                            <div class="flexbox mr50">
+                                <label class="red" style="min-width: 90px"><span ng-bind="'customer.Name' | translate"></span></span></label>
+                                <input type="text" red class="form-control fex1"  ng-model="$parent.party_name"  readonly>
+                            </div>
+                        </div>
+                        <div class="fex1" ng-if="cmDetail.customer_type=='PERSON'">
+                            <div class="flexbox mr50 mr20-media" >
+                                <div class="fex1">
+                                    <div class="flexbox">
+                                        <label style="min-width: 80px;margin-right:10px;"><span ng-bind="'customer.FirstName' | translate"></span></span></label>
+                                        <input type="text" class="form-control fex1" ng-model="$parent.first_name" name="first_name" maxlength="100" readonly>
+                                    </div>
+                                </div>
+                                <div class="fex1">
+                                    <div class="flexbox c_lastname" style="text-indent: 15px;">
+                                        <label style="min-width:91px;margin-left:10px;" class="red ">*<span ng-bind="'customer.LastName' | translate"></span></span></label>
+                                        <input type="text" red class="form-control fex1" required   ng-model="$parent.last_name" name="last_name" readonly maxlength="100" ng-class="{'bd-red':submitted && updateForm.last_name.$invalid}">
+                                        <formtips  title="This field is required" ng-show="submitted && updateForm.last_name.$invalid"></formtips>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox" >
+                        <div class="fex1 mr50 mb30">
+                            <div class="flexbox mr-l">
+                                <label ng-bind="'customer.Email'|translate"></label>
+                                <input type="email" ng-model="$parent.cmDetail.email" name="email" maxlength="100" readonly class="form-control fex1" ng-if="cmDetail.update_flag=='Y'">
+                                <input type="email" ng-model="$parent.cmDetail.email" name="email" maxlength="100" readonly class="form-control fex1" readonly="readonly" ng-if="cmDetail.update_flag=='N'">
+                                <formtips  title="Your email address is incorrect" ng-show="updateForm.email.$dirty  && updateForm.email.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50 mr20-media">
+                                <label class="red" style="min-width:90px;">*<span ng-bind="'customer.Phone'|translate"></span></label>
+                                <input type="text" class="form-control text-center"  style="width: 45px;"   readonly ng-model="$parent.phone_country_code"  name="phone_country_code" ng-class="{'bd-red':submitted && updateForm.phone_country_code.$invalid}" ng-if="cmDetail.update_flag=='Y'"/>
+                                <input type="text" class="form-control text-center"  style="width: 45px;"  readonly  ng-model="$parent.phone_country_code"  name="phone_country_code" ng-class="{'bd-red':submitted && updateForm.phone_country_code.$invalid}" readonly="readonly" ng-if="cmDetail.update_flag=='N'"/>
+                                <span style="border-bottom:#cacaca solid 1px;width: 5%;height: 16px;margin: 0 5px 5px"></span>
+                                <input type="text" class="form-control fex1"     ng-model="$parent.cmDetail.phone" readonly name="phone" ng-class="{'bd-red':submitted && updateForm.phone.$invalid}" ng-if="cmDetail.update_flag=='Y'"/>
+                                <input type="text" class="form-control fex1"    ng-model="$parent.cmDetail.phone" readonly name="phone" ng-class="{'bd-red':submitted && updateForm.phone.$invalid}" readonly="readonly" ng-if="cmDetail.update_flag=='N'"/>
+                                <formtips  title="This field is required" ng-show="submitted && (updateForm.phone.$invalid ||  updateForm.phone_country_code.$invalid ||  updateForm.phone_area_code.$invalid)"></formtips>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="instance_code=='MET'||instance_code=='MPI'">
+                    <div class="ipt-item flexbox" ng-class="{'mb30':submitted && updateForm.obj_name.$invalid}">
+                        <div class="fex1 mr50">
+                            <div class="flexbox mr-l">
+                                <label ng-bind="'customer.CustomerType'|translate"></label>
+                                <input   ng-model="cmDetail.customer_type" type="text"  class="form-control fex1 notAllow">
+                            </div>
+                        </div>
+                        <div class="fex1" ng-if="cmDetail.customer_type=='ORGANIZATION'">
+                            <div class="flexbox mr50">
+                                <label class="red" style="min-width: 90px"><span ng-bind="'customer.Name' | translate"></span></span></label>
+                                <input type="text" red class="form-control fex1"  ng-model="$parent.party_name"  readonly>
+                            </div>
+                        </div>
+                        <div class="fex1" ng-if="cmDetail.customer_type=='PERSON'">
+                            <div class="flexbox mr50 mr20-media" >
+                                <div class="fex1">
+                                    <div class="flexbox">
+                                        <label style="min-width: 80px;margin-right:10px;"><span ng-bind="'customer.FirstName' | translate"></span></span></label>
+                                        <input type="text" class="form-control fex1" readonly ng-model="$parent.first_name" name="first_name" maxlength="100" >
+                                    </div>
+                                </div>
+                                <div class="fex1">
+                                    <div class="flexbox c_lastname" style="text-indent: 15px;">
+                                        <label style="min-width:91px;margin-left:10px;" class="red ">*<span ng-bind="'customer.LastName' | translate"></span></span></label>
+                                        <input type="text" red class="form-control fex1" required   ng-model="$parent.last_name" name="last_name" readonly maxlength="100" ng-class="{'bd-red':submitted && updateForm.last_name.$invalid}">
+                                        <formtips  title="This field is required" ng-show="submitted && updateForm.last_name.$invalid"></formtips>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox" >
+                        <div class="fex1 mr50 mb30">
+                            <div class="flexbox mr-l">
+                                <label ng-bind="'customer.Email'|translate"></label>
+                                <input type="email" ng-model="$parent.cmDetail.email" name="email" maxlength="100" ng-readonly="cmDetail.customer_type=='ORGANIZATION'" disabled class="form-control fex1" ng-if="cmDetail.update_flag=='Y'">
+                                <input type="email" ng-model="$parent.cmDetail.email" name="email" maxlength="100" ng-readonly="cmDetail.customer_type=='ORGANIZATION'" disabled class="form-control fex1"  ng-if="cmDetail.update_flag=='N'">
+                                <formtips  title="Your email address is incorrect" ng-show="updateForm.email.$dirty  && updateForm.email.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50 mr20-media">
+                                <label class="red" style="min-width:90px;">*<span ng-bind="'customer.Phone'|translate"></span></label>
+                                <input type="text" class="form-control text-center"  style="width: 45px;"   ng-readonly="cmDetail.customer_type=='ORGANIZATION'||cmDetail.customer_type=='PERSON'" ng-model="$parent.phone_country_code"  name="phone_country_code" ng-class="{'bd-red':submitted && updateForm.phone_country_code.$invalid}" ng-if="cmDetail.update_flag=='Y'"/>
+                                <input type="text" class="form-control text-center"  style="width: 45px;"  ng-readonly="cmDetail.customer_type=='ORGANIZATION'||cmDetail.customer_type=='PERSON'"  ng-model="$parent.phone_country_code"  name="phone_country_code" ng-class="{'bd-red':submitted && updateForm.phone_country_code.$invalid}" readonly="readonly" ng-if="cmDetail.update_flag=='N'"/>
+                                <span style="border-bottom:#cacaca solid 1px;width: 5%;height: 16px;margin: 0 5px 5px"></span>
+                                <input type="text" class="form-control fex1"     ng-model="$parent.cmDetail.phone" ng-readonly="cmDetail.customer_type=='ORGANIZATION'||cmDetail.customer_type=='PERSON'" name="phone" ng-class="{'bd-red':submitted && updateForm.phone.$invalid}" ng-if="cmDetail.update_flag=='Y'"/>
+                                <input type="text" class="form-control fex1"    ng-model="$parent.cmDetail.phone" ng-readonly="cmDetail.customer_type=='ORGANIZATION'||cmDetail.customer_type=='PERSON'" name="phone" ng-class="{'bd-red':submitted && updateForm.phone.$invalid}"  ng-if="cmDetail.update_flag=='N'"/>
+                                <formtips  title="This field is required" ng-show="submitted && (updateForm.phone.$invalid ||  updateForm.phone_country_code.$invalid ||  updateForm.phone_area_code.$invalid)"></formtips>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="instance_code=='MSA'||instance_code=='MZA'">
+                    <div class="ipt-item flexbox" ng-class="{'mb30':submitted && updateForm.obj_name.$invalid}">
+                        <div class="fex1 mr50">
+                            <div class="flexbox mr-l">
+                                <label ng-bind="'customer.CustomerType'|translate"></label>
+                                <input   ng-model="cmDetail.customer_type" type="text"  class="form-control fex1 notAllow">
+                            </div>
+                        </div>
+                        <div class="fex1" ng-if="cmDetail.customer_type=='ORGANIZATION'">
+                            <div class="flexbox mr50">
+                                <label class="red" style="min-width: 90px"><span ng-bind="'customer.Name' | translate"></span></span></label>
+                                <input type="text" red class="form-control fex1" ng-change="changeName(party_name)" ng-disabled="cmDetail.F_ID_CUST_UPDATE_N!='Y'"  ng-model="$parent.party_name" >
+                            </div>
+                        </div>
+                        <div class="fex1" ng-if="cmDetail.customer_type=='PERSON'">
+                            <div class="flexbox mr50 mr20-media" >
+                                <div class="fex1">
+                                    <div class="flexbox">
+                                        <label style="min-width: 80px;margin-right:10px;"><span ng-bind="'customer.FirstName' | translate"></span></span></label>
+                                        <input type="text" class="form-control fex1" ng-disabled="cmDetail.F_ID_CUST_UPDATE_N!='Y'" ng-change="changeFirstName(first_name)" ng-model="first_name" name="first_name" maxlength="100" >
+                                    </div>
+                                </div>
+                                <div class="fex1">
+                                    <div class="flexbox c_lastname" style="text-indent: 15px;">
+                                        <label style="min-width:91px;margin-left:10px;" class="red ">*<span ng-bind="'customer.LastName' | translate"></span></span></label>
+                                        <input type="text" red class="form-control fex1" required ng-disabled="cmDetail.F_ID_CUST_UPDATE_N!='Y'" ng-change="changeLastName(last_name)" ng-model="last_name" name="last_name"  maxlength="100" ng-class="{'bd-red':submitted && updateForm.last_name.$invalid}">
+                                        <formtips  title="This field is required" ng-show="submitted && updateForm.last_name.$invalid"></formtips>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox" >
+                        <div class="fex1 mr50 mb30">
+                            <div class="flexbox mr-l">
+                                <label ng-bind="'customer.Email'|translate"></label>
+                                <input type="email" ng-model="$parent.cmDetail.email" name="email" maxlength="100" disabled  class="form-control fex1" ng-if="cmDetail.update_flag=='Y'">
+                                <input type="email" ng-model="$parent.cmDetail.email" name="email" maxlength="100" disabled  class="form-control fex1"  ng-if="cmDetail.update_flag=='N'">
+                                <formtips  title="Your email address is incorrect" ng-show="updateForm.email.$dirty  && updateForm.email.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50 mr20-media">
+                                <label class="red" style="min-width:90px;">*<span ng-bind="'customer.Phone'|translate"></span></label>
+                                <input type="text" class="form-control text-center"  style="width: 45px;"   readonly ng-model="$parent.phone_country_code"  name="phone_country_code" ng-class="{'bd-red':submitted && updateForm.phone_country_code.$invalid}" ng-if="cmDetail.update_flag=='Y'"/>
+                                <input type="text" class="form-control text-center"  style="width: 45px;"  readonly  ng-model="$parent.phone_country_code"  name="phone_country_code" ng-class="{'bd-red':submitted && updateForm.phone_country_code.$invalid}" readonly="readonly" ng-if="cmDetail.update_flag=='N'"/>
+                                <span style="border-bottom:#cacaca solid 1px;width: 5%;height: 16px;margin: 0 5px 5px"></span>
+                                <input type="text" class="form-control fex1"     ng-model="$parent.cmDetail.phone"  name="phone" readonly ng-class="{'bd-red':submitted && updateForm.phone.$invalid}" ng-if="cmDetail.update_flag=='Y'"/>
+                                <input type="text" class="form-control fex1"    ng-model="$parent.cmDetail.phone"  name="phone" readonly ng-class="{'bd-red':submitted && updateForm.phone.$invalid}"  ng-if="cmDetail.update_flag=='N'"/>
+                                <formtips  title="This field is required" ng-show="submitted && (updateForm.phone.$invalid ||  updateForm.phone_country_code.$invalid ||  updateForm.phone_area_code.$invalid)"></formtips>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <!--Contact Information-->
+                    <section  ng-if="cmDetail.customer_type=='ORGANIZATION'">
+                        <h2 ng-bind="'customer.ContactInformation'|translate"></h2>
+                        <div class="ipt-item flexbox"ng-class="{'mb30':submitted && updateForm.c_name.$invalid}">
+                            <div class="fex1 mr50">
+                                <div class="flexbox mr-l" >
+                                    <label ng-bind="'customer.AccountType'|translate" ></label>
+                                    <input disabled   ng-model="$parent.cmDetail.c_type"   type="text"   class="form-control fex1 notAllow" >
+                                </div>
+                            </div>
+                            <div class="fex1">
+                                <div class="flexbox mr50" >
+                                    <div class="fex1">
+                                        <div class="flexbox">
+                                            <label style="min-width:80px;margin-right:10px;"><span ng-bind="'customer.FirstName' | translate"></span></span></label>
+                                            <input type="text" red class="form-control fex1"   ng-model="$parent.c_first_name"  maxlength="100" >
+                                        </div>
+                                    </div>
+                                    <div class="fex1" style="text-indent: 15px">
+                                        <div class="flexbox">
+                                            <label style="min-width:91px;margin-left:10px;text-align: left;" class="red">*<span ng-bind="'customer.LastName' | translate"></span></span></label>
+                                            <input  id="lastName" type="text" red class="form-control fex1" required  ng-model="$parent.c_last_name" name="c_last_name"  maxlength="100" ng-class="{'bd-red':submitted && updateForm.c_last_name.$invalid}">
+                                            <formtips  title="This field is required" ng-show="submitted && updateForm.c_last_name.$invalid"></formtips>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ipt-item flexbox"ng-class="{'mb30':submitted && updateForm.c_phone.$invalid}">
+                            <div class="fex1 mr50 mb30">
+                                <div class="flexbox mr-l">
+                                    <label ng-bind="'customer.Email'|translate"></label>
+                                    <input  ng-model="$parent.cmDetail.c_email"   type="email"   class="form-control fex1" name="c_email" ng-if="cmDetail.update_flag=='Y'">
+                                    <input  ng-model="$parent.cmDetail.c_email"   type="email"   class="form-control fex1" name="c_email" readonly="readonly" ng-if="cmDetail.update_flag=='N'">
+                                    <formtips  title="Your email address is incorrect" ng-show="updateForm.c_email.$dirty  && updateForm.c_email.$invalid"></formtips>
+                                </div>
+                            </div>
+                            <div class="fex1">
+                                <div class="flexbox mr50">
+                                    <label class="red" style="min-width:90px;">*<span ng-bind="'customer.Phone'|translate"></span></label>
+                                    <input type="text" class="form-control text-center" style="width: 45px"    ng-model="$parent.c_phone_country_code"  name="c_phone_country_code"ng-class="{'bd-red':submitted && updateForm.phone_country_code.$invalid}" ng-if="cmDetail.update_flag=='Y'"/>
+                                    <input type="text" class="form-control text-center" style="width: 45px"    ng-model="$parent.c_phone_country_code"  name="c_phone_country_code"ng-class="{'bd-red':submitted && updateForm.phone_country_code.$invalid}" readonly="readonly" ng-if="cmDetail.update_flag=='N'"/>
+                                    <span style="border-bottom:#cacaca solid 1px;width: 5%;height: 16px;margin: 0 5px 5px"></span>
+                                    <input type="text" class="form-control fex1"    ng-model="$parent.cmDetail.c_phone"  name="c_phone" ng-class="{'bd-red':submitted && updateForm.c_phone.$invalid}" ng-if="cmDetail.update_flag=='Y'">
+                                    <input type="text" class="form-control fex1"    ng-model="$parent.cmDetail.c_phone"  name="c_phone" ng-class="{'bd-red':submitted && updateForm.c_phone.$invalid}" readonly="readonly" ng-if="cmDetail.update_flag=='N'">
+                                    <formtips  title="This field is required" ng-show="submitted && (updateForm.c_phone.$invalid ||  updateForm.c_phone_country_code.$invalid ||  updateForm.c_phone_area_code.$invalid)"></formtips>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+            <!--Create Prenferences-->
+
+            <h2 > <span ng-bind="'customer.Contact Point' | translate"></span> <button type="button" class="btn btn-primary mr5 fts16  btn-large ml15" ng-click="newItem()"><span ng-bind="'PUBLIC.Add' | translate" class="ng-binding">Add</span></button>
+
+            </h2>
+            <div class="ml15 mr15 mb15"  style="margin-right: 115px">
+                <table id="parts-table" class="table table-striped table-bordered  text-center table-search table-condensed" >
+                    <tr  role="row" >
+                        <th class="sorting" style="width: 50px" ng-bind="'customer.Inactive' | translate"></th>
+                        <th class="sorting"  style="width: 200px" ng-bind="'customer.Contact Method' | translate"></th>
+                        <th class="sorting it"  ng-bind="'customer.Country Code' | translate"></th>
+                        <th class="sorting it" ng-bind="'customer.Contact Point Value' | translate"></th>
+                    </tr>
+
+                    <tr class="trtd"  ng-repeat="item in PrenfArr">
+
+                        <td class="ted" ><input type="checkbox" ng-checked="item.active_flag=='I'"  ng-model="checkbox[$index]"  ng-change="checkbox_C(checkbox[$index],$index)" ></td>
+                        <td>
+
+                            <select select2 class="form-control" ng-disabled="item.contact_method_disabled"  ng-model="selectMethod[$index]"  ng-change="Contact_Method_C(selectMethod[$index],$index)" ng-init="selectMethod[$index]=item.contact_monthed_code" >
+                                <option  value="PHONE">Phone</option>
+                                <option  value="EMAIL">E-mail</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" value="{{item.country_code}}"  readonly ng-change="country_code_C(country_code[$index],$index)"  ng-model="country_code[$index]" ng-init="country_code[$index]=item.country_code">
+                        </td>
+                        <td>
+                            <input   type="text" class="form-control"
+                                     value="{{item.contact_point_value}}"
+                                     ng-blur="point_value_C(contact_point_value[$index],$index)"
+                                     ng-change="changeEmail(contact_point_value[$index],item.contact_monthed_code,$index)"
+                                     ng-model="contact_point_value[$index]"
+                                     ng-class="{'bd-red':item.contact_monthed_code=='EMAIL'&&!item.validEmail}"
+                                     ng-init="contact_point_value[$index]=item.contact_point_value" />
+                        </td>
+                        <!--<td ng-if="item.contact_monthed_code!='PHONE'">
+                            <input  type="text" maxlength="100" class="form-control"
+                                    value="{{item.contact_point_value}}"
+                                   ng-class="{'bd-red':!contact_point_value}"
+                                   ng-change="changeEmail(contact_point_value,$index)"
+                                   ng-model="contact_point_value"
+                                    />
+                        </td>-->
+                    </tr>
+                </table>
+
+            </div>
+            <!--Create Prenferences-->
+            <!--Address Information-->
+                <h2 ng-bind="'customer.AddressInformation'|translate"></h2>
+                <section ng-if="instance_code=='MET'||instance_code=='MPI'||instance_code=='MZA'">
+                    <div class="row address_info">
+                        <!-- #address -->
+                        <div class="col-sm-6 mb20" ng-if="addressInfo.address.display_flag=='Y'">
+                            <div class="row">
+                                <div class="col-sm-3 pl0 lh26" ng-class="{'red':addressInfo.address.require_flag =='Y'}" ><i ng-if="addressInfo.address.require_flag =='Y'">*</i><span ng-bind="'customer.Address' | translate"></span></div>
+                                <div class="col-sm-8 pl0 pos-relative">
+                                    <input type="text" class="form-control" ng-model="$parent.cmDetail.address" maxlength="240" ng-readonly="(instance_code=='MET'||instance_code=='MPI')&&cmDetail.customer_type=='ORGANIZATION'" ng-required="addressInfo.address.require_flag =='Y'" name="address" ng-class="{'bd-red':submitted && updateForm.address.$invalid}"/>
+                                    <formtips  title="This field is required" ng-show="submitted && updateForm.address.$invalid"></formtips>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #country -->
+                        <div class="col-sm-6 mb20">
+                            <div class="row">
+                                <div class="col-sm-3 red pl0 lh26"><i>*</i><span ng-bind="'customer.Country' | translate"></span></div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative">
+                                    <input select3 type="text" class="form-control" name="c_phone"  required ng-model="country_name" disabled maxlength="100">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #state -->
+                        <div class="col-sm-6 mb20" ng-if="addressInfo.state.display_flag=='Y'">
+                            <div class="row">
+                                <div class="col-sm-3 pl0 lh26" ng-class="{'red':addressInfo.state.require_flag =='Y'}" ><i ng-if="addressInfo.state.require_flag =='Y'">*</i><span ng-bind="'customer.State' | translate"></span></div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative" ng-if="addressInfo.state.type=='T'">
+                                    <input type="text" class="form-control" name="state" ng-model="$parent.$parent.s_thai" ng-required="addressInfo.state.require_flag =='Y'" maxlength="240" ng-class="{'bd-red':submitted && updateForm.state.$invalid}" />
+                                    <formtips  title="This field is required" ng-show="submitted && addcustform.state.$invalid"></formtips>
+                                </div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative" ng-if="addressInfo.state.type=='L'">
+                                    <i class="icon-search add-btn icon-color" ng-click="stateData()" ng-if="cmDetail.update_flag=='Y'"></i>
+                                    <i class="icon-search add-btn icon-color" ng-if="(instance_code=='MET'||instance_code=='MPI')&&cmDetail.customer_type=='ORGANIZATION'"></i>
+
+                                    <i class="icon-remove-sign icon-color" ng-if="!((instance_code=='MET'||instance_code=='MPI')&&cmDetail.customer_type=='ORGANIZATION')" ></i>
+                                    <input ng-model="s_thai" class="form-control fex1" type="text" readonly select3 name="state" ng-required="addressInfo.state.require_flag =='Y'" ng-class="{'bd-red':submitted && updateForm.state.$invalid}"  ng-change="province='';city='';district='';postal_code=''"/>
+                                    <formtips  title="This field is required" ng-show="submitted && updateForm.state.$invalid"></formtips>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #province -->
+                        <div class="col-sm-6 mb20" ng-if="addressInfo.province.display_flag=='Y'">
+                            <div class="row">
+                                <div class="col-sm-3 pl0 lh26" ng-class="{'red':addressInfo.province.require_flag =='Y'}" ><i ng-if="addressInfo.province.require_flag =='Y'">*</i><span ng-bind="'customer.province' | translate"></span></div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative" ng-if="addressInfo.province.type=='T'">
+                                    <input type="text" class="form-control" name="province" ng-model="$parent.$parent.province" ng-required="addressInfo.province.require_flag =='Y'" maxlength="240" ng-class="{'bd-red':submitted && updateForm.province.$invalid}"/>
+                                    <formtips  title="This field is required" ng-show="submitted && addcustform.province.$invalid"></formtips>
+                                </div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative" ng-if="addressInfo.province.type=='L'">
+                                    <i class="icon-search add-btn icon-color" ng-click="province_lov(1)" ng-if="addressInfo.province.display_flag=='Y'"></i>
+                                    <i class="icon-search add-btn icon-color"  ng-if="(instance_code=='MET'||instance_code=='MPI')&&cmDetail.customer_type=='ORGANIZATION'"></i>
+                                    <i class="icon-remove-sign icon-color" ng-if="!((instance_code=='MET'||instance_code=='MPI')&&cmDetail.customer_type=='ORGANIZATION')" ></i>
+                                    <input ng-model="province" class="form-control fex1" type="text" readonly select3 name="province" ng-required="addressInfo.province.require_flag =='Y'" ng-class="{'bd-red':submitted && updateForm.province.$invalid}" ng-change="city='';district='';postal_code=''"/>
+                                    <formtips  title="This field is required" ng-show="submitted && updateForm.province.$invalid"></formtips>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #city -->
+                        <div class="col-sm-6 mb20" ng-if="addressInfo.city.display_flag=='Y'">
+                            <div class="row">
+                                <div class="col-sm-3 pl0 lh26" ng-class="{'red':addressInfo.city.require_flag =='Y'}"><i ng-if="addressInfo.city.require_flag =='Y'">*</i>
+                                    <span ng-if="!(instance_code=='MZA'||instance_code=='MSA')" ng-bind="'customer.city' | translate"></span>
+                                    <span ng-if="instance_code=='MZA'||instance_code=='MSA'" ng-bind="'customer.district' | translate"></span>
+                                </div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative" ng-if="addressInfo.city.type=='T'">
+                                    <input type="text" class="form-control" name="city" ng-model="$parent.$parent.city_desc" ng-required="addressInfo.city.require_flag =='Y'" maxlength="240" ng-class="{'bd-red':submitted && updateForm.city.$invalid}"/>
+                                    <formtips  title="This field is required" ng-show="submitted && addcustform.city.$invalid"></formtips>
+                                </div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative" ng-if="addressInfo.city.type=='L'">
+                                    <i class="icon-search add-btn icon-color" ng-click="city_lov(1)" ng-if="addressInfo.city.display_flag=='Y'"></i>
+                                    <i class="icon-search add-btn icon-color" ng-if="(instance_code=='MET'||instance_code=='MPI')&&cmDetail.customer_type=='ORGANIZATION'"></i>
+
+                                    <i class="icon-remove-sign icon-color" ng-if="!((instance_code=='MET'||instance_code=='MPI')&&cmDetail.customer_type=='ORGANIZATION')" ></i>
+                                    <input  ng-model="$parent.$parent.city_desc" class="form-control fex1" type="text" readonly select3 name="city" ng-change="district='';postal_code='';cmDetail.city=''" ng-required="addressInfo.city.require_flag =='Y'" ng-class="{'bd-red':submitted && updateForm.city.$invalid}"/>
+                                    <formtips  title="This field is required" ng-show="submitted && updateForm.city.$invalid"></formtips>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #district -->
+                        <div class="col-sm-6 mb20" ng-if="addressInfo.district.display_flag=='Y'">
+                            <div class="row">
+                                <div class="col-sm-3 pl0 lh26" ng-class="{'red':addressInfo.district.require_flag =='Y'}"><i ng-if="addressInfo.district.require_flag =='Y'">*</i><span ng-bind="'customer.District' | translate"></span></div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative" ng-if="addressInfo.district.type=='T'">
+                                    <input type="text" class="form-control" name="district" ng-model="$parent.$parent.district" ng-required="addressInfo.district.require_flag =='Y'" maxlength="240" ng-class="{'bd-red':submitted && updateForm.district.$invalid}"/>
+                                    <formtips  title="This field is required" ng-show="submitted && addcustform.district.$invalid"></formtips>
+                                </div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative" ng-if="addressInfo.district.type=='L'">
+                                    <i class="icon-search add-btn icon-color" ng-click="district_lov(1)" ng-if="cmDetail.update_flag=='Y'"></i>
+                                    <!--<i class="icon-remove-sign icon-color" ></i>-->
+                                    <input  ng-model="district" class="form-control fex1" type="text" readonly select3 name="district" ng-change="clearAddr_code()" ng-change="postal_code=''" ng-required="addressInfo.district.require_flag =='Y'" ng-class="{'bd-red':submitted && updateForm.district.$invalid}"/>
+                                    <formtips  title="This field is required" ng-show="submitted && updateForm.district.$invalid"></formtips>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- #postal code -->
+                        <div class="col-sm-6 mb20"  ng-if="addressInfo.postal_code.display_flag=='Y'">
+                            <div class="row">
+                                <div class="col-sm-3 pl0 lh26" ng-class="{'red':addressInfo.postal_code.require_flag =='Y'}"><i ng-if="addressInfo.postal_code.require_flag =='Y'">*</i><span ng-bind="'customer.PostalCode' | translate"></span></div>
+                                <div class="col-sm-6 pl0 pr0 pos-relative">
+                                    <input type="text" class="form-control" name="postalcode" ng-model="$parent.cmDetail.postal_code" ng-required="addressInfo.postal_code.require_flag =='Y'" maxlength="240" ng-readonly="addressInfo.postal_code.display_flag!='Y'" />
+                                    <formtips  title="This field is required" ng-show="submitted && updateForm.postalcode.$invalid"></formtips>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section ng-if="instance_code=='MAC'">
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox">
+                                <label class="red">
+                                    *<span ng-bind="'customer.Address' | translate"></span>
+                                </label>
+                                <input type="text" class="form-control" required="" ng-class="{'bd-red':submitted && updateForm.address.$invalid}"
+                                       ng-model="$parent.cmDetail.address" maxlength="240" name="address"/>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50">
+                                <label style="min-width: 80px;margin-right:10px;">
+                                    <span ng-bind="'customer.city' | translate"></span>
+                                </label>
+                                <input type="text" class="form-control" name="city" ng-model="$parent.city" maxlength="240"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50" >
+                            <div class="flexbox mr-l">
+                                <label><span ng-bind="'customer.County' | translate"></span></label>
+                                <input type="text" class="form-control" name="County" ng-model="$parent.county"
+                                       maxlength="240"/>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox mr50">
+                                <label class="red" style="min-width: 80px;margin-right:10px;">*<span ng-bind="'customer.State' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="stateData()"></i>
+                                <i class="icon-remove-sign icon-color"></i>
+                                <input type="text" required="" ng-class="{'bd-red':submitted && updateForm.state.$invalid}"
+                                       readonly class="form-control" select3 name="state" ng-model="$parent.s_thai" maxlength="240"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox mr-l">
+                                <label class="red">
+                                    *<span ng-bind="'customer.PostalCode' | translate"></span>
+                                </label>
+                                <input type="text" class="form-control" required="" ng-class="{'bd-red':submitted && updateForm.postalcode.$invalid}"
+                                       name="postalcode" ng-model="$parent.postal_code" maxlength="240"/>
+                            </div>
+                        </div>
+                        <div class="fex1">
+
+                        </div>
+                    </div>
+                </section>
+
+                <div class="footer-btn mt10">
+                    <div class="flexbox mt20">
+                        <div class="fex1 text-right ">
+                            <button type="submit" class="btn btn-large btn-primary mr5 fts16"  ng-disabled="instance_code!='MZA'&&cmDetail.customer_type=='ORGANIZATION'">
+                                <span ng-bind="'PUBLIC.Submit' | translate"></span>
+                            </button>
+                            <button type="button" class="btn  btn-default mr100 mr35-media" style="margin-right: 120px;"  back-button>
+                                <span ng-bind="'PUBLIC.Cancel' | translate" ng-bind="'PUBLIC.Cancel' | translate"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                </form>
+            </div>
+        </section>
+    </section>

@@ -1,0 +1,137 @@
+<div id="container" ng-controller="PoReceiveCtrl">
+
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+
+        <h1 ng-bind="'PO.PartsPoReceiving' | translate"></h1>
+        <div class="base-box base-box-search">
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr50 pricelist">
+                        <label class="red">*<span ng-bind="'PO.MideaSN' | translate"></span></label>
+                        <input  type="text" ng-model="sr_number" required=""  class="form-control input-small fex1" ng-keypress="enter($event)" >
+                        <!--<select   select2="" required class="form-control mb15-1024" ng-model="list_header_id" ng-keypress=" enter($event)"   get-focus="">-->
+                            <!--<option ng-repeat="item in priceList" value="{{item.list_header_id}}">{{item.pricelist_name}}</option>-->
+                        <!--</select>-->
+                    </div>
+                </div>
+
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'PO.PONO' | translate"></label>
+                        <input  type="text" ng-model="po_number"  class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+            </div>
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'PO.MideaSRStatus' | translate"></label>
+                        <input type="text" readonly="readonly" ng-model="sr_status" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'PO.CreationDate' | translate"></label>
+                        <input datetimepicker="" type="text" ng-model="creation_date"  class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+            </div>
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="text-right">
+                        <button type="button" id="sub" class="btn btn-primary" ng-click="DoCtrlPagingAct(1)">
+                            <span ng-bind="'PUBLIC.Search' | translate"></span>
+                        </button>
+                        <button type="button" class="btn btn-default mr50" ng-click="reset()">
+                            <span ng-bind="'PUBLIC.Reset' | translate"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="ml15 mr15">
+            <table class="table table-striped table-bordered text-center table-summary table-condensed" ng-show="!loadingFlag" style="table-layout: fixed;">
+                <tr role="row" class="active">
+                    <th style="width: 50px;" class="sorting" role="columnheader" >
+                        <input ng-click="choiceAll(checkedAll)" ng-model="checkedAll" type="checkbox"/>
+                    </th>
+                    <th style="width:150px;" class="sorting" role="columnheader" ng-bind="'PO.Item' | translate"></th>
+                    <th  class="sorting" role="columnheader"><span ng-bind="'PO.ItemDescription' | translate"></span></th>
+                    <th  class="sorting" role="columnheader" ng-bind="'PO.OrderStatus' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'PO.Subinventory' | translate"></th>
+                    <th  class="sorting" role="columnheader" ng-bind="'PO.Locator' | translate"></th>
+                    <th style="" class="sorting" role="columnheader" ng-bind="'PO.PurchasedQty' | translate"></th>
+                    <th style="" class="sorting" role="columnheader" ng-bind="'PO.ReceivedQty' | translate"></th>
+                    <th style="" class="sorting" role="columnheader" ng-bind="'PO.ToBeReceived' | translate"></th>
+                    <th style="" class="sorting" role="columnheader" ng-bind="'PO.Reference' | translate"></th>
+                </tr>
+                <tr class="trtd" ng-repeat="item in pocharge">
+                    <td class="ted" >
+                        <input ng-model="item.checked" type="checkbox"/>
+                    </td>
+                    <td class="bc-e">
+                        <div ng-bind="item.item_name"></div>
+                    </td>
+                    <td class="bc-e" title="{{item.item_desc}}">
+                        <div style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis" ng-bind="item.item_desc"></div>
+                    </td>
+                    <td class="bc-e">
+                        <div ng-bind="item.Order_Status"></div>
+                    </td>
+                    <td>
+                        <ng-form name="tform">
+                            <input ng-model="tran" name="tran" type="hidden" required>
+                            <select select2 class="form-control" ng-model="item.subinventory_code" ng-change="getV1(item.subinventory_code,$index)" >
+                                <option value="{{item.subinventory_code}}" ng-repeat="item in subinventory">{{item.subinventory_code}}</option>
+                            </select>
+                        </ng-form>
+                    </td>
+                    <td >
+                        <ng-form name="ltform">
+                            <div class="ipt-item flexbox zz">
+                                <div class="fex1 zz">
+                                    <div class="flexbox zz">
+                                        <i class="icon-search add-btn icon-color" ng-click="locationLov(1,$index)"></i>
+                                        <input type="text" ng-model="item.location_code" name="location"   class="form-control  notAllow" select3=""
+                                               not-allow=""  >
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-form>
+                    </td>
+                    <td class="bc-e">
+                        <div ng-bind="item.qty"></div>
+                    </td>
+                    <td class="bc-e">
+                        <div ng-bind="item.Received_Qty"></div>
+                    </td>
+                    <td >
+                        <input type="number" ng-change="changeTobereceived($index,item.tobereceived)" class="form-control fex1 " ng-model="item.tobereceived" >
+                    </td>
+                    <td>
+                        <input type="text" class="form-control fex1 " ng-model="item.transaction_reference" >
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="flexbox footer-btn mt10"  style="border: none;">
+            <div class="fex1" ></div>
+            <div class="mr15 mt20">
+               <button type="submit" style="line-height: 12px !important;" class="btn btn-primary mr5 fts14 mr50"  ng-click="submitPriceNewForm()" ng-bind="'PUBLIC.Confirm' | translate"></button>
+               <!--<a class="btn btn-default btn-large mr50"  back-button=""><span ng-bind="'PUBLIC.Cancel' | translate"  ng-bind="'PUBLIC.Cancel'"></span></a>-->
+            </div>
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="pocharge.length==0">No results found. </div>
+    </div>
+</div>
+
+

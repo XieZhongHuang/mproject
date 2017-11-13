@@ -1,0 +1,123 @@
+<div ng-controller="menuCtrl" class="menuContainer">
+
+    <div class="menu-item tableBodyScroll fts15" ng-class="{'tableBodyScrollThumb':!pullActive}">
+        <div ng-show="pullActive" class="list-menu" >
+            <a class="active menu-tit" slide-toggle>
+                <i ng-bind="'menu.Menu' | translate"></i>
+                <span class="icon-angle-down pull-right fts20"></span>
+            </a>
+            <div class="menuWrap">
+                <span class="sub-menu" ng-repeat="menu in InitalData.function.header">
+                    <a tabindex="0" data-toggle="dropdown" aria-expanded="false" slide-toggle  name="{{$index}}">
+                        <span class="icon-menu-left"  style="margin-right: 5px;"><i style="font-size: 12px !important;"
+                                ng-class="{
+                                'icon-user':menu.name.indexOf('CUSTOMER')>-1,
+                                'icon-edit':menu.name.indexOf('SR')>-1,
+                                'icon-cog':menu.name.indexOf('_SP')>-1,
+                                'icon-leaf':menu.name.indexOf('CLAIM')>-1,
+                                'icon-wrench':menu.name.indexOf('IB')>-1,
+                                'icon-cogs':menu.name.indexOf('LIST')>-1,
+                                'icon-money':menu.name.indexOf('PRICE')>-1,
+                                'icon-custom-bar-chart':menu.name.indexOf('REPORT')>-1,
+                                'icon-bell':menu.name.indexOf('NOTIFICATION')>-1
+                                }"
+                                ></i></span>
+                        <span class="font-menu-span fts14" style="color:#000;" ng-bind="'{{menu.flag}}.{{menu.name}}' | translate" href-replace="{{menu.name}}"></span>
+                        <span class="icon-angle-right pull-right fts16 text-let"></span>
+                    </a>
+                    <div class="menuWrap menuWrapIn">
+                        <span class="sub-menu" ng-repeat="submenu2 in menu.submenu">
+                            <a tabindex="0" data-toggle="dropdown" style="padding-left:36px;" class="fts12"
+                               ng-bind="'{{submenu2.flag}}.{{submenu2.name}}' | translate"
+                               href="#{{submenu2.flag=='menu'?'':submenu2.name}}"></a>
+                        </span>
+                    </div>
+                </span>
+            </div>
+        </div>
+        <div ng-show="!pullActive" class="list-menu" ng-click="pullSlideFlag()"><!--ng-controller="headerCtrl"-->
+            <div class="menuWrap">
+                <span class="sub-menu" ng-repeat="menu in InitalData.function.header" mouse-enter leave-enter>
+                    <a tabindex="0" data-toggle="dropdown" aria-expanded="false" style="text-align: center;" >
+                        <span class="icon-menu-left"  style="margin-right: 5px;"><i style="font-size:16px;"
+                                ng-class="{
+                                'icon-home':menu.name.indexOf('HOME')>-1,
+                                 'icon-user':menu.name.indexOf('CUSTOMER')>-1,
+                                'icon-edit':menu.name.indexOf('SR')>-1,
+                                'icon-cog':menu.name.indexOf('_SP')>-1,
+                                'icon-leaf':menu.name.indexOf('CLAIM')>-1,
+                                'icon-wrench':menu.name.indexOf('IB')>-1,
+                                'icon-cogs':menu.name.indexOf('LIST')>-1,
+                                'icon-money':menu.name.indexOf('PRICE')>-1,
+                                'icon-custom-bar-chart':menu.name.indexOf('REPORT')>-1,
+                                'icon-bell':menu.name.indexOf('NOTIFICATION')>-1,
+                                'icon-book':menu.name=='F_ID_KB'
+                                }"
+                                ></i></span>
+                    </a>
+                    <div class="menuWrap menuWrapIn menuWrapPosition">
+                        <a ng-if="menu.name!='F_ID_KB'" class="font-menu-span fts12" style="color:#000;"  href="#{{menu.name}}">
+                            <span ng-bind="'{{menu.flag}}.{{menu.name}}' | translate"></span>
+                            <span ng-if="menu.name.indexOf('F_ID_HOME')==-1" class="icon-angle-down pull-right fts16"></span>
+                        </a>
+                        <a ng-if="menu.name=='F_ID_KB'" class="font-menu-span fts12" style="color:#000;" target="_blank"  href="{{Knowledge}}">
+                            <span ng-bind="'{{menu.flag}}.{{menu.name}}' | translate"></span>
+                            <span class="icon-angle-down pull-right fts20"></span>
+                        </a>
+                        <span class="sub-menu" ng-repeat="submenu2 in menu.submenu">
+                            <a tabindex="0" data-toggle="dropdown" class="fts12"
+                               ng-bind="'{{submenu2.flag}}.{{submenu2.name}}' | translate"
+                               href="#{{submenu2.flag=='menu'?'':submenu2.name}}"></a>
+                        </span>
+                    </div>
+                </span>
+            </div>
+        </div>
+        <!--<div ng-if="pullActive" class="list-menu">
+            <a class="active menu-tit" slide-toggle>
+                <i ng-bind="'menu.QuickLinks' | translate"></i>
+                <span class="icon-angle-down pull-right fts20"></span>
+            </a>
+            <div class="menuWrap">
+                <span class="sub-menu" ng-repeat="item in InitalData.function.left"  >
+                    <a href="#{{item.name}}">
+                        <span ng-bind="'{{item.flag}}.{{item.name}}' | translate" ></span>
+                    </a>
+                </span>
+            </div>
+        </div>-->
+        <div ng-show="pullActive" class="list-menu" ng-if="!RecentItems[0].object_code==''">
+            <a class="active menu-tit" slide-toggle>
+                <i ng-bind="'menu.Recentitems' | translate"></i>
+                <span class="icon-angle-down pull-right fts20"></span>
+            </a>
+            <div class="menuWrap">
+                <span class="sub-menu" ng-repeat="item in RecentItems">
+                    <a class="pos-relative"  ui-sref="sr_update({sr_id:'{{item.object_id | urlFilter}}',scrollFlag:'2'})"  title="{{item.object_name}}" ng-if="item.object_code=='SR'">
+                        <span class="icon-round {{item.object_code}}">{{item.object_code | limitTo : 2}}</span>
+                        <p style="margin-left: 33px" class="name">{{item.object_name}}</p>
+                    </a>
+                    <a class="pos-relative"  ui-sref="UpdateCustomer({party_id:'{{item.object_id | urlFilter}}'})" ng-if="item.object_code=='CUSTOMER'" title="{{item.object_name}}">
+                        <span class="icon-round {{item.object_code}}">{{item.object_code | limitTo : 2}}</span>
+                        <p style="margin-left: 33px" class="name">{{item.object_name}}</p>
+                    </a>
+                    <a class="pos-relative"  ui-sref="ib_update({instance_id:'{{item.object_id | urlFilter}}'})"  ng-if="item.object_code=='IB'" title="{{item.object_name}}">
+                        <span class="icon-round {{item.object_code}}">{{item.object_code | limitTo : 2}}</span>
+                        <p style="margin-left: 33px" class="name">{{item.object_name}}</p>
+                    </a>
+                     <a class="pos-relative"  ui-sref="claim_update({claim_id:'{{item.object_id | urlFilter}}'})"  ng-if="item.object_code=='CLAIM'" title="{{item.object_name}}">
+                         <span class="icon-round {{item.object_code}}">{{item.object_code | limitTo : 2}}</span>
+                         <p style="margin-left: 33px" class="name">{{item.object_name}}</p>
+                     </a>
+                    <a class="pos-relative"  ui-sref="CheckOrder({orderNumId:'{{item.object_id | urlFilter}}'})"  ng-if="item.object_code=='CO'" title="{{item.object_name}}">
+                         <span class="icon-round {{item.object_code}}">{{item.object_code | limitTo : 2}}</span>
+                         <p style="margin-left: 33px" class="name">{{item.object_name}}</p>
+                     </a>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="pull-block">
+        <div class="pull-btn" ng-click="pullMenu()"><span ng-class="{true: 'icon-chevron-left', false: 'icon-chevron-right'}[pullActive]"></span></div>
+    </div>
+</div>

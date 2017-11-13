@@ -1,0 +1,608 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Print</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        @font-face {
+            font-family: DeliciousRoman;
+            src: url('timesbd.ttf'), url('TimesLTStd-Roman.otf');
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #000 !important;
+            font-family: DeliciousRoman;
+            font-size: 13px;
+        }
+
+        .mask {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background-color: #fff;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: none;
+        }
+
+        .printOutBtn {
+            width: 60px;
+            height: 30px;
+            cursor: pointer;
+            position: fixed;
+            right: 0;
+            top: 10px;
+        }
+
+        .load {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1001;
+            margin-top: -18px;
+            margin-left: -18px;
+            display: none;
+        }
+
+        h1 {
+            margin: 0 200px;
+            padding: 10px 0;
+        }
+
+        .tc {
+            text-align: center;
+        }
+        .tc~tr{
+            text-align: center;
+        }
+
+        .fs24 {
+            font-size: 24px;
+        }
+
+        .fs12 {
+            font-size: 12px;
+        }
+
+
+        .print-logo {
+            position: absolute;
+            top:50px;
+            left: 0;
+            color:#000;
+        }
+
+        img {
+            border: 0;
+        }
+
+        .print-container {
+            position: relative;
+            width: 900px;
+            height: 1130px;
+            background: #fff;
+            margin: 0 auto;
+
+        }
+
+        .print-time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .print-head {
+            height: 73px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        tr th {
+            height: 20px;
+            background: #f2f2f2;
+            border: 1px solid #999;
+            /*width: 50%;*/
+            text-align: center;
+        }
+
+        tr th.bort0, tr td.bort0 {
+            border-top: 0;
+        }
+
+        tr td {
+            border: 1px solid #999;
+            vertical-align: middle;
+            /*text-align: center;*/
+        }
+
+        tr td.borb0 {
+            border-bottom: 0;
+        }
+
+        .mb10 {
+            margin-bottom: 10px;
+        }
+
+        .ml10 {
+            margin-left: 10px;
+        }
+
+        table tr td p strong {
+            color: #000;
+            margin-right: 10px;
+        }
+
+        table tr td p {
+            color: #000;
+            padding: 0 10px;
+            height: 33px;
+            line-height: 30px;
+            margin-bottom: 0;
+        }
+
+        table tr td p.last {
+            border-bottom: 0;
+        }
+
+        .write-table tr td {
+            border-left: 0;
+            height: 35px;
+            border-bottom: 0;
+        }
+
+        .write-area {
+            height: 120px;
+        }
+
+        .write-table tr th {
+            border-left: 0;
+        }
+
+        .Parts-table tr td {
+            height: 28px;
+            min-height: 28px;
+            line-height: 30px;
+        }
+
+        .report-table input {
+            height: 28px;
+            width: 80px;
+            border: 1px solid #666;
+            border-radius: 3px;
+        }
+
+        table tr td .report-table tr th, table tr td .report-table tr td {
+            border: 0;
+        }
+
+        table tr td .report-table tr th, table tr td .report-table tr td {
+            border: 0;
+            line-height: 30px;
+        }
+
+        tr .report-l {
+            width: 50%;
+            border: 0;
+        }
+
+        tr .report-r {
+            border: 0;
+        }
+
+        .report-r table tr td {
+            line-height: 39px;
+            border-left: 0;
+        }
+
+        .report-r table tr td.item {
+            width: 90px;
+            *width: 92px;
+        }
+
+        .report-tip {
+            margin-top: 10px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .mt10 {
+            margin-top: 10px;
+        }
+
+        .report-table tr td {
+            text-align: center
+        }
+
+        .pl5 {
+            padding-left: 5px;
+        }
+
+        .report-r tr th.bort0 {
+            border: 0;
+        }
+
+        .dashedLine {
+            border: 0;
+            border-bottom: 1px dashed #999;
+            height: 26px;
+            width: 100%;
+        }
+
+        .dashedLine2 {
+            border: 0;
+            border-bottom: 1px dashed #999;
+            height: 26px;
+            width: 90px;
+        }
+
+        .dashedLine3 {
+            width: 30px;
+            margin-top: 5px;
+            height: 30px;
+            border-radius: 3px;
+            border: 1px solid #666;
+        }
+        .dashedLine4 {
+            border: 0;
+            border-bottom: 1px solid #999;
+            height: 20px;
+        }
+
+        .solidLine {
+            border: 0;
+            border-bottom: 1px solid #999;
+            height: 18px;
+            width: 230px;
+        }
+
+        .solidLine2 {
+            border: 0;
+            border-bottom: 1px solid #999;
+            height: 16px;
+            width: 220px;
+            max-width: 220px;
+        }
+
+        .solidLine3 {
+            border: 0;
+            border-bottom: 1px solid #999;
+            height: 16px;
+            width: 230px;
+            max-width: 220px;
+            right: 20px;
+        }
+
+        .solidLine4 {
+            border:0;
+            border-bottom: 1px solid #999;
+            height: 16px;
+            width: 100px;
+            max-width: 80px;;
+        }
+
+
+        .print-footer td p {
+            text-align: center;
+            border-top: 0;
+        }
+
+        input {
+            *line-height: 25px;
+        }
+
+        .tab-content{
+            width: 100%;
+
+        }
+        .tab-content ul{
+            list-style: none;
+        }
+
+        .left-content{
+            float: left;
+        }
+
+        .middle-content{
+            float:left ;
+
+
+        }
+
+        .right-content{
+            float:left ;
+            margin-top: 10px;
+        }
+
+        .info-l {
+            float: left;
+        }
+
+        .info-r {
+            float: left;
+        }
+        #sr_address{
+            /*min-width:220px;*/
+            /*max-width:440px;*/
+            display: inline-block;
+            height:auto;
+        }
+
+        .bk{
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+<div class="print-container">
+    <div class="print-head" style="margin-bottom:40px; ">
+        <div class="logo" style="position: absolute;top:5px;left:5px;"><img src="logo.jpg" style="width:180px ;height:60px" alt=""/></div>
+        <h1 class="fs24 tc">Imperial Air Conditioning(Pty) Ltd</h1>
+        <h2 class="fs24 tc">Delivery Order(Parts)</h2>
+    </div>
+    <table>
+        <tr>
+            <th>Received By Info</th>
+            <th>DO/SR Info</th>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <p style="line-height: 35px;"><strong>Name</strong><input id="sr_name" class="solidLine2" type="text" value=""
+                            style="margin-left: 13px;">
+                    </p>
+                </div>
+                <div>
+                    <p style="line-height: 35px;"><strong>Account</strong><input id="sr_account"  class="solidLine2" style=""
+                                                                                      type="text" value=""></p>
+                </div>
+                <div style="font-size: 0px;position: relative;margin:5px 0px;">
+                    <p style="line-height: 35px;display: inline-block;font-size: 13px;position: absolute;left:0px;top:-10px;"><strong>Address</strong></p>
+                    <div id="sr_address" style="font-size: 13px;margin-left: 64px;" class="solidLine2" ></div>
+                </div>
+                <div>
+                    <p style="line-height: 35px;"><strong>Phone</strong><input class="solidLine2" style="margin-left:10px;" type="text"
+                                                                                    id="sr_phone"
+                                                                                    value=""></p>
+
+                </div>
+                <p class="last"></p>
+            </td>
+            <td>
+                <div>
+                    <p style="line-height: 35px;"><strong>DO NO</strong><input id="sr_do_no" class="solidLine2" type="text" value="">
+                    </p>
+                </div>
+                <div>
+                    <p style="line-height: 35px;"><strong>Date</strong><input id="sr_date"  class="solidLine2" style="margin-left: 18px"
+                                                                                      type="text" value=""></p>
+                </div>
+                <div>
+                    <p style="line-height: 35px;"><strong>SR Type</strong><input id="sr_type" style="margin-left: -3px"
+                                                                                          class="solidLine2" type="text"
+                                                                                          value=""></p>
+
+                </div>
+                <div>
+                    <p style="line-height: 35px;"><strong>Parts for</strong><input class="solidLine2" style="margin-left: -3px;" type="text"
+                                                                                    id="sr_parts_for"
+                                                                                    value=""></p>
+
+                </div>
+                <p class="last"></p>
+            </td>
+        </tr>
+    </table>
+    <div style="width: 900px;height:812px;">
+    <table width="100%" class="Parts-table PartsInfo" style="/*table-layout: fixed*/">
+        <tr>
+            <th class="bort0" colspan="10">Parts Info</th>
+        </tr>
+        <tr class="tc">
+            <td width="5%">No</td>
+            <td width="20%">Item Code</td>
+            <td width="20%">Item Description</td>
+            <td width="10%">Reference No</td>
+            <td width="10%">Delivered Qty</td>
+            <td width="10%">Received Qty</td>
+            <td width="15%">From Subinventory</td>
+            <td width="15%">From Locator</td>
+        </tr>
+        <!--<tr class="parts_tr_date">
+              <td>1</td>
+              <td>SP@201101090004</td>
+              <td><div style="word-break: break-all;">Air555555555555555552222111111111110</div></td>
+              <td></td>
+              <td>1</td>
+              <td>1</td>
+        </tr>-->
+          <!-- <tr class="parts_tr_date">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr class="parts_tr_date">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr class="parts_tr_date">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr class="parts_tr_date">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr class="parts_tr_date">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr class="parts_tr_date">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr class="parts_tr_date">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr class="parts_tr_date">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>-->
+    </table>
+
+    </div>
+    <table style="border:0;margin-bottom: 40px;">
+        <tr style="border:0;">
+            <td style="border:0;">
+                <div class="info-l" style="margin-left: 355px;">
+                    <p><strong>Warehouse</strong><input style="margin-left: 3px;" class="dashedLine4" type="text" value=""></p>
+                    <p><strong>Date</strong></strong><input class="dashedLine4" type="text" value="" style="margin-left: 40px;"></p>
+                </div>
+                <div class="info-r">
+                    <p><strong>Received By</strong><input class="dashedLine4" type="text" value=""></p>
+                    <p><strong>Date</strong><input style="margin-left: 44px;" class="dashedLine4" type="text" value="" width="" ></p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table style="border:0;">
+        <tr class="print-footer" style="border:0;">
+            <td style="border:0;"><p> Address: Unit B3 Kimbult Industrial Park, 9 Zeiss Road, Honeydew, 2040, Gauteng, South Africa</p>
+                <p>Tel:(011) 794 5537 /Fax:0866 136 792 /Email:cfowlds@imperialaircon.co.za</p></td>
+        </tr>
+    </table>
+</div>
+<button class="printOutBtn" >Print</button>
+<div class="mask"></div>
+<div class="load"><img src="load.gif"></div>
+<script src="../api/apiconfig.js"></script>
+<script src="../framework/jquery-1.8.3.min.js"></script>
+<script>
+    $(function () {
+
+//        window.location.href = 'http://localhost/print/print_MZA_DO.html?sr_id=95140&c_timezone=Africa/Tripoli&s_timezone=Asia/Hong_Kong'
+        var sendData = window.location.href;
+
+        if (sendData.indexOf('=') > -1) {
+            sendData = sendData.substring(sendData.indexOf('=') + 1);
+        } else {
+            alert('Can not get SR ID!');
+            return false;
+        }
+        $.ajax({
+            type: "get",
+            async: false,
+            url: partalConfig + "srdo?sr_id=" + sendData,//srdo
+            dataType: "jsonp",
+            jsonp: "callback",
+            beforeSend: loading,
+            success: function (res) {
+                $('.load,.mask').hide();
+                var response = (JSON.stringify(res));
+                response = JSON.parse(response).job_sheet_info;
+                $('#sr_name').val(response.customer_name);
+                $('#sr_account').val(response.account_number);
+                $('#sr_address').text(response.address);
+                $('#sr_phone').val(response.phone);
+                $('#sr_do_no').val(response.incident_number);
+                $('#sr_date').val(response.do_date);
+                $('#sr_type').val(response.incident_type);
+                $('#sr_parts_for').val(response.fg_item);
+                //parts数据
+
+                for(var i=0;i<response.Parts.length;i++){
+                    /*$('.parts_tr_date').eq(i).children('td').eq(0).html(i+1);
+                    $('.parts_tr_date').eq(i).children('td').eq(1).html(response.Parts[i].part_number);
+                    $('.parts_tr_date').eq(i).children('td').eq(3).html(response.Parts[i].Reference);
+                    $('.parts_tr_date').eq(i).children('td').eq(2).html(response.Parts[i].part_desc);
+                    $('.parts_tr_date').eq(i).children('td').eq(4).html(response.Parts[i].qty);*/
+
+                    var $tr = $('<tr>');
+                    for(var j=0;j<8;j++){
+                        var $td=$('<td>');
+                        if(j==0){
+                            $td.html(i+1)
+                        }else if(j==1){
+                            $td.html(response.Parts[i].part_number)
+                        }else if(j==3){
+                            $td.html(response.Parts[i].Reference)
+                        }else if(j==2){
+                            $td.html('<div class="bk">'+response.Parts[i].part_desc+'</div>')
+                        }else if(j==4){
+                            $td.html(response.Parts[i].qty)
+                        }else if(j==6){
+                            $td.html(response.Parts[i].subinventory_code)
+                        }else if(j==7){
+                            $td.html(response.Parts[i].locater_code)
+                        }
+                        $tr.append($td);
+                    }
+                    $('.PartsInfo').append($tr);
+                }
+            },
+            error: function () {
+
+            }
+        });
+    });
+
+    function loading() {
+        $('.load,.mask').show();
+    }
+
+
+    //print
+
+    $('.printOutBtn').bind('click',function(){
+        $('.printOutBtn').hide();
+        window.print();
+    });
+</script>
+</body>
+</html>

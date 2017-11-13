@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="IndonesiaApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="">
+    <meta name="keyword" content="">
+    <title>iService Portal</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min.css?bust=1442282958057" rel="stylesheet">
+    <link href="css/bootstrap-theme.css?bust=1442282958057" rel="stylesheet">
+    <link href="css/ngDialog.css" rel="stylesheet">
+    <link href="css/trix.css" rel="stylesheet">
+    <link href="css/ngDialog-custom-width.css" rel="stylesheet">
+    <link href="css/ngDialog-contactUS.css" rel="stylesheet">
+    <link href="css/ngDialog-theme-default.css" rel="stylesheet">
+    <link href="css/ngDialog-theme-plain.css" rel="stylesheet">
+    <link href="css/ngDialog-theme-publicTemp.min.css" rel="stylesheet">
+    <link href="css/jquery-ui-1.9.2.css" rel="stylesheet">
+    <link href="css/sweet-alert.css" rel="stylesheet">
+    <link href="css/loading-bar.css" rel="stylesheet">
+    <link href="css/elegant-icons-style.css" rel="styleshee">
+    <link href="assets/font-awesome/css/font-awesome.css?bust=1442282958057" rel="stylesheet">
+    <link href="css/select2.css?bust=1442282958057" rel="stylesheet">
+    <link href="css/select2-bootstrap.css?bust=1442282958057" rel="stylesheet">
+    <link href="css/base.css?bust=1442282958057" rel="stylesheet">
+    <link href="css/style.css?bust=1442282958057" rel="stylesheet">
+</head>
+<body>
+<!--<div>-->
+    <!--<div ng-include="'tpls/header.html'"></div>-->
+    <!--<div ng-include="'tpls/menu.html'"></div>-->
+    <div data-ui-view="" ng-controller="appCtrl"></div>
+<!--</div>-->
+<!--angular-->
+<script src="framework/jquery-1.8.3.min.js"></script>
+<script src="framework/autoChange.js"></script>
+<script src="framework/jquery-ui-1.9.2.js"></script>
+<script src="framework/select2.min.js"></script>
+<script src="angular/Angular1.2.28.js"></script>
+<script src="angular/angular-ui-router.js"></script>
+<script src="angular/angular-translate.min.js"></script>
+<script src="angular/loader-static-files.js"></script>
+<script src="angular/angular-loader.js"></script>
+<script src="angular/angular-animate.js"></script>
+<script src="angular/ngDialog.min.js"></script>
+<script src="angular/angular-utf8-base64.min.js"></script>
+<script src="angular/paging.js"></script>
+<script src="angular/ng-file-upload.min.js"></script>
+<script src="angular/ng-file-upload-shim.min.js"></script>
+<script src="angular/angular-dirty-form.js"></script>
+<script src="angular/angular-route.min.js"></script>
+<script src="angular/angular-urlsafe-base64.js?bust=121212"></script>
+<script src="js/app.js?bust=1442282958057"></script>
+<script src="js/view.js?bust=1442282958057"></script>
+<script src="api/apiconfig.js?bust=1442282958057"></script>
+<script src="js/controller/baseCtrl.js?bust=1442282958057"></script>
+<script src="js/directives/services/services.js?bust=1442282958057"></script>
+
+<script src="angular/trix.js"></script>
+<script src="angular/angular-trix.js"></script>
+
+
+<script src="framework/jquery-ui-timepicker-addon.js"></script>
+<script src="js/directives/directives.js"></script>
+<script src="js/filter/filter.js"></script>
+<script src="framework/sweet-alert.min.js"></script>
+<script src="framework/bootstrap.min.js"></script>
+<script src="angular/ui-bootstrap-custom-0.13.0.min.js"></script>
+<script src="angular/drag-drop.min.js"></script>
+<script src="framework/echarts.min.js"></script>
+
+<!-- nice scroll -->
+<script src="framework/jquery.scrollTo.min.js?bust=1442282958057"></script>
+<script src="framework/jquery.nicescroll.js?bust=1442282958057" type="text/javascript"></script>
+<!--Dashboard-->
+<script src="framework/jquery.speedometer.js"></script>
+<script src="framework/jquery.speedometer2.js"></script>
+<script src="framework/jquery.jqcanvas-modified.js"></script>
+<script src="framework/excanvas-modified.js"></script>
+<!--require-->
+<script src="js/require.js"></script>
+<script src="angular/angular-require.min.js"></script>
+<script src="angular/angular-sanitize.js"></script>
+<script src="framework/underscore-min.js"></script>
+<script>
+    require.config({
+        urlArgs: "bust=" +  (new Date()).getTime(),
+        waitSeconds: 0
+    });
+
+    //IE version test
+    var browser=navigator.userAgent;  
+    var browser_url=window.location.href.substring(0,window.location.href.indexOf('index.html'));
+    if(browser.indexOf("MSIE 6.0")>-1 || browser.indexOf("MSIE 7.0")>-1 || browser.indexOf("MSIE 8.0")>-1 || browser.indexOf("MSIE 9.0")>-1){
+        window.location.href=browser_url+"tpls/browser.html";
+    }
+</script>
+</body>

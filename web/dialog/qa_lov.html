@@ -1,0 +1,365 @@
+<div class="datatable" drag-drop>
+    <div class="modal-header">
+        <h4 class="modal-title" ng-bind="'QA.LOV.{{title}}' | translate"></h4>
+    </div>
+    <div class="search-box2 flexbox" ng-if="Engineer">
+        <div class="fex1 pos-relative mr15">
+            <div class="flexbox">
+                <label><span ng-bind="'PUBLIC.SearchBy' | translate"></span>:</label>
+
+                <div class="btn-group search-type">
+
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  but-width="">
+                        <span class="search-init">{{seaTypeValue}}</span><span class="caret" style="margin-left: 10px"></span>
+                    </button>
+                    <ul class="dropdown-menu"  >
+                        <li ng-repeat="item in searchtype"  >
+                            <a href="javascript:void(0)" class="pos-relative">
+                                {{item.name}}
+                                <input type="radio"  name="pp" value="{{item.value}}" ng-model="obj_select.value"  class="ipt-hide"  ng-click="searFuc(item.name)">
+
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="fex1 pos-relative">
+
+                    <input type="text" class="form-control" ng-change="choiceobj_name2(obj_name2)"  ng-model="obj_name2" lov-keypress="">
+                </div>
+
+            </div>
+            <span id="lovsearch" ng-click="DoCtrlPagingAct(1)" class="icon-search lov-search"></span>
+        </div>
+
+
+    </div>
+
+    <section class="panel tableBodyScroll" style="height: 332px; width:800px;overflow: hidden">
+    <!--category_code start-->
+    <table class="table table-bordered table-hover table-search table-condensed" ng-if="category_code">
+        <thead>
+        <tr>
+            <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+            <th ng-bind="'QA.Category Code' | translate"></th>
+            <th ng-bind="'QA.Category Description' | translate"></th>
+
+        </tr>
+        </thead>
+        <tr ng-repeat=" item in lovData.category" get-value="">
+            <td class="text-center">
+                <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                       ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+            </td>
+            <td title="{{item.CATEGORY_CODE}}">
+                <div ng-bind="item.CATEGORY_CODE"></div>
+            </td>
+            <td title="{{item.CATEGORY_DESC}}">
+                <div ng-bind="item.CATEGORY_DESC"></div>
+
+            </td>
+
+        </tr>
+
+    </table>
+    <!--category_code end-->
+
+        <!--Subcategory_Code start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Subcategory">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Subcategory Code' | translate"></th>
+                <th ng-bind="'QA.Subcategory Description' | translate"></th>
+
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.Subcategory" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.Subcategory_CODE}}">
+                    <div ng-bind="item.Subcategory_CODE"></div>
+                </td>
+                <td title="{{item.Subcategory_DESC}}">
+                    <div ng-bind="item.Subcategory_DESC"></div>
+
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Subcategory_Code end-->
+
+        <!--Reason_Code start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Reason">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Defect code' | translate"></th>
+                <th ng-bind="'QA.Defect Description' | translate"></th>
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.reason" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.reason_code}}">
+                    <div ng-bind="item.reason_code"></div>
+                </td>
+                <td title="{{item.reason_desc}}">
+                    <div ng-bind="item.reason_desc"></div>
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Reason_Code end-->
+
+        <!--Solution_Code start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Solution">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Solution Code' | translate"></th>
+                <th ng-bind="'QA.Solution Description' | translate"></th>
+
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.solution" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.solution_code}}">
+                    <div ng-bind="item.solution_code"></div>
+                </td>
+                <td title="{{item.solution_desc}}">
+                    <div ng-bind="item.solution_desc"></div>
+
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Solution_Code end-->
+
+        <!--Condition_Code start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Condition">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Condition Code' | translate"></th>
+                <th ng-bind="'QA.Condition Description' | translate"></th>
+
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.condition" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.CONDITION_CODE}}">
+                    <div ng-bind="item.CONDITION_CODE"></div>
+                </td>
+                <td title="{{item.CONDITION_DESC}}">
+                    <div ng-bind="item.CONDITION_DESC"></div>
+
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Condition_Code end-->
+
+        <!--Complaint start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Complaint">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Complaint Code' | translate"></th>
+                <th ng-bind="'QA.Complaint Description' | translate"></th>
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.complaint" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.complaint_code}}">
+                    <div ng-bind="item.complaint_code"></div>
+                </td>
+                <td title="{{item.complaint_desc}}">
+                    <div ng-bind="item.complaint_desc"></div>
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Complaint end-->
+        <!--Symptom start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Symptom">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Symptom Code'| translate"></th>
+                <th ng-bind="'QA.Symptom Description' | translate"></th>
+
+
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.Symptom" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.Symptom_code}}">
+                    <div ng-bind="item.Symptom_code"></div>
+                </td>
+                <td title="{{item.Symptom_desc}}">
+                    <div ng-bind="item.Symptom_desc"></div>
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Symptom end-->
+        <!--Section start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Section">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Section_code'| translate"></th>
+                <th ng-bind="'QA.Section Description' | translate"></th>
+
+
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.Section" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.Section_code}}">
+                    <div ng-bind="item.Section_code"></div>
+                </td>
+                <td title="{{item.Section_desc}}">
+                    <div ng-bind="item.Section_desc"></div>
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Section end-->
+        <!--Defect start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Defect">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Defect code'| translate"></th>
+                <th ng-bind="'QA.Defect Description' | translate"></th>
+
+
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.Defect" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.Defect_code}}">
+                    <div ng-bind="item.Defect_code"></div>
+                </td>
+                <td title="{{item.Defect_desc}}">
+                    <div ng-bind="item.Defect_desc"></div>
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Defect end-->
+        <!--Repair start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Repair">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Repair code'| translate"></th>
+                <th ng-bind="'QA.Repair Description' | translate"></th>
+
+
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData.Repair" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.Repair_code}}">
+                    <div ng-bind="item.Repair_code"></div>
+                </td>
+                <td title="{{item.Repair_desc}}">
+                    <div ng-bind="item.Repair_desc"></div>
+                </td>
+
+            </tr>
+
+        </table>
+        <!--Repair end-->
+        <!--Diagnostic Engineer start-->
+        <table class="table table-bordered table-hover table-search table-condensed" ng-if="Engineer">
+            <thead>
+            <tr>
+                <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+                <th ng-bind="'QA.Diagnostic Engineer Name'| translate"></th>
+
+
+            </tr>
+            </thead>
+            <tr ng-repeat=" item in lovData" get-value="">
+                <td class="text-center">
+                    <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"
+                           ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br/>
+                </td>
+                <td title="{{item.engineer_name}}">
+                    <div ng-bind="item.engineer_name"></div>
+                </td>
+
+
+            </tr>
+
+        </table>
+        <!--Diagnostic Engineer end-->
+
+    </section>
+    <div class="btn-row">
+        <div class="form-group mt15"
+             style="border-bottom: 1px solid #f5f5f5;border-top: 1px solid #f5f5f5;margin-bottom: 5px;">
+            <!--<div class="flexbox text-center">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)"
+                     class="page-list mr15 fex1 ml15"
+                        >
+                </div>
+            </div>-->
+        </div>
+        <div class="mr15 text-right" ng-show="!noData">
+            <button class="btn btn-primary btn-large select" type="button"
+                    ng-click="closeThisDialog(2)" ng-bind="'PUBLIC.Select' | translate">
+            </button>
+            <button class="btn btn-default btn-large btn-small" type="button" ng-click="closeThisDialog(0)"
+                    ng-bind="'PUBLIC.Cancel' | translate"></button>
+        </div>
+    </div>
+</div>
+<!-- noData-->
+<div class="noData" ng-if="noData">
+    <span class="icon-warning-sign fts48"></span>
+
+    <p class="fts14" ng-bind="'PUBLIC.noData' | translate"></p>
+</div>
+<!-- noData-->

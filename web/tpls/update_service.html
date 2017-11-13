@@ -1,0 +1,665 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="ServiceUpdateCtrl"  >
+<div ng-include="'tpls/header.html'"></div>
+<div ng-include="'tpls/menu.html'"></div>
+<section id="main-content">
+<!--<div class="mask" ng-if="sr_info.update_flag=='N'"></div>-->
+<style>
+    body{
+        overflow-x:hidden;
+    }
+    .ajax-tip{margin-left:110px;}
+    table td{
+        text-align: center;
+    }
+    .issue-box h2 div:nth-child(1){
+        margin-top: 5px!important;
+    }
+</style>
+
+<form class="form-validate form-validate" method="get" name="sr_form" novalidate  ng-submit="submitForm(sr_form)" dirty-form="">
+<h1>
+    <span ng-bind="'SR.UpdateTitle' | translate"></span>
+    <button type="submit" class="btn btn-primary pull-right  mr15" style="padding-top: 3px; margin-top: 2px;padding-bottom: 6px"ng-bind="'PUBLIC.Submit' | translate" ng-disabled="sr_info.update_flag=='N'"></button>
+        <a class="btn btn-primary pull-right btn-mini mr15" type="submit"  href="print/print_{{instance_code}}.html?sr_id={{sr_id}}&resp_id={{resp_id}}" target="_blank" style="padding-top: 3px;
+    margin-top: 1px;position: relative;z-index: 998" ng-bind="'PUBLIC.PrintJobsheet' | translate" ng-show="!(instance_code == 'MSA'||instance_code == 'MZA')"></a>
+
+    <a class="btn btn-primary pull-right btn-mini mr15" type="submit"  href="{{printurl}}sr_id={{sr_id}}&resp_id={{resp_id}}&print_type=JS&client_timezone={{c_timezone}}&server_timezone={{s_timezone}}"  target="_blank" style="padding-top: 3px;
+    margin-top: 1px;position: relative;z-index: 998" ng-bind="'PUBLIC.PrintJobsheet' | translate"  ng-show="instance_code == 'MSA'||instance_code == 'MZA'"></a>
+
+        <!--<a class="btn btn-primary pull-right btn-mini mr15" type="submit"    target="_blank" style="padding-top: 3px;-->
+    <!--margin-top: 1px;position: relative;z-index: 998" ng-bind="'PUBLIC.Do' | translate" ng-disabled="sr_info.F_ID_PRINT_DO!='Y'"  ng-show="instance_code == 'MSA'||instance_code == 'MZA'"-->
+           <!--ng-click="PrintLov(1)" >-->
+        <!--</a>-->
+       <!-- href="{{printurl}}sr_id={{sr_id}}&print_type=DO&client_timezone={{c_timezone}}&server_timezone={{s_timezone}}"-->
+</h1>
+<div class="base-box sr-box">
+<!--SR Header start-->
+<h2 class="sr-header" ng-bind="'SR.sr_header' | translate"></h2>
+
+<div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-bind="'SR.sr_number' | translate"></label>
+            <input type="text" class="form-control fex1" not-allow="" ng-model="sr_info.incident_number">
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.incident_date' | translate"></label>
+            <input type="text" class="form-control fex1" ng-model="incident_date" not-allow="" >
+        </div>
+    </div>
+</div>
+<div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-bind="'SR.sr_type' | translate"></label>
+            <select select2 class="form-control" ng-change="sr_type(sr_type_item)" ng-model="sr_type_item" >
+                <option ng-repeat="item in srData.sr_type" value="{{item.type_id}}">{{item.type_name}}</option>
+            </select>
+
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.Status' | translate"></label>
+            <!--<i class="icon-remove-sign icon-color" ng-show="sr_info.update_flag=='Y'"></i>-->
+            <i class="icon-search add-btn  icon-color" ng-click="statusLov()" ng-if="sr_info.update_flag=='Y'"></i>
+            <i class="icon-search add-btn  icon-color"  ng-if="sr_info.update_flag=='N'"></i>
+            <input type="text" class="form-control" readonly ng-model="status_name" select3="" ng-change="incident_status_id=''">
+            <input type="hidden" class="form-control" readonly ng-model="incident_status_id">
+
+        </div>
+    </div>
+</div>
+<div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-bind="'SR.Urgency' | translate"></label>
+            <select select2 class="form-control" ng-model="urgency_id" >
+                <option value="{{item.urgency_id }}" ng-repeat="item in srData.urgency">{{item.urgency_name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.Severity' | translate"></label>
+            <select class="form-control" select2="" ng-model="severity_id" >
+                <option value="{{item.severity_id}}" ng-repeat="item in srData.severity">{{item.severity_name}}</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-bind="'SR.sr_group' | translate"></label>
+            <!--<i class="icon-search add-btn icon-color" ng-click="groupLov(1)"></i>-->
+            <!--<i class="icon-remove-sign icon-color"></i>-->
+            <input type="text" class="form-control ng-valid" ng-model="group_name" not-allow=""  >
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.closed_date' | translate"></label>
+            <input type="text" class="form-control ng-pristine ng-valid sr-owne"  not-allow="" ng-model="close_date" >
+        </div>
+    </div>
+</div>
+<div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-bind="'SR.Owner' | translate"></label>
+            <input ng-model="resource_name" class="form-control fex1" type="text" not-allow="">
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.ReferenceSR' | translate"></label>
+            <i class="icon-search add-btn  icon-color" ng-click="referenceLov(1)"></i>
+            <i class="icon-remove-sign icon-color"></i>
+            <input type="text" class="form-control" readonly ng-model="reference" select3="" >
+        </div>
+    </div>
+</div>
+
+<div class="ipt-item flexbox" ng-if="instance_code == 'MAC'">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l" style="margin-right: 623px;">
+            <label ng-bind="'SR.upsTN' | translate"></label>
+            <input ng-model="ups_tracking_number" class="form-control fex1" type="text"  not-allow="">
+        </div>
+    </div>
+</div>
+
+<!--SR Header end-->
+
+<h2 ng-bind="'SR.customer_info' | translate" ></h2>
+
+<div class="ipt-item flexbox" ng-class="{'mb30':submitted && sr_form.customer_name.$invalid}">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-bind="'SR.customer_type' | translate"></label>
+            <select select2="" class="form-control" ng-model="CustomerType" ng-change="CustomerTypeChange()" disabled>
+                <option value="PERSON">Person</option>
+                <option value="ORGANIZATION">Organization</option>
+            </select>
+        </div>
+    </div>
+    <div class="fex1" >
+        <div class="flexbox mr50">
+            <label class="red">*<span ng-bind="'SR.Name' | translate"></span></label>
+            <input type="text" class="form-control" ng-model="customer_name" not-allow required=""  name="customer_name" select3="" ng-change="customer_c()" ng-class="{'bd-red':submitted && sr_form.customer_name.$invalid}">
+            <input type="hidden" ng-model="customer_id" name="customer_id"   >
+            <formtips  title="This field is required" ng-show="submitted && sr_form.customer_name.$invalid"></formtips>
+        </div>
+    </div>
+</div>
+<div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-bind="'SR.account_number' | translate"></label>
+            <input type="text" class="form-control" not-allow="" ng-model="account_number">
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.Email' | translate"></label>
+            <input type="text" class="form-control" not-allow="" ng-model="email">
+        </div>
+    </div>
+</div>
+<div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox">
+            <label ng-bind="'SR.Address' | translate"></label>
+            <input type="text" class="form-control" not-allow="" ng-model="address">
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.Phone' | translate"></label>
+            <input type="text" class="form-control" value="" not-allow="" ng-model="phone"  >
+        </div>
+    </div>
+</div>
+<h2 ng-bind="'SR.product_info' | translate"></h2>
+<div ng-if="srTrueFalse2">
+    <div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-bind="'SR.Category' | translate"></label>
+            <i class="icon-search add-btn icon-color" ng-click="categoryLov(1)" ></i>
+            <i class="icon-remove-sign icon-color" ></i>
+            <input type="text" class="form-control" ng-model="$parent.category" readonly select3=""  ng-change="category_id=''" >
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.installed_date' | translate"></label>
+            <input ng-model="instance_date" type="text" class="form-control" not-allow="" name="date">
+            <input type="hidden" ng-model="instance_id">
+        </div>
+    </div>
+</div>
+    <div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l">
+            <label ng-class="{'red':false}"><span ng-if="false">*</span><span ng-bind="'SR.Item' | translate"></span></label>
+            <i class="icon-search add-btn icon-color" ng-click="itemLov(1)" ></i><!--sn_required=='YES'-->
+            <i class="icon-remove-sign icon-color" ng-click="removeItemRelative()"></i>
+            <input type="text" class="form-control" ng-required="false" name="item_number"
+                   ng-class="{'bd-red':submitted && sr_form.item_number.$invalid}"
+                   ng-model="$parent.item_number" readonly select3 ng-change="Item_c()" >
+            <input type="hidden" class="form-control" readonly ng-model="inventory_item_id" name="inventory_item_id">
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.item_desc' | translate"></label>
+            <input type="text" class="form-control" ng-model='item_desc' not-allow="">
+        </div>
+    </div>
+</div>
+    <div class="ipt-item flexbox">
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l ">
+            <label ng-bind="'SR.instance_number' | translate"></label>
+            <i class="icon-search add-btn icon-color" ng-click="SerialLov('install_number')" ></i>
+            <i class="icon-remove-sign icon-color" ng-click="removeInstallNumber()" ></i>
+            <input type="text" class="form-control" ng-model="$parent.instance_number" readonly select3=""  ng-change="instance_id='';contract_id='';contract_service_id=''">
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.w_start_date' | translate"></label>
+            <input type="text" class="form-control" ng-model="warranty_start_date" not-allow="">
+
+        </div>
+    </div>
+</div>
+    <div class="ipt-item flexbox" >
+    <div class="fex1 mr50">
+        <div class="flexbox mr-l " ng-if="serial_number_control_code=='Y'">
+            <label ng-class="{'red':false}"><span ng-if="false">*</span><span ng-bind="'SR.serial_number' | translate" ></span></label>
+            <i class="icon-search add-btn icon-color" ng-if="trackable_flag=='Y'" ng-click="SerialLov('serial_number')" ></i>
+            <input type="text" class="form-control" ng-required="false" name="serial_number" ng-model="formData.serial_number"
+                   ng-class="{'bd-red':submitted && sr_form.serial_number.$invalid}"
+                   ng-readonly="trackable_flag=='Y'" select3="" >
+        </div>
+        <div class="flexbox mr-l " ng-if="lot_control_code == 'Y'">
+            <label ng-class="{'red':false}"><span ng-if="false">*</span><span ng-bind="'IB.LotNumber' | translate"></span></label>
+            <i class="icon-search add-btn icon-color" ng-if="trackable_flag=='Y'" ng-click="SerialLov('lot_number')" ></i>
+            <input type="text" class="form-control"  ng-required="false" ng-model="formData.lot_number" name="lot_number"
+                   ng-class="{'bd-red':submitted && sr_form.lot_number.$invalid}"
+                   ng-readonly="trackable_flag=='Y'" select3="" >
+        </div>
+    </div>
+    <div class="fex1">
+        <div class="flexbox mr50">
+            <label ng-bind="'SR.w_end_date' | translate"></label>
+            <input type="text" class="form-control" ng-model="warranty_end_date" not-allow="">
+        </div>
+    </div>
+</div>
+    <div class="ipt-item flexbox" ng-if="checkCurchase_date">
+        <div class="fex1 mr50">
+            <div class="flexbox mr-l">
+                <label ng-bind="'SR.PurchaseDate' | translate"></label>
+                <input type="text" datetimepicker2 options="{type:'date'}" class="form-control"   ng-model="formData.purchase_date" >
+            </div>
+        </div>
+        <div class="fex1">
+            <div class="flexbox mr50">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="srTrueFalse1">
+    <div class="ipt-item flexbox">
+        <div class="fex1 mr50">
+            <div class="flexbox mr-l">
+                <label ng-bind="'SR.Category' | translate"></label>
+                <input type="text" class="form-control" ng-model="$parent.category" readonly  ng-change="category_id=''" >
+
+            </div>
+        </div>
+        <div class="fex1">
+            <div class="flexbox mr50">
+
+                <label ng-bind="'SR.installed_date' | translate"></label>
+                <input ng-model="instance_date" type="text" class="form-control" not-allow="" name="date">
+                <input type="hidden" ng-model="$parent.instance_id">
+
+            </div>
+        </div>
+    </div>
+    <div class="ipt-item flexbox">
+        <div class="fex1 mr50">
+            <div class="flexbox mr-l">
+                <label ng-bind="'SR.Item' | translate"></label>
+                <input type="text" class="form-control" ng-model="item_number" readonly ng-change="Item_c()" >
+                <input type="hidden" class="form-control" readonly ng-model="$parent.inventory_item_id" name="inventory_item_id">
+            </div>
+        </div>
+        <div class="fex1">
+            <div class="flexbox mr50">
+                <label ng-bind="'SR.item_desc' | translate"></label>
+                <input type="text" class="form-control" ng-model='$parent.item_desc' not-allow="">
+            </div>
+        </div>
+    </div>
+    <div class="ipt-item flexbox">
+        <div class="fex1 mr50">
+            <div class="flexbox mr-l ">
+                <label ng-bind="'SR.instance_number' | translate"></label>
+                <input type="text" class="form-control" ng-model="$parent.instance_number" ng-mouseover="instance_n_fun($parent.instance_number)"  ng-mouseleave="$parent.instance_number_tips=false" readonly  ng-change="instance_id='';contract_id='';contract_service_id=''">
+                <!--<div class="sr_info_tips" ng-bind="'SR.sr_tips' | translate" ng-show="instance_number_tips"></div>-->
+            </div>
+        </div>
+        <div class="fex1">
+            <div class="flexbox mr50">
+                <label ng-bind="'SR.w_start_date' | translate"></label>
+                <input type="text" class="form-control" ng-model="$parent.warranty_start_date" not-allow="">
+            </div>
+        </div>
+    </div>
+
+    <div class="ipt-item flexbox" >
+        <div class="fex1 mr50">
+            <div class="flexbox mr-l " ng-if="serial_is">
+                <label ng-bind="'SR.serial_number' | translate"></label>
+                <input type="text" class="form-control" ng-model="formData.serial_number"  readonly  ng-mouseover="serial_n_fun(formData.serial_number)"  ng-mouseleave="serial_fun_false()" >
+                <!--<div class="sr_info_tips" ng-bind="'SR.sr_tips' | translate" ng-show="$parent.serial_number_tips"></div>-->
+            </div>
+            <div class="flexbox mr-l " ng-if="formData.lot_number">
+                <label ng-bind="'IB.LotNumber' | translate"></label>
+                <input type="text" class="form-control" ng-model="formData.lot_number" readonly ng-mouseover="lot_n_fun(formData.lot_number)"  ng-mouseleave="lot_fun_false()" >
+                <div class="sr_info_tips" ng-bind="'SR.sr_tips' | translate" ng-show="$parent.lot_number_tips"></div>
+            </div>
+        </div>
+        <div class="fex1">
+            <div class="flexbox mr50">
+                <label ng-bind="'SR.w_end_date' | translate"></label>
+                <input type="text" class="form-control" ng-model="warranty_end_date" not-allow="">
+            </div>
+        </div>
+    </div>
+    <div class="ipt-item flexbox" ng-if="checkCurchase_date">
+        <div class="fex1 mr50">
+            <div class="flexbox mr-l">
+                <label ng-bind="'SR.PurchaseDate' | translate"></label>
+                <input type="text" datetimepicker2 options="{type:'date'}" class="form-control ng-pristine ng-valid"  ng-model="formData.purchase_date" >
+            </div>
+        </div>
+        <div class="fex1">
+            <div class="flexbox mr50">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="mt15" ng-bind="'SR.Problem_desc' | translate"></h2>
+
+<div class="flexbox problem-box ipt-item" ng-class="{'mb10':sr_info.update_flag=='N'}" >
+    <div class="fex1 mr50">
+        <div class="flexbox" ng-class="{'mb30':submitted && sr_form.summary.$invalid}">
+            <label class="red">*<span ng-bind="'SR.Summary' | translate"></span></label>
+            <input type="text" class="form-control fex1" ng-model="summary" name="summary" required="" ng-class="{'bd-red':submitted && sr_form.summary.$invalid}">
+
+            <formtips  title="This field is required" ng-show="submitted && sr_form.summary.$invalid"></formtips>
+        </div>
+        <div class="flexbox mt10">
+            <label  ng-bind="'SR.Notes' | translate"></label>
+            <textarea type="text" class="form-control" ng-model="note"
+                      placeholder="input your reply here..."></textarea>
+        </div>
+        <a class="btn btn-primary pull-right mt10 btn-mini" ng-if="sr_info.update_flag=='Y'"  ng-click="upload(files)" ng-bind="'PUBLIC.Upload' | translate"></a>
+    </div>
+    <div class="fex1">
+
+        <div class="flexbox" >
+            <div class="upload-btn" ng-if="sr_info.update_flag=='Y'" ngf-select  ng-model="$parent.files"   ngf-multiple="true"  ngf-accept="validate($file)" ngf-allow-dir="true" ngf-change="fileSelected($files, $event)">
+                <i class="icon-cloud-upload fts18"></i>
+                <p class="fts16"  ng-bind="'SR.add_file' | translate"></p>
+            </div>
+            <div class="upload-list fex1">
+                <div ng-repeat="item in sr_info.attachment" >
+                    <p  style="margin-bottom: 2px"><a
+                          href="{{dowUrl}};{{jsessionid}}?filename={{item.file_name}}&filetype={{item.file_type}}" style="text-decoration: none"><i  class="icon-cloud-download fts16 mr10" style="color: #48bbc2;"></i><span style="color: #6d6d6d">{{item.original_name}}</span></a>
+                    </p>
+                </div>
+                <div class="file_item{{$index}}"  ng-repeat="item in files">
+                    <div class="file-name">
+                        <i class="icon_folder_upload fts16"></i><span class="ml10"  ng-bind="item.name"></span>
+                    </div>
+                    <div class="flexbox">
+                        <div class="progress progress-xs" style="height: 6px">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                                 aria-valuemax="100" ng-style="{'width': progressPercentage}">
+                            </div>
+                        </div>
+                        <div class="progress-right">
+                            <span class="progress-num">{{progressPercentage}}</span>
+                            <span class="icon_close delete-btn" ng-class="{'icon_close':isremove}"  ng-click="del($index)" ></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <p class="mt10 red" ng-bind="'SR.file_tips' | translate" style="width: 70%" ng-if="sr_info.update_flag=='Y'">
+        </p>
+
+    </div>
+
+</div>
+
+<!--Task Summary start-->
+
+<div class="issue-box clearfix" id="scrollPlace">
+    <h2 class="mt15 flexbox"  style="border-bottom: 1px solid #ddd;">
+        <div ng-bind="'SR.TASK.Title' | translate">
+        </div>
+        <div class="mb2 mt2 fex1"><button class="btn btn-primary mr15 btn-mini" type="submit" ng-disabled="sr_info.F_ID_SR_CREATE_TASK!='Y'"  ui-sref="newTask({sr_id:'{{sr_id | urlFilter}}'})" style="text-indent: 0px!important;margin-left: 16px;" ng-bind="'PUBLIC.New' | translate"></button></div> <!--/*||sr_info.F_ID_SR_UPDATE_TASK_N!='N'*/-->
+    </h2>
+    <section class="panel ml15 mr15">
+        <table class="table table-bordered table-search table-condensed table-summary"  style="border-bottom: 1px solid #dddddd;" >
+            <thead>
+            <tr>
+                <th style="width:8%;" ng-bind="'SR.TASK.Action' | translate"></th>
+                <th ng-bind="'SR.TASK.TaskNumber' | translate"></th>
+                <th ng-bind="'SR.TASK.Type' | translate"></th>
+                <th ng-bind="'SR.TASK.Subject' | translate"></th>
+                <th ng-bind="'SR.TASK.TaskOwner' | translate"></th>
+                <th ng-bind="'SR.TASK.Assignee' | translate"></th>
+                <th ng-bind="'SR.TASK.Status' | translate"></th>
+                <th ng-bind="'SR.TASK.Priority' | translate"></th>
+                <th ng-bind="'SR.TASK.ActualStartDate' | translate"></th>
+                <th ng-bind="'SR.TASK.ActualEndDate' | translate"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in tastSummary">
+                <td class="text-center" >
+                    <a  ui-sref="task_update({task_id:'{{item.task_id | urlFilter}}',sr_id:'{{sr_id | urlFilter}}',incident_date:'{{incident_date | urlFilter}}'})"><i class="icon-edit" style="font-size: 20px;cursor: pointer"></i></a>
+                    <!--<a  ng-if="sr_info.update_flag=='N'||item.task_status=='Closed'" ><i class="icon-edit a-dis" style="font-size: 20px;cursor: pointer"></i></a>-->
+                    <!-- ng-if="sr_info.update_flag=='Y'&&item.task_status!='Closed'" -->
+                </td>
+                <td title="{{item.task_number}}"> <div ng-bind="item.task_number" class="text-center"></div></td>
+                <td title="{{item.task_type}}"><div ng-bind="item.task_type"></div></td>
+                <td title="{{item.task_name}}"><div ng-bind="item.task_name"></div></td>
+                <td title="{{item.owner}}"><div ng-bind="item.owner"></div></td>
+                <td title="{{item.asignee}}"><div ng-bind="item.asignee"></div></td>
+                <td title="{{item.task_status}}"><div ng-bind="item.task_status"></div></td>
+                <td title="{{item.task_priority}}"><div ng-bind="item.task_priority"></div></td>
+                <td title="{{item.actual_start_date}}"><div ng-bind="item.actual_start_date"></div></td>
+                <td title="{{item.actual_end_date}}"><div ng-bind="item.actual_end_date"></div></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+<!--Task Summary end-->
+<!--Charge Summary start-->
+<div class="issue-box  "  style="position: relative;">
+    <h2 class="mt15 flexbox"  style="border-bottom: 1px solid #ddd;">
+        <div ng-bind="'SR.CHARGE.Title' | translate"></div>
+
+        <div class="fex1 mt2 mb2 ml15" style="text-indent: 0px">
+            <a class="btn btn-primary btn-mini" type="submit"  ng-disabled="sr_info.update_flag=='N'"  href="#/newCharge/{{sr_id | urlFilter}}/{{sr_type_item | urlFilter }}/{{sr_info.item | urlFilter}}/{{instance_number | urlFilter}}" ng-bind="'PUBLIC.New' | translate"></a>
+            <a class="btn btn-primary btn-mini mr5" type="submit"  ng-disabled="sr_info.F_ID_SR_CHARGE_SUBMIT=='N'&&sr_info.enable_om_button=='N'"  ng-click="charge_submit_order()" ng-bind="'SR.CHARGE.OM' | translate"></a>
+
+        </div>
+    </h2>
+    <section class="panel ml15 mr15"  style="-webkit-box-shadow: none;">
+        <table class="table table-bordered table-search table-condensed table-summary" style="border-bottom: 1px solid #ddd;">
+            <thead>
+            <tr>
+                <th style="width:8%;" ng-bind="'SR.CHARGE.Action' | translate"></th>
+                <th ng-bind="'SR.CHARGE.ServiceAct' | translate"></th>
+                <th ng-bind="'SR.CHARGE.Status' | translate"></th>
+                <th ng-bind="'SR.CHARGE.OrderStatus' | translate"></th>
+                <th ng-bind="'SR.CHARGE.Item' | translate"></th>
+                <th style="width:290px;" ng-bind="'SR.CHARGE.ItemDesc' | translate"></th>
+                <th ng-bind="'SR.CHARGE.BillType' | translate"></th>
+                <th ng-bind="'SR.CHARGE.QTY' | translate"></th>
+                <th ng-bind="'SR.CHARGE.Price' | translate"></th>
+                <th ng-bind="'SR.CHARGE.Amount' | translate"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in chargeSummary">
+                <td style="position: relative" class="text-center">
+                    <a ng-if="item.status_code =='NEW'"  style="border-right: 1px solid #ddd;display: inline-block"  href="#/charge_update/{{item.charge_line_id | urlFilter}}/{{sr_id | urlFilter}}/{{sr_type_item | urlFilter }}/{{instance_number | urlFilter}}/{{item.status_code | urlFilter}}/{{sr_info.item | urlFilter }}" ng-class="{'a-dis':{{item.status_code}},'br-no':{{item.status_code}}}" >
+                        <i class="icon-edit" style="font-size: 18px;cursor: pointer;top:2px;position: relative"></i>
+                    </a>
+                    <a ng-if="item.status_code !='NEW'"  style="display: inline-block"  href="#/charge_update/{{item.charge_line_id | urlFilter}}/{{sr_id | urlFilter}}/{{sr_type_item | urlFilter }}/{{instance_number | urlFilter}}/{{item.status_code | urlFilter}}/{{sr_info.item | urlFilter }}"  >
+                        <i class="icon-edit" style="font-size: 18px;cursor: pointer;top:2px;position: relative"></i>
+                    </a>
+                    <!--<span    ng-class="{'td-dis':{{item.status_code}}}"></span>-->
+                    <span style="position: relative;top: 0px; font-size:17px;cursor: pointer" class="icon-minus-sign red ml5 fts16 gray" ng-show="item.status_code =='NEW'" ng-click="chargeDel(item.charge_line_id)"></span>
+                </td>
+                <td title="{{item.activity}}"><div ng-bind="item.activity"></div> </td>
+                <td title="{{item.status_code}}"><div ng-bind="item.status_code"></div> </td>
+                <td title="{{item.oe_status}}"><div ng-bind="item.oe_status"></div> </td>
+                <td title="{{item.item_name}}"><div ng-bind="item.item_name"></div></td>
+                <td title="{{item.item_desc}}"><div style="width: 290px;word-break: break-all; word-wrap:break-word;" ng-bind="item.item_desc"></div></td>
+                <td title="{{item.bill_type}}"><div ng-bind="item.bill_type"></div> </td>
+                <td title="{{item.qty}}" class="text-center"><div ng-bind="item.qty"></div> </td>
+                <td title="{{item.price}}">
+                    <div class="text-right" ng-show="item.mask_flag == 'Y' && instance_code == 'MAC'">***</div>
+                    <div class="text-right" ng-show="item.mask_flag != 'Y' || instance_code != 'MAC'" ng-bind="item.price"></div>
+                </td>
+                <td title="{{item.amount}}"><div class="text-right" ng-bind="item.amount"></div> </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <div class="flexbox  footer-btn " style="border-top:none ">
+        <div class="fex1" ></div>
+        <div class="mr15">
+            <!--<a class="btn btn-primary btn-mini btn-large mr5" type="submit"  ng-disabled="sr_info.F_ID_SR_CHARGE_SUBMIT=='N'&&sr_info.enable_om_button=='N'"  ng-click="charge_submit_order()" ng-bind="'SR.CHARGE.OM' | translate"></a>-->
+            <a class="btn btn-primary btn-mini btn-large mr5" type="submit" ng-if="instance_code == 'MSA'||instance_code == 'MZA'"   ng-click="charge_picking_release()" ng-bind="'SR.CHARGE.PickRelease' | translate"></a>
+            <a class="btn btn-primary pull-right btn-mini mr15" type="submit"    target="_blank" style="padding-top: 3px;
+                margin-top: 1px;position: relative;z-index: 998" ng-bind="'PUBLIC.Do' | translate" ng-disabled="sr_info.F_ID_PRINT_DO!='Y'"  ng-show="instance_code == 'MSA'||instance_code == 'MZA'"
+               ng-click="PrintLov(1)" >
+            </a>
+        </div>
+    </div>
+</div>
+<!--Charge Summary end-->
+
+
+    <div class="issue-box clearfix " >
+
+        <h2 class="mt15 flexbox"  style="border-bottom: 1px solid #ddd;">
+            <div ng-bind="'QA.title' | translate">
+
+            </div>
+
+
+            <div class="mb2 mt2 fex1" ng-if="!(instance_code=='MSA'||instance_code=='MZA')" ><!-- ng-if="sr_info.F_ID_SR_QA_M=='Y'"-->
+                <a class="btn btn-primary mr15 btn-mini"  style="text-indent: 0px; margin-left: 26px;" href="#/new_qa/{{sr_id | urlFilter}}/{{inventory_item_id | urlFilter }}/{{sr_type_name | urlFilter}}" ng-disabled="(instance_code=='MSA'||instance_code=='MZA')&&sr_info.F_ID_SR_QA_M!='Y'" ng-bind="'PUBLIC.New' | translate" ></a>
+            </div>
+            <div class="mb2 mt2 fex1" ng-if="instance_code=='MSA'||instance_code=='MZA'" >
+                <a class="btn btn-primary mr15 btn-mini"  style="text-indent: 0px; margin-left: 26px;" href="#/new_qa_mza/{{sr_id | urlFilter}}/{{inventory_item_id | urlFilter }}/{{sr_type_name | urlFilter}}" ng-disabled="(instance_code=='MSA'||instance_code=='MZA'||instance_code=='MPI')&&sr_info.F_ID_SR_QA_M!='Y'" ng-bind="'PUBLIC.New' | translate" ></a>
+            </div>
+            <!--<div class="mb2 mt2 fex1" ng-if="sr_info.F_ID_SR_QA_M=='N'" ><a class="btn btn-primary mr15 btn-mini"  ng-disabled="true" style="text-indent: 0px;margin-left: 26px;" href="" ng-bind="'PUBLIC.New' | translate" ></a></div>-->
+
+        </h2>
+        <section class="panel ml15 mr15 qatableScroll" ng-if="!(instance_code=='MSA'||instance_code=='MZA')">
+            <table class="table table-bordered table-search table-condensed table-summary "  style="border-bottom: 1px solid #dddddd;width: 1500px;min-height: 100px" >
+                <thead>
+                <tr>
+                    <th style="width:88px;" ng-bind="'SR.CHARGE.Action' | translate"></th>
+                    <th ng-bind="'QA.Condition Code' | translate"></th>
+                    <th ng-bind="'QA.Condition Description' | translate"></th>
+                    <th ng-bind="'QA.Complaint' | translate"></th>
+                    <th ng-bind="'QA.Complaint Description' | translate"></th>
+                    <th ng-bind="'QA.Symptom' | translate"></th>
+                    <th ng-bind="'QA.Symptom Description' | translate"></th>
+                    <th ng-bind="'QA.Section' | translate"></th>
+                    <th ng-bind="'QA.Section Description' | translate"></th>
+                    <th ng-bind="'QA.Defect' | translate"></th>
+                    <th ng-bind="'QA.Defect Description' | translate"></th>
+                    <th ng-bind="'QA.Repair' | translate"></th>
+                    <th ng-bind="'QA.Repair Description' | translate"></th>
+                    <th ng-bind="'QA.Diagnostic Comments' | translate"></th>
+                    <th ng-bind="'QA.Diagnostic Engineer' | translate"></th>
+                    <th ng-bind="'QA.Date of Diagnostics' | translate"></th>
+                    <th ng-bind="'QA.Resolution Comments' | translate"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in sr_info.qa">
+                    <td class="text-center" >
+                        <a  ng-if="sr_info.update_flag=='Y'" ui-sref="update_qa({sr_id:'{{sr_id | urlFilter}}',row_id:'{{item.row_id | urlFilter}}'})">
+                            <i class="icon-edit" style="font-size: 20px;cursor: pointer;padding: 0px!important;"></i>
+                        </a>
+                        <a  ng-if="sr_info.update_flag=='N'" ><i class="icon-edit a-dis" style="font-size: 20px;cursor: pointer;text-align: center;text-indent: 5px"></i></a>
+                    </td>
+                    <td title="{{item.Condition_code}}"> <div ng-bind="item.Condition_code" ></div></td>
+                    <td title="{{item.Condition_code}}"> <div ng-bind="item.Condition_desc" ></div></td>
+                    <td title="{{item.Complaint}}"> <div ng-bind="item.Complaint" ></div></td>
+                    <td title="{{item.Complaint_desc}}"> <div ng-bind="item.Complaint_desc" ></div></td>
+                    <td title="{{item.Symptom}}"> <div ng-bind="item.Symptom" ></div></td>
+                    <td title="{{item.Symptom_desc}}"> <div ng-bind="item.Symptom_desc" ></div></td>
+                    <td title="{{item.Section}}"> <div ng-bind="item.Section" ></div></td>
+                    <td title="{{item.Section_desc}}"> <div ng-bind="item.Section_desc" ></div></td>
+                    <td title="{{item.Defect}}"> <div ng-bind="item.Defect" ></div></td>
+                    <td title="{{item.Defect_desc}}"> <div ng-bind="item.Defect_desc" ></div></td>
+                    <td title="{{item.Repair}}"> <div ng-bind="item.Repair" ></div></td>
+                    <td title="{{item.Repair_desc}}"> <div ng-bind="item.Repair_desc" ></div></td>
+                    <td title="{{item.Diagnostic_Comments}}"> <div ng-bind="item.Diagnostic_Comments" ></div></td>
+                    <td title="{{item.Diagnostic_Engineer}}"> <div ng-bind="item.Diagnostic_Engineer" ></div></td>
+                    <td title="{{item.Date_of_Diagnostics}}"> <div ng-bind="item.Date_of_Diagnostics" ></div></td>
+                    <td title="{{item.Resolution_Comments}}"> <div ng-bind="item.Resolution_Comments" ></div></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="panel ml15 mr15 qatableScroll" ng-if="instance_code=='MSA'||instance_code=='MZA'">
+            <table class="table table-bordered table-search table-condensed table-summary "  style="border-bottom: 1px solid #dddddd;width: 1500px;min-height: 80px" >
+                <thead>
+                <tr>
+                    <th style="width:88px;" ng-bind="'SR.CHARGE.Action' | translate"></th>
+                    <th ng-bind="'QA.Product_line' | translate"></th>
+                    <th ng-bind="'QA.Product Subcategory' | translate"></th>
+                    <!--<th ng-bind="'QA.Symptom' | translate"></th>-->
+                    <th ng-bind="'QA.Symptom_Desc_En' | translate"></th>
+                    <!--<th ng-bind="'QA.Reason' | translate"></th>-->
+                    <th ng-bind="'QA.Reason_Desc_En' | translate"></th>
+                    <!--<th ng-bind="'QA.Solution' | translate"></th>-->
+                    <th ng-bind="'QA.Solution_Desc_En' | translate"></th>
+                    <!--<th ng-bind="'QA.Item_category' | translate"></th>-->
+                    <th ng-bind="'QA.Diag_filed_eng' | translate"></th>
+                    <!--<th ng-bind="'QA.Dod' | translate"></th>-->
+                    <th ng-bind="'QA.Diag_comments' | translate"></th>
+                    <th ng-bind="'QA.Res_comments' | translate"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in sr_info.qa">
+                    <td class="text-center" >
+                        <a  ui-sref="update_qa_mza({sr_id:'{{sr_id | urlFilter}}',row_id:'{{item.row_id | urlFilter}}'})">
+                            <i class="icon-edit" style="font-size: 20px;cursor: pointer;padding: 0px!important;"></i>
+                        </a>
+                        <!--<a  ng-if="sr_info.update_flag=='N'" ><i class="icon-edit a-dis" style="font-size: 20px;cursor: pointer;text-align: center;text-indent: 5px"></i></a>-->
+                    </td>
+                    <td title="{{item.cux_iris_prdocut_line}}"> <div ng-bind="item.cux_iris_prdocut_line" ></div></td>
+                    <td title="{{item.cux_iris_product_subcategory_desc}}"> <div ng-bind="item.cux_iris_product_subcategory_desc" ></div></td>
+                    <!--<td title="{{item.cux_iris_symptom}}"> <div ng-bind="item.cux_iris_symptom" ></div></td>-->
+                    <td title="{{item.cux_iris_symptom_desc_en}}"> <div ng-bind="item.cux_iris_symptom_desc_en" ></div></td>
+                    <!--<td title="{{item.cux_iris_reason}}"> <div ng-bind="item.cux_iris_reason" ></div></td>-->
+                    <td title="{{item.cux_iris_reason_desc_en}}"> <div ng-bind="item.cux_iris_reason_desc_en" ></div></td>
+                    <!--<td title="{{item.cux_iris_solution}}"> <div ng-bind="item.cux_iris_solution" ></div></td>-->
+                    <td title="{{item.cux_iris_solution_desc_en}}"> <div ng-bind="item.cux_iris_solution_desc_en" ></div></td>
+                    <!--<td title="{{item.cux_item_category}}"> <div ng-bind="item.cux_item_category" ></div></td>-->
+                    <td title="{{item.cux_diag_field_eng}}"> <div ng-bind="item.cux_diag_field_eng" ></div></td>
+                    <!--<td title="{{item.cux_dod}}"> <div ng-bind="item.cux_dod" ></div></td>-->
+                    <td title="{{item.cux_diag_comments}}"> <div ng-bind="item.cux_diag_comments" ></div></td>
+                    <td title="{{item.cux_res_comments}}"> <div ng-bind="item.cux_res_comments" ></div></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
+
+<div class="flexbox  footer-btn " style="border-top:none ">
+    <div class="fex1" ></div>
+    <div class="mr15">
+        <!--<a class="btn btn-primary btn-mini btn-large mr5" type="submit"  ng-disabled="sr_info.F_ID_SR_CHARGE_SUBMIT=='N'&&sr_info.enable_om_button=='N'"  ng-click="charge_submit_order()" ng-bind="'SR.CHARGE.OM' | translate"></a>-->
+        <!--<a class="btn btn-primary btn-mini btn-large mr5" type="submit" ng-if="instance_code == 'MSA'||instance_code == 'MZA'"   ng-click="charge_picking_release()" ng-bind="'SR.CHARGE.PickRelease' | translate"></a>-->
+        <button type="submit" class="btn btn-primary mr5 fts16 btn-large" ng-bind="'PUBLIC.Submit' | translate" ng-disabled="sr_info.update_flag=='N'"></button>
+        <a class="btn btn-default btn-large btn-mini" back-button=""><span ng-bind="'PUBLIC.Cancel' | translate"  ng-bind="'PUBLIC.Cancel'"></span></a>
+    </div>
+</div>
+</form>
+</section>
+</section>

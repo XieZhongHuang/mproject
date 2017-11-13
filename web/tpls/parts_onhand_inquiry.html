@@ -1,0 +1,97 @@
+<div id="container" ng-controller="PartsOnhandInquiryCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+
+        <h1 ng-bind="'NPR.OnhandInquiry'|translate"></h1>
+        <div class="base-box pt10">
+            <form>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.ItemCategory' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="categoryLov(1)"></i>
+                            <i class="icon-remove-sign icon-color" style="display: none;" ng-click="categoryem()"></i>
+                            <input type="text" ng-model="category" ng-keypress="enter($event)"  class="form-control fex1 ng-isolate-scope ng-pristine ng-valid notAllow" select3="" not-allow="" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="fex1 ">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NPR.Item' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                            <i class="icon-remove-sign icon-color" style="display: none;" ng-click="itemem()"></i>
+                            <input type="text" ng-model="item_number" ng-keypress="enter($event)" class="form-control fex1 ng-isolate-scope ng-pristine ng-valid notAllow" select3="" not-allow="" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50 ">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.ItemDescription' | translate" ></label>
+                            <input type="text" class="form-control fex1 notAllow" ng-model="item_desc" >
+                        </div>
+                    </div>
+                    <div class="fex1 ">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NPR.Subinventory' | translate"></label>
+                            <select select2 class="form-control" ng-model="subinventory" ng-change="changeSubinventory()" ng-keypress="enter($event)" get-focus="">
+                                <option value=""></option>
+                                <option value="{{item.subinventory_code}}" ng-repeat="item in inventory">{{item.subinventory_code}}</option>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50 ">
+                        <div class="flexbox mr-l">
+                            <label translate="NPR.Location"></label>
+                            <i class="icon-remove-sign icon-color" ng-click="formData.location_id=''"></i>
+                            <i class="icon-search add-btn icon-color" ng-click="locationLov(1, subinventory)"></i>
+                            <input type="text" ng-model="formData.location_code"  class="form-control fex1 notAllow" select3="" not-allow="" readonly>
+                        </div>
+                    </div>
+                    <div class="fex1 "></div>
+                </div>
+
+            </form>
+            <div class="text-right mr20" style="margin-right: 69px">
+                <button type="submit" class="btn btn-primary mr5 fts16  btn-large" id="sub" ng-click="DoCtrlPagingAct2(1)">
+                    <span ng-bind="'PUBLIC.Search' | translate" class="ng-binding">Search</span>
+                </button>
+                <button type="button" class="btn btn-large btn-default ng-binding mr45" ng-click="reset()">
+                    <span ng-bind="'PUBLIC.Reset' | translate" class="ng-binding " ng-click="">Reset</span>
+                </button>
+            </div>
+        </div>
+        <div class="ml15 mr15" ng-show="!loadingFlag">
+            <table class="table table-striped table-bordered table-hover text-center table-search table-condensed" >
+                <tr  role="row" class="active">
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.ItemCategory' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.ItemNo' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.ItemDescription' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.PrimaryUOM' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.Subinventory' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.Location' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NPR.QTY' | translate"></th>
+                </tr>
+                <tr ng-repeat=" item in List" class="trtd">
+                    <td><p ng-bind="item.item_category"></p></td>
+                    <td><p ng-bind="item.item_no"></p></td>
+                    <td><p ng-bind="item.item_desc"></p></td>
+                    <td><p ng-bind="item.primary_uom"></p></td>
+                    <td><p ng-bind="item.subinventory"></p></td>
+                    <td><p ng-bind="item.location_code"></p></td>
+                    <td><p ng-bind="item.qty"></p></td>
+                </tr>
+            </table>
+            <div class="btn-row ml15 mt10 text-center page-list" ng-show="!loadingFlag">
+                <div paging page="currentPage" page-size="10" total="totalPage*10" show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct2(page)">
+                </div>
+            </div>
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="emptyData&&List.length==0">No results found. </div>
+    </div>
+</div>

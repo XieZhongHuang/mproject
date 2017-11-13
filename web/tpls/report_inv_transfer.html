@@ -1,0 +1,115 @@
+<div id="container" ng-controller="ReportInvTransferCtrl">
+
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+
+        <h1 ng-bind="'ReportInvTransfer.TransferInv' | translate"></h1>
+        <div class="base-box base-box-search">
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr50 pricelist">
+                        <label ng-bind="'NPR.TranxType' | translate"></label>
+                        <select select2 class="form-control" ng-model="transaction_type_name" ng-change="choiceTranxType(transaction_type_name)"  ng-keypress="enter($event)" get-focus="">
+                            <option value=""></option>
+                            <option value="{{item.transaction_type_name}}" ng-repeat="item in TranxType">{{item.transaction_type_name}}</option>
+                        </select>
+                        <!--<select   select2="" class="form-control mb15-1024" ng-model="list_header_id" ng-keypress=" enter($event)" ng-change="choicePriceList(list_header_id)"  get-focus="">
+                            <option ng-repeat="item in priceList" value="{{item.list_header_id}}">{{item.pricelist_name}}</option>
+                        </select>-->
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'ReportInvTransfer.ReferenceNo' | translate"></label>
+                        <input type="text" class="form-control fex1" ng-model="reference" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr50 pricelist">
+                        <label><span ng-bind="'ReportInvTransfer.ItemCategory' | translate"></span></label>
+                        <i class="icon-search add-btn icon-color" ng-click="categoryLov(1)"></i>
+                        <i class="icon-remove-sign icon-color"></i>
+                        <input  type="text" name="category" ng-model="category"  class="form-control fex1" select3 not-allow>
+                    </div>
+                </div>
+
+
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'ReportInvTransfer.ItemNumber' | translate"></label>
+                        <i class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                        <i class="icon-remove-sign icon-color"></i>
+                        <input  type="text" name="item_number" ng-model="item_number"  class="form-control fex1" select3 not-allow>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr50 pricelist">
+                        <label><span ng-bind="'ReportInvTransfer.SubinventoryFrom' | translate"></span></label>
+                        <select   select2="" class="form-control mb15-1024" ng-model="subinventory_code_from" ng-keypress=" enter($event)" ng-change="choiceSubinventoryFrom(subinventory_code_from)"  get-focus="">
+                            <option value=""></option>
+                            <option ng-repeat="item in inventory" value="{{item.subinventory_code}}">{{item.subinventory_code}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label><span ng-bind="'ReportInvTransfer.Locator' | translate"></span></label>
+                        <i class="icon-search add-btn icon-color" ng-click="locationLov(1)"></i>
+                        <i class="icon-remove-sign icon-color" ng-click="location_id=''"></i>
+                        <input type="text" ng-model="location_code" name="location"   class="form-control fex1" select3=""
+                               not-allow="" readonly="readonly" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr50 pricelist">
+                        <label class="red">*<span ng-bind="'ReportInvTransfer.DateFrom' | translate"></span></label>
+                        <input type="text" datetimepicker value="{{trs_date_from}}" ng-model="trs_date_from" name="trs_date_from" class="form-control fex1"
+                               style="cursor: pointer;z-index:999;position:relative;color: #aaa" ng-class="{'bd-red':submittedDateFrom}"
+                               required ng-change="chargeDateFrom(trs_date_from)" />
+                        <label class="red" style="min-width:20px;margin-left:5px;">*<span ng-bind="'ReportInvTransfer.To' | translate"></span></label>
+                        <input type="text" datetimepicker-end value="{{trs_date_to}}" ng-model="trs_date_to" name="trs_date_to" class="form-control fex1"
+                               style="cursor: pointer;z-index:999;position:relative;color: #aaa" ng-class="{'bd-red':submittedDateTo}"
+                               required ng-change="chargeDateTo(trs_date_to)" />
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="text-right">
+                        <button type="button" id="sub" class="btn btn-primary" ng-click="DoCtrlPagingAct(1)"><span ng-bind="'PUBLIC.ExportExcel' | translate"></span>
+                        </button>
+                        <button type="button" class="btn btn-default mr50" ng-click="reset()"><span ng-bind="'PUBLIC.Reset' | translate"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

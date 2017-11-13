@@ -1,0 +1,197 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="NotificationUpdateCtrl">
+    <div ng-include="'tpls/header.html'" ></div>
+    <div ng-include="'tpls/menu.html'" ></div>
+    <form class="form-horizontal form-validate " method="get"  name="update_n_form"
+          novalidate ng-submit="submitForm(update_n_form)" dirty-form="">
+        <section id="main-content"  >
+            <h1>
+                <span ng-bind="'NOTIFICATION.UPDATE_N' | translate"></span>
+
+                <a class="btn btn-large  btn-primary pull-right  mr10" ng-click="publishClick()" id="publish-btn">
+                    <span ng-bind="'NOTIFICATION.PUBLISH' | translate"></span>
+                </a>
+                <a class="btn btn-large  btn-primary pull-right  mr10"
+                   ui-sref="nt_preview({n_id:'{{nid | urlFilter}}'})">
+                    <span ng-bind="'NOTIFICATION.PREVIEW' | translate"></span>
+                </a>
+                <button type="submit" class="btn btn-large btn-primary pull-right  mr10">
+                    <span ng-bind="'PUBLIC.Submit' | translate"></span>
+                </button>
+            </h1>
+
+            <style>
+                .ui-datepicker{z-index: 1000!important;}
+            </style>
+
+            <div class="base-box">
+                <h2 ng-bind="'NOTIFICATION.BASE_INFO' | translate"></h2>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'NOTIFICATION.TYPE' | translate"></label>
+                            <select select2 class="form-control" ng-model="typeSelect">
+                                <option value="{{item.type_code}}" ng-repeat="item in noti_type">{{item.type_name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox" ng-class="{'mb30':submitted && update_n_form.title.$invalid}">
+                            <label class="red">*<span ng-bind="'NOTIFICATION.TITLE' | translate"></span></label>
+                            <input type="text" class="form-control" ng-model="title" name="title" required=""
+                                   ng-class="{'bd-red':submitted && update_n_form.title.$invalid}"/>
+                            <formtips title="This field is required"
+                                      ng-show="submitted && update_n_form.title.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'NOTIFICATION.STATUS' | translate"></label>
+                            <input type="text" class="form-control" ng-model="status" maxlength="100" not-allow=""/>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox">
+                            <label ng-bind="'NOTIFICATION.C_DATE' | translate"></label>
+                            <input type="text" class="form-control" ng-model="creation_date" maxlength="100" not-allow=""/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox" ng-class="{'mb30':submitted && update_n_form.start_date.$invalid}">
+                            <label class="red">*<span ng-bind="'NOTIFICATION.S_DATE' | translate"></span></label>
+                            <input datetimepicker ng-model="start_date" class="form-control" name="start_date" required=""
+                                   ng-class="{'bd-red':submitted && update_n_form.start_date.$invalid}" value="{{start_date}}">
+                            <formtips title="This field is required"
+                                      ng-show="submitted && update_n_form.start_date.$invalid"></formtips>
+                            <label style="min-width:0px;margin:0 5px; width: 8%;text-align: center;">---</label>
+                            <input datetimepicker ng-model="exp_date"  class="form-control" name="exp_date" required=""
+                                   ng-class="{'bd-red':submitted && update_n_form.exp_date.$invalid}" value="{{exp_date}}" >
+                            <formtips title="This field is required"
+                                      ng-show="submitted && update_n_form.exp_date.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox" ng-class="{'mb30':submitted && update_n_form.exp_date.$invalid}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1">
+                        <div class="flexbox" ng-class="{'mb30':submitted && update_n_form.content.$invalid}">
+                            <label class="red">*<span ng-bind="'NOTIFICATION.CONTENT' | translate"></span></label>
+                            <!--<textarea type="text" class="form-control" ng-model="content"
+                                      style="height: 120px !important;" name="content" required=""
+                                      ng-class="{'bd-red':submitted && update_n_form.content.$invalid}"/>
+                            </textarea>-->
+
+                            <div class="fex1">
+                                <trix-editor style="" required angular-trix ng-model="content"
+                                             name="content" class="trix-content" ng-class="{'bd-red':submitted&& update_n_form.content.$invalid}">
+
+                                </trix-editor>
+                                <!--<p title="This field is required" style="margin-top:10px;color: red"
+                                              ng-show="submitted && create_n_form.content.$invalid">
+                                    This field is required
+                                </p>-->
+
+                            </div>
+
+                            <!--<div>
+                                <formtips title="This field is required" style="margin-top:120px;"
+                                          ng-show="submitted && update_n_form.content.$invalid"></formtips>
+                            </div>-->
+
+                        </div>
+                    </div>
+                </div>
+
+                <h2 ng-bind="'NOTIFICATION.ATTACHMENT' | translate"></h2>
+                <div class="ipt-item flexbox problem-box">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <div class="upload-btn" ngf-select ng-model="files" ngf-multiple="true"
+                                 ngf-accept="validate($file)" ngf-allow-dir="true"
+                                 ngf-change="fileSelected($files, $event)">
+                                <i class="icon-cloud-upload fts18"></i>
+
+                                <p class="fts16" ng-bind="'SR.add_file' | translate"></p>
+                            </div>
+                            <div class="upload-list fex1" style="height:114px;">
+                                <div ng-repeat="item in attachment" >
+                                    <p  style="margin-bottom: 2px"><a
+                                            href="{{dowUrl}}?filename={{item.file_name}}&filetype={{item.file_type}}" style="text-decoration: none"><i  class="icon-cloud-download fts16 mr10" style="color: #48bbc2;"></i><span style="color: #6d6d6d">{{item.original_name}}</span></a>
+                                        <span class="icon_close delete-btn" ng-class="{'icon_close':isremove}" ng-click="delUpload(item.file_id,item.file_name)"></span>
+                                    </p>
+                                </div>
+                                <div class="file_item{{$index}}" ng-repeat="item in files">
+                                    <div class="file-name">
+                                        <i  class="icon_folder_upload"></i><span class="ml5" ng-bind="item.name"></span>
+                                    </div>
+                                    <div class="flexbox">
+                                        <div class="progress progress-xs" style="height: 6px">
+
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100" ng-style="{'width': progressPercentage}">
+
+                                            </div>
+
+                                        </div>
+                                        <div class="progress-right"><span
+                                                class="progress-num">{{progressPercentage}}</span><span
+                                                class="icon_close delete-btn" ng-class="{'icon_close':isremove}"
+                                                ng-click="del($index)"></span></div>
+                                    </div>
+                                </div>
+                                <div class="pull-left" style="position: absolute;top:80px;">
+                                    <a class="btn btn-primary btn-large pull-left" ng-click="upload(files)"
+                                       ng-bind="'PUBLIC.Upload' | translate"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox">
+                            <!--<a class="btn btn-primary btn-large pull-right" ng-click="upload(files)"-->
+                               <!--ng-bind="'PUBLIC.Upload' | translate"></a>-->
+                        </div>
+                    </div>
+                </div>
+                <p class="mt10 ml10 red" ng-bind="'NOTIFICATION.file_tips' | translate" style="width: 70%">
+                <h2 ng-bind="'NOTIFICATION.RECEIVER' | translate"></h2>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="width:30px;"><input type="checkbox" ng-model="allSel" ng-change="checkAll(allSel)" /></th>
+                                    <th>Receive Country</th>
+                                    <th>Receive Group</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in receivers">
+                                    <td><input type="checkbox" ng-model="item.sel" ng-change="changeAll()"/></td>
+                                    <td>{{item.receive_country}}</td>
+                                    <td>{{item.receive_group_name}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="fex1"></div>
+                </div>
+
+            </div>
+        </section>
+    </form>
+
+</section>

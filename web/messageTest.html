@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>消息测试</title>
+    <link href="css/bootstrap.min.css?bust=1442282958057" rel="stylesheet">
+    <link href="css/bootstrap-theme.css?bust=1442282958057" rel="stylesheet">
+    <link href="css/sweet-alert.css" rel="stylesheet">
+    <style>
+        .box{
+            display: flex;
+            height:100px;
+            justify-content: center;
+            align-items: center;
+        }
+        table{
+            border-collapse: collapse;/* 边框合并属性  */
+            width:100%;
+            margin:20px 0px;
+            text-align: center;
+        }
+        th{
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        td{
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <table>
+            <tr>
+                <th>type</th>
+                <th>title</th>
+                <th>status</th>
+                <th>start date</th>
+                <th>end date</th>
+                <th>content</th>
+            </tr>
+            <tr class="content">
+                <td>Message</td>
+                <td>测试一下</td>
+                <td>Draft</td>
+                <td>2017-01-07 14:09:22</td>
+                <td>2017-01-08 05:09:22</td>
+                <td>哈哈</td>
+            </tr>
+        </table>
+    </div>
+
+
+
+    <div class="box btn-block">
+        <button class="test_click btn btn-primary btn-lg">
+            <span>Create Notification</span>
+        </button>
+    </div>
+
+    <!--<div class="box btn-block">-->
+        <!--<button class="test_click btn btn-primary btn-lg">-->
+            <!--<span><a href="mailto:guangxue.fu@partner.midea.com" style="color:#fff;">发送邮件</a></span>-->
+        <!--</button>-->
+    <!--</div>-->
+
+    <script src="framework/jquery-1.8.3.min.js"></script>
+    <script src="framework/sweet-alert.min.js"></script>
+    <script>
+
+        //base64解码编码
+        function Base64() {
+
+            // private property
+            _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+            // public method for encoding
+            this.encode = function (input) {
+                var output = "";
+                var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = _utf8_encode(input);
+                while (i < input.length) {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+                    output = output +
+                    _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+                    _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+                }
+                return output;
+            }
+
+            // public method for decoding
+            this.decode = function (input) {
+                var output = "";
+                var chr1, chr2, chr3;
+                var enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+                while (i < input.length) {
+                    enc1 = _keyStr.indexOf(input.charAt(i++));
+                    enc2 = _keyStr.indexOf(input.charAt(i++));
+                    enc3 = _keyStr.indexOf(input.charAt(i++));
+                    enc4 = _keyStr.indexOf(input.charAt(i++));
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+                    output = output + String.fromCharCode(chr1);
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+                }
+                output = _utf8_decode(output);
+                return output;
+            }
+
+            // private method for UTF-8 encoding
+            _utf8_encode = function (string) {
+                string = string.replace(/\r\n/g,"\n");
+                var utftext = "";
+                for (var n = 0; n < string.length; n++) {
+                    var c = string.charCodeAt(n);
+                    if (c < 128) {
+                        utftext += String.fromCharCode(c);
+                    } else if((c > 127) && (c < 2048)) {
+                        utftext += String.fromCharCode((c >> 6) | 192);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    } else {
+                        utftext += String.fromCharCode((c >> 12) | 224);
+                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+
+                }
+                return utftext;
+            }
+
+            // private method for UTF-8 decoding
+            _utf8_decode = function (utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+                while ( i < utftext.length ) {
+                    c = utftext.charCodeAt(i);
+                    if (c < 128) {
+                        string += String.fromCharCode(c);
+                        i++;
+                    } else if((c > 191) && (c < 224)) {
+                        c2 = utftext.charCodeAt(i+1);
+                        string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                        i += 2;
+                    } else {
+                        c2 = utftext.charCodeAt(i+1);
+                        c3 = utftext.charCodeAt(i+2);
+                        string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                        i += 3;
+                    }
+                }
+                return string;
+            }
+        }
+
+        //获取sessiionid  及initalData
+        $.ajax({
+            url:'https://iservicetest.midea.com:9011/rest/resources/login/authentication;',
+            type:'POST',
+            data: $.param({
+                username:btoa('ex_imperial'),
+                password: btoa('midea@123')
+            }),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success:function(response){
+                response=JSON.parse(response);
+                jessionid = response.jsessionid;
+
+                if(response.responsibility.length>0){
+                    $.ajax({
+                        url:'https://iservicetest.midea.com:9011/rest/resources/user/function;jsessionid='+jessionid,
+                        type:'POST',
+                        data:$.param({
+                            user_id:response.user_id,
+                            repl_id:response.responsibility[0].resp_id,
+                            jsessionid:jessionid,
+                            lang_code:'US'
+                        }),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success:function(response){
+                            profile = JSON.parse(response).profile
+                        }
+                    })
+                }
+            }
+        })
+
+
+        document.getElementsByTagName('button')[0].onclick=function(){
+
+            var base = new Base64();
+
+            var entity = JSON.stringify({
+                "notification_type": $('.content').find('td').eq(0).html(),
+                "title": $('.content').find('td').eq(1).html(),
+                "status": $('.content').find('td').eq(2).html(),
+                "creation_date": "",
+                "start_date": $('.content').find('td').eq(3).html(),
+                "end_date": $('.content').find('td').eq(4).html(),
+                "content": $('.content').find('td').eq(5).html(),
+                "attachment": [],
+                "receiver": []
+            })
+
+
+            swal({
+                title: navigator.userAgent,
+//                type: "success",
+                showCancelButton: true,
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+
+            }, function (isConfirm) {
+
+                if(isConfirm){
+                    $.ajax({
+                        url:'https://iservicetest.midea.com:9011/rest/resources/notification/create;jsessionid='+jessionid,
+                        type:'POST',
+                        data: $.param({
+                            profile:JSON.stringify(profile),
+                            noti_entity:entity
+                        }),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success:function(response){
+                            console.log(typeof response, response.Status,response)
+                            response = JSON.parse(response);
+                            console.log(typeof response,response.Status,response)
+                            if(response.Status=='S'){
+                                swal({
+                                    title: response.Message,
+                                    type: "success"
+                                },function(){
+                                    window.opener = null;
+                                    window.open('about:blank','_self');
+                                    window.close();
+                                })
+
+                            }else if(response.Status=='E'){
+                                swal({ title: response.Message, type: "error" })
+                                console.log('error');
+                            }else if(response.status=='L'){
+                                swal({ title: response.message, type: "error" })
+                            }
+
+                        }
+                    })
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<div id="container" ng-controller="CreateIBCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <form class="form-validate" method="get" name="ib_form" novalidate ng-submit="submitForm(ib_form)" dirty-form>
+            <h1 ng-bind="'IB.NewInstallBase' | translate"></h1>
+            <div class="base-box">
+                <h2 ng-bind="'IB.CustomerInformation' | translate"></h2>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && ib_form.name.$invalid}">
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.CustomerType' | translate"></label>
+                            <select ng-model="customerType" ng-init="customerType='PERSON'" class="form-control fex1" select2>
+                                <option value="PERSON" ng-bind="'IB.Person' | translate"></option>
+                                <option value="ORGANIZATION" ng-bind="'IB.Organization' | translate"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label class="red">*<span ng-bind="'IB.Name' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="namelov(1)"></i>
+                            <!--<i class="icon-remove-sign icon-color"></i>-->
+                            <input type="text" ng-model="name" name="name" ng-change="clearRelative('name')"
+                                   class="form-control fex1" ng-class="{'bd-red':submitted && ib_form.name.$invalid}"
+                                   required select3 not-allow>
+                            <formtips  title="This field is required" ng-show="submitted && ib_form.name.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1">
+                        <div class="flexbox mr10">
+                            <label ng-bind="'IB.Address' | translate"></label>
+                            <input type="text" ng-model="address" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'IB.Email' | translate"></label>
+                            <input type="text" ng-model="email" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox mb5">
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.Phone' | translate"></label>
+                            <input type="text" ng-model="phone" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1"></div>
+                </div>
+
+                <h2 ng-bind="'IB.ProductInformation' | translate"></h2>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && ib_form.instance_date.$invalid}">
+                    <div class="fex1">
+                        <div class="flexbox mr-l select3">
+                            <label ng-bind="'IB.Category' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="categoryLov(1)"></i>
+                            <i class="icon-remove-sign icon-color" ng-click="category_id=''"></i>
+                            <input type="text" ng-model="category" class="form-control fex1" select3 not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label class="red">*<span ng-bind="'IB.InstanceDate' | translate"></span></label>
+                            <input datetimepicker ng-model="instance_date" value="{{instance_date}}" class="form-control fex1" ng-class="{'bd-red':submitted && ib_form.instance_date.$invalid}"
+                                   name="instance_date" placeholder="date picker"
+                                   style="cursor: pointer;z-index:999;position:relative;color: #aaa" required>
+                            <formtips style="display: block;margin-bottom: 10px;"  title="This field is required"
+                                        ng-show="submitted && ib_form.instance_date.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && ib_form.item_number.$invalid}">
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label class="red">*<span ng-bind="'IB.Item' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                            <!--<i class="icon-remove-sign icon-color"></i>-->
+                            <input required type="text" name="item_number" ng-model="item_number" ng-change="clearRelative('item')" class="form-control fex1" ng-class="{'bd-red':submitted && ib_form.item_number.$invalid}" select3 not-allow>
+                            <formtips style="display: block;margin-bottom: 10px;"  title="This field is required"
+                                      ng-show="submitted && ib_form.item_number.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'IB.ItemDesc' | translate"></label>
+                            <input type="text" ng-model="item_desc" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.Uom' | translate"></label>
+                            <input type="text" ng-model="uom_code" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'IB.Quanlity' | translate"></label>
+                            <input type="text" ng-model="quanlity" ng-init="quanlity=1" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox mb5" ng-class="{'mb30':submitted && ib_form.serialNumber.$invalid}">
+                    <div class="fex1" ng-if="srNumberDom">
+                        <div class="flexbox mr-l select3">
+                            <label class="red">* <span ng-bind="'IB.SerialNumber' | translate"></span></label>
+                            <!--<i class="icon-search add-btn icon-color" ng-click="srNumberLov(1)"></i>-->
+                            <!--<i class="icon-remove-sign icon-color"></i>-->
+                            <input required type="text" name="serialNumber" ng-model="$parent.serialNumber" value="{{serialNumber}}" class="form-control fex1" ng-class="{'bd-red':submitted && ib_form.serialNumber.$invalid}" select3>
+                            <formtips style="display: block;margin-bottom: 10px;"  title="This field is required"
+                                      ng-show="submitted && ib_form.serialNumber.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1" ng-if="lotDom">
+                        <div class="flexbox mr-l select3">
+                            <label class="red">* <span ng-bind="'IB.LotNumber' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="LotLov(1)"></i>
+                            <i class="icon-remove-sign icon-color"></i>
+                            <input required type="text" name="lot_number" ng-model="$parent.lot_number" class="form-control fex1" ng-class="{'bd-red':submitted && ib_form.lot_number.$invalid}" select3>
+                            <formtips style="display: block;margin-bottom: 10px;"  title="This field is required"
+                                      ng-show="submitted && ib_form.lot_number.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50"></div>
+                    </div>
+                </div>
+
+                <h2 ng-bind="'IB.InstallerInformation' | translate"></h2>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && ib_form.technician_name.$invalid}">
+                    <div class="fex1">
+                        <div class="flexbox mr-l select3">
+                            <label ng-bind="'IB.Installer' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="installerLov(1)"></i>
+                            <i class="icon-remove-sign icon-color" ng-click="part_id=''" ></i>
+                            <input type="text" ng-model="party_name" class="form-control fex1" select3 ng-change="ib_form.$dirty='ture'">
+                        </div>
+                    </div>
+
+                    <div class="fex1">
+                        <div class="flexbox mr50 select3">
+                            <label class="red">*<span  ng-bind="'IB.Technician' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="technicianLov(1)"></i>
+                            <i class="icon-remove-sign icon-color"></i>
+                            <input type="text" ng-model="technician_name" name="technician_name" class="form-control fex1" select3 required="" ng-class="{'bd-red':submitted && ib_form.technician_name.$invalid}" >
+                            <formtips style="display: block;margin-bottom: 10px;"  title="This field is required"
+                                      ng-show="submitted && ib_form.technician_name.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-btn mt10">
+                    <div class="flexbox mr10 mt20">
+                        <div class="fex1 text-right pr20">
+                            <button type="submit" ng-disabled="createIbSubmitFlag" class="btn btn-large btn-primary mr5 fts16">
+                                <span ng-bind="'PUBLIC.Submit' | translate"></span>
+                            </button>
+                            <a class="btn btn-large btn-default mr50" style="margin-right: 88px;"  back-button>
+                                <span ng-bind="'PUBLIC.Cancel' | translate" ng-bind="'PUBLIC.Cancel' | translate"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+<div style="position: fixed;width: 100%;height: 100%; z-index:100000; background-color: #fff;opacity: 0;top:0;" ng-if="loadingbox" >
+
+</div>
+<div class="head-box clearfix" ng-controller="headerCtrl">
+    <div class="header clearfix">
+        <div class="top pos-relative">
+            <div class="logo">
+                <img src="img/logo.png">
+            </div>
+            <div class="search-right">
+                <form class="plr0 pull-right top-search" role="search">
+                    <div class="input-group mr20 searchBox">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn dropdown-toggle search-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #fff;">
+
+                                <span ng-bind="'customer.CustomerName' | translate"  ng-if="selectedSearch=='Customer Name'"></span>
+                                <span ng-bind="'HOME.ServiceRequest' | translate" ng-if="selectedSearch=='Service Request#'"></span>
+                                <span ng-bind="'SR.serial_number' | translate" ng-if="selectedSearch=='Serial Number'"></span>
+                                <span class="caret caret-btn"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:;" ng-click="getType(0)" ng-bind="'customer.CustomerName' | translate">{{searchType[0]}}</a></li>
+                                <li><a href="javascript:;" ng-click="getType(1)" ng-bind="'HOME.ServiceRequest' | translate">{{searchType[1]}}</a></li>
+                                <li><a href="javascript:;" ng-click="getType(2)" ng-bind="'SR.serial_number' | translate">{{searchType[2]}}</a></li>
+                            </ul>
+                        </div>
+                        <input name="keywords" id="key" type="text" ng-model="keywords" class="form-control keywords">
+                    <span class="input-group-btn" id="to-search" to-search>
+                        <button class="btn searchButton"
+                                type="button"><span class="icon-search icon-search-color"></span></button>
+                    </span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-5 pull-right pos-absolute top-link">
+                <div class="flexbox pull-right" ng-controller="TranslateController">
+                    <div class="dropdown pos-relative duty-box ">
+                        <div class="btn btn-default border0 btn-toplink"
+                             data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="true"
+                             dropdown on-toggle="toggled(open)"
+                             dropdown-toggle>
+                            <i class="icon-bell fts15 icon-d" style="font-size: 14px;font-weight: bold;color:#fff;top:2px;">
+                                <span ng-if="notificationDatalength>0" ng-bind="notificationDatalength" class="tipsnumber"></span>
+                            </i>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li style="border-bottom: 1px solid #eee;">
+                                <a href="" title="" >You have {{notificationDatalength}} notifications</a>
+                            </li>
+                            <li ng-repeat="item in notificationData">
+                                <a ui-sref="nt_preview({n_id:'{{item.nid | urlFilter}}'})" >
+                                    {{item.title}}<br />
+                                    <span style="color:#999" ng-bind="item.time_span"></span>
+                                </a>
+                            </li>
+                            <li style="border-top: 1px solid #eee;">
+                                <a ng-bind="'NOTIFICATION.NOTIFICATIONTIPS'|translate" href="#F_ID_NOTIFICATION_LIST" title="" >
+                                    <!--<i class="icon-cog"></i>-->
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown pos-relative duty-box ">
+                        <div class="btn btn-default border0 btn-toplink"
+                             data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="true"
+                             dropdown on-toggle="toggled(open)"
+                             dropdown-toggle
+                                >
+                            <!--<span ng-if="countryFlagen" class="flag" style="position: relative;top: 2px;"></span>-->
+                            <!--<span ng-if="countryFlagba" class="flag flag-ba" style="position: relative;top: 2px;"></span>-->
+                            {{changeName}}
+                            <i class="icon-sort-down fts15 icon-d"
+                               ng-class="{hover_top:istop}"></i>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <div class="arrow-up"></div>
+                            <li><a href="" title="English" ng-click="changeLanguage('English')">
+                                <!--<span class="flag" style="position: relative;top: 1px;"></span> -->
+                                English</a></li>
+                            <li ng-repeat="item in lanData" ng-show="InitalData.profile.instance_code==item.code"><a href="" title="{{item.name}}" ng-click="changeLanguage(item.name)">
+                                <!--<span class="flag flag-ba" style="position: relative;top: 1px;"></span>-->
+                                {{item.name}}</a></li>
+                        </ul>
+                    </div>
+                    <div class="line"></div>
+                    <div class="dropdown pos-relative duty-box ">
+                        <div class="btn btn-default border0 btn-toplink"
+                             data-toggle="dropdown"
+                             aria-haspopup="true"
+                             aria-expanded="true"
+                             dropdown on-toggle="toggled(open)"
+                             dropdown-toggle
+                                >
+                            {{resp_name}}
+                            <i class="icon-sort-down fts15 icon-d"
+                               ng-class="{hover_top:istop}"></i>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <div class="arrow-up"></div>
+                            <li ng-repeat="item in AuthData.responsibility" ng-click="SetResp(item.resp_id,item.resp_name)"><a
+                                    href="javascript:void(0)">{{item.resp_name}}</a></li>
+
+                        </ul>
+                    </div>
+
+                    <div class="line"></div>
+                    <div class="dropdown pos-relative user-box">
+                        <div class="btn btn-default  border0   btn-toplink" id="dropdownMenu2"
+                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span ng-bind="InitalData.profile.username"></span>
+                            <span class="icon-sort-down fts15 icon-d"></span>
+                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <div class="arrow-up"></div>
+                            <li ng-show="ex_userName" ng-init="url"><a href="https://mail.midea.com/ess/security/passwordexpired" target="_blank"><i class="icon-key"></i><span ng-bind="'PUBLIC.ResetPassword' | translate"></span></a></li>
+                            <li ng-show="!ex_userName"><a href="https://idmess.midea.com.cn/ess/security/passwordexpired" target="_blank"><i class="icon-key"></i><span ng-bind="'PUBLIC.ResetPassword' | translate"></span></a></li>
+                            <li><a href="javascript:void (0)" ng-click="logout()"><i class="icon-share-alt"></i><span ng-bind="'PUBLIC.Logout' | translate"></span></a></li>
+                            <li><a href="javascript:void (0)" ng-click="contactUSLov()"><i class="icon-phone"></i><span ng-bind="'PUBLIC.contactUS' | translate"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="user-pic">
+                        <img src="img/profile-avatar.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="mainMenu flexbox">-->
+        <!--<div class="pos-relative fex1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown" ng-repeat="menu in InitalData.function.header" scroll-bar>
+                    <a tabindex="0" data-toggle="dropdown" aria-expanded="false">
+                        <span ng-bind="'{{menu.flag}}.{{menu.name}}' | translate" href-replace="{{menu.name}}"></span>
+                        <span class="caret" ng-show="menu.submenu.length>0"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="submenu2 in menu.submenu"
+                            ng-class="{'dropdown-submenu':submenu2.submenu.length>0}">
+
+                            <a tabindex="0" data-toggle="dropdown"
+                               ng-bind="'{{submenu2.flag}}.{{submenu2.name}}' | translate"
+                               href="#{{submenu2.flag=='menu'?'':submenu2.name}}"></a>
+                            <ul class="dropdown-menu" ng-show="submenu2.submenu.length>0">
+                                <li ng-repeat="submenu3 in submenu2.submenu">
+                                    <a tabindex="0" data-toggle="dropdown"
+                                       ng-bind="'{{submenu3.flag}}.{{submenu3.name}}' | translate"></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="scroll-bar"></div>
+        </div>-->
+    <!--</div>-->
+</div>
+<div class="ajax-tip">
+    <!-- loading gif-->
+    <div class="sk-circle" ng-if="loadingFlag">
+        <div class="sk-circle1 sk-child"></div>
+        <div class="sk-circle2 sk-child"></div>
+        <div class="sk-circle3 sk-child"></div>
+        <div class="sk-circle4 sk-child"></div>
+        <div class="sk-circle5 sk-child"></div>
+        <div class="sk-circle6 sk-child"></div>
+        <div class="sk-circle7 sk-child"></div>
+        <div class="sk-circle8 sk-child"></div>
+        <div class="sk-circle9 sk-child"></div>
+        <div class="sk-circle10 sk-child"></div>
+        <div class="sk-circle11 sk-child"></div>
+        <div class="sk-circle12 sk-child"></div>
+        <p class="text-center" style="font-size:12px;margin-top: 42px;margin-left: -5px;">loading...</p>
+    </div>
+    <!-- loading gif-->
+</div>

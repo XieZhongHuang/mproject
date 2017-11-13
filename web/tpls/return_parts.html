@@ -1,0 +1,112 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="ReturnPartsCtrl">
+    <div ng-include="'tpls/header.html'" ></div>
+    <div ng-include="'tpls/menu.html'" ></div>
+    <form class="form-horizontal form-validate " method="get"  name="newform" novalidate ng-submit="submitForm(addcustform.$valid)">
+        <section id="main-content"  >
+            <h1 ng-bind="'NPR.CreatePartsRequirement' | translate"></h1>
+            <div class="base-box" >
+                <h2 ng-bind="'NPR.RequirementInformation' | translate"></h2>
+                <form>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox">
+                                <label ng-bind="'NPR.ASP' | translate"></label>
+                                <input type="text" red class="form-control fex1"  required ng-model="ASP" name="ASP" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox">
+                                <label  ng-bind="'NPR.Address' | translate"></label>
+                                <input type="text" red class="form-control fex1"  required ng-model="Address" name="Address" maxlength="100">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ipt-item flexbox"ng-class="{'mb30':submitted && addcustform.c_name.$invalid}">
+                        <div class="fex1 mr50">
+                            <div class="flexbox">
+                                <label  ng-bind="'NPR.RequirementNo' | translate"></label>
+                                <input type="email" class="form-control" ng-model="RequirementNo" name="RequirementNo"  maxlength="100"/>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox">
+                                <label class="red">*<span ng-bind="'NPR.NeedByDate' | translate"></span></label>
+                                <input type="text" class="form-control" readonly ng-model="NeedByDate" >
+                                <formtips  title="This field is required" ng-show="submitted && addcustform.phone.$invalid"}></formtips>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox">
+                                <label  ng-bind="'NPR.Status' | translate"></label>
+                                <textarea select2  ng-model="customer_type" select2-model="aS2" type="text"  config="config1" class="form-control fex1" ng-change="req()" style="width:60%;height: 100px "></textarea>
+                            </div>
+                        </div>
+                        <div class="fex1 ">
+                        </div>
+                    </div>
+                </form>
+
+                <h2 ng-bind="'NPR.ItemInformation' | translate"></h2>
+                <div >
+                    <table class="table table-striped table-bordered table-hover text-center">
+                        <tr class="active">
+                            <th class="sorting" role="columnheader">*<span  ng-bind="'NPR.ItemRequired' | translate"></span></th>
+                            <th class="sorting" role="columnheader" >*<span  ng-bind="'NPR.Quantity' | translate"></span></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.UOM' | translate"></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.Description' | translate"></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.UnitPrice' | translate"></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.Amount' | translate"></th>
+                        </tr>
+                        <tr ng-repeat=" item in summaryList">
+                            <td>
+                                <a ui-sref="UpdateCustomer({party_id:{{item.party_id}},customer_type:'{{item.customer_type}}',user_id:{{user_id}},update_flag:'{{item.update_flag}}'})">
+                                    <i class="icon-edit-sign" ng-if="item.update_flag=='Y'"></i>
+                                    <i class="icon-edit" ng-if="item.update_flag=='N'"></i>
+                                </a>
+                            </td>
+                            <td><p ng-bind="item.customer_number"></p></td>
+                            <td><p ng-bind="item.account_number"></p></td>
+                            <td><p ng-bind="item.customer_type"></p></td>
+                            <td><p ng-bind="item.customer_name"></p></td>
+                            <td><p ng-bind="item.customer_address"></p></td>
+                        </tr>
+                    </table>
+
+                    <div class="btn-row ml15 text-center">
+                        <div paging
+                             page="currentPage"
+                             page-size="10"
+                             total="totalPage*10"
+                             show-prev-next="{{showPrevNext}}"
+                             paging-action="DoCtrlPagingAct(page)"
+                             ng-show="totalPage>0"
+                                >
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox"ng-class="{'mb30':submitted && addcustform.c_name.$invalid}">
+                    <div class="fex1">
+
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox">
+                            <label  ng-bind="'NPR.TotalAmount' | translate"></label>
+                            <input type="email" class="form-control" ng-model="RequirementNo" name="RequirementNo"  maxlength="100"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="flexbox mt10">
+                    <div class="fex1" ></div>
+                    <div class="mr15 mt20">
+                        <button type="submit" class="btn btn-primary mr5 fts16" ng-bind="'PUBLIC.Submit' | translate"></button>
+                        <a class="btn btn-default"><span ng-bind="'PUBLIC.Cancel' | translate" ui-sref="F_ID_CUST_SUMMARY" ng-bind="'PUBLIC.Cancel'"></span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</section>

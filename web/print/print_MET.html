@@ -1,0 +1,800 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Print</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        @font-face {
+            font-family: DeliciousRoman;
+            src: url('timesbd.ttf'), url('TimesLTStd-Roman.otf');
+        }
+
+        body {
+            background-color: #f2f2f2;
+            color: #000 !important;
+            font-family: DeliciousRoman;
+            font-size: 13px;
+        }
+
+        .mask {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background-color: #fff;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: none;
+        }
+
+        .load {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1001;
+            margin-top: -18px;
+            margin-left: -18px;
+            display: none;
+        }
+
+        h1 {
+            margin: 0 200px;
+            padding: 10px 0;
+        }
+
+        .tc {
+            text-align: center;
+        }
+
+        .fs24 {
+            font-size: 24px;
+        }
+
+        .fs12 {
+            font-size: 12px;
+        }
+
+        .color-999 {
+            color: #999;
+        }
+
+        .print-logo {
+            position: absolute;
+            left: 0
+        }
+
+        img {
+            border: 0;
+        }
+
+        .print-container {
+            position: relative;
+            width: 749px;
+            height: 1130px;
+            background: #fff;
+            margin: 0 auto;
+        }
+
+        .print-time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .print-head {
+            height: 73px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        tr th {
+            background: #f2f2f2;
+            border: 2px solid #999;
+            width: 50%;
+            text-align: center;
+        }
+
+        tr th.bort0, tr td.bort0 {
+            border-top: 0;
+        }
+
+        tr td {
+            border: 2px solid #999;
+            vertical-align: top;
+        }
+
+        tr td.borb0 {
+            border-bottom: 0;
+        }
+
+        .mb10 {
+            margin-bottom: 10px;
+        }
+
+        .ml10 {
+            margin-left: 10px;
+        }
+
+        table tr td p strong {
+            color: #666;
+            margin-right: 10px;
+        }
+
+        table tr td p {
+            color: #666;
+            padding: 0 10px;
+            height: 28px;
+            line-height: 30px;
+            margin-bottom: 0;
+        }
+
+        table tr td p.last {
+            border-bottom: 0;
+        }
+
+        .write-table tr td {
+            border-left: 0;
+            height: 35px;
+            border-bottom: 0;
+        }
+
+        .write-area {
+            height: 75px;
+        }
+
+        .write-table tr th {
+            border-left: 0;
+        }
+
+        .Parts-table tr td {
+            height: 28px;
+            line-height: 30px;
+        }
+
+        .report-table input {
+            height: 28px;
+            width: 80px;
+            border: 1px solid #666;
+            border-radius: 3px;
+        }
+
+        table tr td .report-table tr th, table tr td .report-table tr td {
+            border: 0;
+        }
+
+        table tr td .report-table tr th, table tr td .report-table tr td {
+            border: 0;
+            line-height: 30px;
+        }
+
+        tr .report-l {
+            width: 50%;
+            border: 0;
+            border-bottom: 1px solid #999;
+        }
+
+        tr .report-r {
+            border: 0;
+            border-bottom: 1px solid #999
+        }
+
+        .report-r table tr td {
+            height: 45px;
+            line-height: 39px;
+            border-left: 0;
+        }
+
+        .report-r table tr td.item {
+            width: 90px;
+            *width: 92px;
+        }
+
+        .report-tip {
+            margin-top: 10px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .mt10 {
+            margin-top: 10px;
+        }
+
+        .report-table tr td {
+            text-align: center
+        }
+
+        .pl5 {
+            padding-left: 5px;
+        }
+
+        .report-r tr th.bort0 {
+            border: 0;
+        }
+
+        .printOutBtn {
+            width: 80px;
+            height: 30px;
+            cursor: pointer;
+            position: fixed;
+            right: 0;
+            top: 10px;
+        }
+        .printOutBtn2 {
+            width: 80px;
+            height: 30px;
+            cursor: pointer;
+            position: fixed;
+            right: 0;
+            top: 10px;
+        }
+
+        .dashedLine {
+            border: 0;
+            border-bottom: 1px dashed #999;
+            height: 26px;
+            width: 100%;
+        }
+
+        .dashedLine1 {
+            border: 0;
+            border-bottom: 1px dashed #999;
+            height: 26px;
+            width: 239px;
+        }
+
+        .dashedLine2 {
+            border: 0;
+            border-bottom: 1px dashed #999;
+            height: 26px;
+            width: 90px;
+        }
+        .dashedLine3{
+            border: 0;
+            border-bottom: 1px dashed #999;
+            width: 45px;
+        }
+
+
+        .solidLine {
+            border: 0;
+            border-bottom: 1px solid #999;
+            height: 18px;
+            width: 230px;
+        }
+
+        .solidLine2 {
+            border: 0;
+            border-bottom: 1px solid #999;
+            height: 16px;
+            width: 198px;
+            max-width: 198px;
+        }
+
+
+        .print-footer td p {
+            text-align: center;
+            border-top: 0;
+        }
+
+        input {
+            *line-height: 25px;
+        }
+
+        .tab-content{
+            width: 100%;
+
+        }
+        .tab-content ul{
+            list-style: none;
+        }
+
+        .left-content{
+            float: left;
+        }
+
+        .middle-content{
+            float:left ;
+
+
+        }
+
+        .right-content{
+            float:left ;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body id="myPage" style="height: 1300px;">
+<input class="printOutBtn2" style="position: fixed;right: 0;" type="button" value="Export PDF" onClick="exportPdf()">
+<input class="printOutBtn" style="position: fixed;right: 100px;" type="button" value="Print">
+    <div class="print-container">
+        <div class="print-head" style="padding-bottom: 35px">
+            <div class="print-logo">
+                <img src="logo.jpg" width="200" height="80">
+
+                <p class="fs12 tc" style="padding-left: 10px">Midea ELECTRIC TRADING(THAILAND)CO.,LTD.</p>
+            </div>
+            <h1 class="fs24 tc">Midea Service Job Sheet</h1>
+
+            <p class="fs12 print-time color-999">Print Date:<span id="print-date"></span></p>
+        </div>
+        <table>
+            <tr>
+                <th>Customer Information</th>
+                <th>Service Request Information</th>
+            </tr>
+            <tr>
+                <td>
+                    <p><strong>Customer Name</strong><input id="name" class="solidLine" type="text"
+                                                            style="margin-left:8px\0;*margin-left:5px;"></p>
+
+                    <div class="tab-content">
+                        <div class="left-content">
+                            <ul>
+                                <li style="position: absolute">
+                                    <p style="width: 40px;"><strong>Address</strong></p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="middle-content">
+                            <ul>
+                                <li style=" width:232px;margin-left: 110px;margin-top: 6px;border-bottom: 1px solid #999;">
+                                    <span id="address" style="font: 13.3333px Arial;" ></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="right-content">
+                            <p><strong>Phone No</strong><input id="phone"
+                                                               style="margin-left:35px;"
+                                                               class="solidLine" type="text"
+                                                               value=""></p>
+                            <p class="last mb10" style="margin-bottom:12px\0;">
+                                <strong>Email</strong><input id="email" class="solidLine" type="text" value=""
+                                                             style="margin-left: 57px;"></p>
+                        </div>
+
+                    </div>
+
+
+
+                    <!--<p><strong>Customer Name</strong><input id="name" class="solidLine" type="text"
+                                                            style="margin-left:8px\0;*margin-left:5px;"></p>
+
+                    <p><strong>Address</strong><input id="address" style="width:80%;" class="solidLine"
+                                                      type="text"
+                                                      value=""></p>
+
+                    <p><strong>Phone No</strong><input id="phone"
+                                                       style="margin-left:43px\0;*margin-left:40px;"
+                                                       class="solidLine" type="text"
+                                                       value=""></p>
+
+                    <p class="last mb10" style="margin-bottom:12px\0;">
+                        <strong>Email</strong><input id="mobile" class="solidLine" type="text" value=""
+                                                     style="margin-left:7px\0;*margin-left:4px;"></p>-->
+                </td>
+                <td>
+                    <div>
+                        <p><strong>Service Request Number</strong><input id="sr_number" class="solidLine2" type="text" value="">
+                        </p>
+                    </div>
+                    <div>
+                        <p><strong>Request Type</strong><input id="sr_type"  class="solidLine2" style="margin-left: 61px"
+                                                               type="text" value=""></p>
+                    </div>
+                    <div>
+                        <p><strong>SR Creation Date</strong><input id="sr_create_date" style="margin-left: 38px"
+                                                                   class="solidLine2" type="text"
+                                                                   value=""></p>
+
+                    </div>
+                    <div>
+                        <p><strong>Technician</strong><input class="solidLine2" style="margin-left: 75px;" type="text"
+                                                             id="sr_technician"
+                                                             value=""></p>
+
+                    </div>
+                    <p class="last"></p>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th class="bort0">Product Information</th>
+                <th class="bort0">Problem Description</th>
+            </tr>
+            <tr>
+                <td>
+                    <p><strong>Model Type</strong><input id="model_type"
+                                                         style="margin-left:33px;margin-left:30px\0;*margin-left:24px;"
+                                                         class="solidLine" type="text"
+                                                         value=""></p>
+
+                    <p><strong>Model Number</strong><input id="model_number"
+                                                           style="margin-left:15px;margin-left:10px\0;*margin-left:5px;"
+                                                           class="solidLine" type="text" value=""></p>
+
+                    <p><strong>Serial Number</strong><input id="serial_number"
+                                                            style="margin-left:18px;margin-left:12px\0;*margin-left:8px;"
+                                                            class="solidLine" type="text" value=""></p>
+
+                    <p><strong>Date Of Purchase</strong><input id='date_purchase' class="solidLine2" type="text" value=""
+                                                               style="margin-left:-5px\0;*margin-left:-8px;"></p>
+
+                    <p style="margin-bottom:5px\0;"><strong>Warranty Expiry</strong><input id="expiry" class="solidLine2"
+                                                                                           type="text" value=""
+                                                                                           style="margin-left:-3px\0;*margin-left:-6px;">
+                    </p>
+
+                    <p class="last"><strong>Warranty Status</strong>
+                        <input class="warranty_Flag" type="checkbox"> Warranty
+                        <input class="warranty_Flag" class="ml10" type="checkbox" style="margin-left:10px;"> Non Warranty
+                    </p>
+                </td>
+                <td>
+                    <p><strong>Problem Summary:</strong></p>
+
+                    <div style="padding: 0 10px;"><div style="width:347px;margin-left:5px;max-width: 370px;height:auto;max-height: auto;word-break: break-all; word-wrap:break-word;" id="summary"
+                                                         class="solidLine2" type="text" value=""></div>
+                    </div>
+                    <div class="write-area">
+                        <p><input class="dashedLine" type="text" value=""></p>
+
+                        <p><input class="dashedLine" type="text" value=""></p>
+
+                        <!--<p><input class="dashedLine" type="text" value=""></p>-->
+                    </div>
+                    <table class="write-table">
+                        <tr>
+                            <th>Agree To Repair</th>
+                            <th style="border-right:0;">Customer Signature</th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="border-right:0;"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th class="bort0">Comments</th>
+                <th class="bort0">Estimate Charge</th>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <p><strong>Labor</strong><input style="margin-left:62px;" class="dashedLine1" type="text" value=""></p>
+
+                    <p><strong>Transportation</strong><input class="dashedLine1" style="margin-left:12px;" type="text"
+                                                             value=""></p>
+
+                    <p><strong>Spare Parts</strong><input style="margin-left:31px;" class="dashedLine1" type="text"
+                                                          value=""></p>
+
+                    <p><strong>Other</strong><input style="margin-left:63px;" class="dashedLine1" type="text" value=""></p>
+
+                    <p class="last mb10"><strong>Total Amount</strong><input style="margin-left:17px;" class="dashedLine1"
+                                                                             type="text" value=""></p>
+                </td>
+            </tr>
+        </table>
+        <table class="Parts-table">
+            <tr>
+                <th class="bort0" colspan="5">Parts Usage</th>
+            </tr>
+            <tr class="tc">
+                <td>No</td>
+                <td>Item Number</td>
+                <td style="width:120px\0;*width:155px;text-align:center;">Item Description</td>
+                <td>Qty</td>
+                <td>Price</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!--<tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>-->
+        </table>
+        <table>
+            <tr>
+                <td class="report-l">
+                    <table>
+                        <tr>
+                            <th class="bort0">Technician Report</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 5px 13px 5px;padding: 10px 5px 15px 5px\0;border-bottom:0;">
+                                <table class="report-table">
+                                    <tr>
+                                        <td style="padding-bottom: 10px;">Condition</td>
+                                        <td><input type="text"></td>
+                                        <td class="pl5">Complain</td>
+                                        <td><input type="text"></td>
+                                        <td class="pl5">Symptom</td>
+                                        <td><input type="text"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Section</td>
+                                        <td><input type="text"></td>
+                                        <td>Defect</td>
+                                        <td><input type="text"></td>
+                                        <td class="pl5">Repair</td>
+                                        <td>
+                                            <input type="text">
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div style="width: 100%; ;height: 90px; ">
+                                    <div style="float: left; width: 50%;">
+                                        <div class="report-tip">
+                                            <strong style="margin-left:5px;">Repair Start Date:</strong>
+                                            <input style="" class="dashedLine2" type="text" value="">
+                                        </div>
+                                        <div class="report-tip">
+                                            <strong style="margin-left:5px;">Repair End Date:</strong>
+                                            <input style="" class="dashedLine2" type="text" value="">
+                                        </div>
+                                        <div class="report-tip">
+                                            <strong style="margin-left:5px;">Required Send Repair Unit:</strong>
+                                            <input style="" class="dashedLine3" type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div style="float: left; width: 50%">
+                                        <div style="float: left; text-align: center;">
+                                            <div style="margin-top: 28px">
+                                                <span>Warranty</span>
+                                            </div>
+
+                                            <div style="margin-top: 25px">
+                                                <span>Caused By Customer</span>
+                                            </div>
+
+                                        </div>
+                                        <div style="float: left; margin-left: 10px;">
+                                            <div style="margin-left: 6px;margin-top: 10px;">
+                                                <span>Yes</span><span style="margin-left: 32px">No</span>
+                                            </div>
+                                            <div>
+                                                <input style="width: 30px; margin-top: 5px; height: 30px;" type="text">
+                                                <input style="width: 30px; margin-top: 5px; height: 30px; margin-left: 5px"
+                                                       type="text">
+                                            </div>
+
+                                            <div>
+                                                <input style="width: 30px; margin-top: 5px; height: 30px;" type="text">
+                                                <input style="width: 30px; margin-top: 5px; height: 30px; margin-left: 5px"
+                                                       type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="report-r">
+                    <table>
+                        <tr>
+                            <td class="tc bort0 item">Spare Parts</td>
+                            <td class="bort0" style="width: 100px;width: 128px\0;"></td>
+                        </tr>
+                        <tr>
+                            <td class="tc">Labor</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="tc">Transportation</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="tc">Others</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="tc borb0">Total Amount</td>
+                            <td class="borb0" style="height:42px;"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table>
+
+            <tr class="print-footer">
+                <td><p>Note: Estimate charge may be a little different with the actual cost. Please refer to the actual cost for payment</p>
+                    <p>Call Center: 02-105-4413 OFFICE: 02-751-5015 FAX: 02-751-5014 LINE ID: cs_midea</p></td>
+            </tr>
+        </table>
+    </div>
+<div class="mask"></div>
+<div class="load"><img src="load.gif"></div>
+<script src="../framework/jsPDF-master/promise.js"></script>
+<script src="../angular/html2canvas.js"></script>
+<script src="../framework/jsPDF-master/jspdf.min.js"></script>
+<script src="../api/apiconfig.js"></script>
+<script src="../framework/jquery-1.8.3.min.js"></script>
+<script>
+    $(function () {
+
+        //日期
+        var date = new Date();
+        var mon = date.getMonth()
+        switch (mon) {
+            case 0:
+                var mon_en = 'Jan';
+                break;
+            case 1:
+                var mon_en = 'Feb';
+                break;
+            case 2:
+                var mon_en = 'Mar';
+                break;
+            case 3:
+                var mon_en = 'Apr';
+                break;
+            case 4:
+                var mon_en = 'May';
+                break;
+            case 5:
+                var mon_en = 'Jun';
+                break;
+            case 6:
+                var mon_en = 'Jul';
+                break;
+            case 7:
+                var mon_en = 'Aug';
+                break;
+            case 8:
+                var mon_en = 'Sept';
+                break;
+            case 9:
+                var mon_en = 'Oct';
+                break;
+            case 10:
+                var mon_en = 'Nov';
+                break;
+            case 11:
+                var mon_en = 'Dec';
+                break;
+
+        }
+        $('#print-date').html(date.getDate() + '-' + mon_en + '-' + date.getFullYear() + '  ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds())
+
+
+        var sendData = window.location.href;
+        if (sendData.indexOf('=') > -1) {
+            sendData = sendData.substring(sendData.indexOf('=') + 1);
+        } else {
+            alert('Can not get SR ID!');
+            return false;
+        }
+        $.ajax({
+            type: "get",
+            async: false,
+            url: partalConfig + "jobsheet?sr_id=" + sendData,
+            dataType: "jsonp",
+            jsonp: "callback",
+            beforeSend: loading,
+            success: function (res) {
+                $('.load,.mask').hide();
+                var response = (JSON.stringify(res));
+                response = JSON.parse(response).job_sheet_info;
+                if( response.customer_address ){
+
+                }
+                $('#name').val(response.customer_name);
+                $('#address').text(response.customer_address);
+                $('#phone').val(response.customer_phone);
+                $('#email').val(response.customer_email);
+                $('#sr_number').val(response.incident_number);
+                $('#sr_type').val(response.incident_type);
+                $('#sr_create_date').val(response.incident_date);
+                $('#model_type').val(response.category);
+                $('#model_number').val(response.item);
+                $('#date_purchase').val(response.instance_date);
+                $('#expiry').val(response.warranty_end_date);
+                $('#serial_number').val(response.serial_number);
+                $('#sr_technician').val(response.tech);
+
+                if (response.Warranty_Flag == 'Y') {
+                    $('.warranty_Flag').eq(0).prop('checked', true);
+                }
+                if (response.Warranty_Flag == 'N') {
+                     $('.warranty_Flag').eq(1).prop('checked', true);
+                }
+                $('#summary').text(response.summary);
+            },
+            error: function () {
+
+            }
+        });
+    });
+
+    function loading() {
+        $('.load,.mask').show();
+    }
+
+    $("input[type=checkbox]").click(function (){
+        $(this).attr('checked','checked').siblings().removeAttr('checked');
+    })
+
+    //print
+    $('.printOutBtn').bind('click', function () {
+        $('.printOutBtn').hide();
+        window.print();
+
+    });
+
+    /**
+     * 通过html2canvas将页面生成图片
+     */
+    function createImage(){
+        html2canvas(document.getElementById('myPage'),{
+            allowTaint:true,
+            height: 500
+        }).then(function(canvas) {
+            createPdf(canvas);
+        });
+    }
+
+
+    /**
+     * 将html2canvashtml生成的图片生成pdf文档对象。
+     * @param canvas
+     */
+    function createPdf(canvas){
+        var doc = new jsPDF();
+        var imgData = canvas.toDataURL();
+        doc.addImage(imgData,-45, 2, 300, 300);
+        doc.save('jobsheet.pdf');
+    }
+
+    /**
+     * 导出pdf文档
+     */
+    function exportPdf(){
+        createImage();
+    }
+</script>
+</body>
+</html>

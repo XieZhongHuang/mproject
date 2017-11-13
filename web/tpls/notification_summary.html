@@ -1,0 +1,121 @@
+<div id="container" ng-controller="NotificationSummaryCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'NOTIFICATION.SEARCH_N'|translate"></h1>
+        <div class="base-box base-box-search">
+            <form>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NOTIFICATION.TYPE' | translate"></label>
+                            <!--<input type="text" ng-model="type" class="form-control fex1">-->
+                            <select select2 class="form-control" ng-model="typeSelect">
+                                <option value="{{item.type_code}}" ng-repeat="item in noti_type">{{item.type_name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NOTIFICATION.TITLE' | translate"></label>
+                            <input type="text" ng-model="title" class="form-control fex1">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NOTIFICATION.STATUS' | translate"></label>
+                            <!--<input type="text" ng-model="status" class="form-control fex1">-->
+                            <select select2 class="form-control" ng-model="status">
+                                <option value="-1">-- Please Choose --</option>
+                                <option value="Draft">Draft</option>
+                                <option value="Published">Published</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NOTIFICATION.C_DATE_F' | translate"></label>
+                            <input datetimepicker ng-model="start_date" class="form-control fex1" >
+                            <label style="min-width:0px;margin:0 5px; width: 8%;text-align: center;">---</label>
+                            <input datetimepicker ng-model="end_date" class="form-control fex1">
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'NOTIFICATION.C_DATE_F' | translate"></label>
+                            <input datetimepicker ng-model="start_date" class="form-control fex1" >
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox">
+                            <label ng-bind="'NOTIFICATION.C_DATE_T' | translate"></label>
+                            <input datetimepicker ng-model="end_date" class="form-control fex1">
+                        </div>
+                    </div>
+                </div>-->
+            </form>
+            <div class="text-right" style="margin-right: 115px;">
+                <button type="button" class="btn btn-default btn-small" style="z-index: 1 !important;"
+                   ui-sref="F_ID_NOTIFICATION_NEW" >
+                    <span ng-bind="'PUBLIC.New' | translate">New</span>
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <span ng-bind="'PUBLIC.Search' | translate" ng-click="searchHandle()" class="ng-binding">Search</span>
+                </button>
+            </div>
+        </div>
+        <div class="ml15 mr15"  ng-show="!loadingFlag">
+            <table class="table table-striped table-bordered table-hover text-center table-search table-condensed table-summary" >
+                <tr  role="row" class="active">
+                    <th class="sorting" role="columnheader" ng-bind="'NOTIFICATION.ACTION' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NOTIFICATION.TYPE' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NOTIFICATION.TITLE' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NOTIFICATION.STATUS' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NOTIFICATION.C_DATE' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'NOTIFICATION.S_DATE' | translate" colspan="2"></th>
+                    <!--<th class="sorting" role="columnheader" ng-bind="'NOTIFICATION.E_DATE' | translate"></th>-->
+                </tr>
+                <tr ng-repeat=" item in summaryList">
+                    <td>
+                        <a ui-sref="nt_update({n_id:'{{item.nid | urlFilter}}'})">
+                            <i class="icon-edit"></i>
+                        </a>
+                    </td>
+                    <td title="{{item.notification_type}}"><div ng-bind="item.notification_type"></div></td>
+                    <td title="{{item.title}}"><div ng-bind="item.title"></div></td>
+                    <td title="{{item.status}}"><div ng-bind="item.status"></div></td>
+                    <td title="{{item.creation_date}}"><div ng-bind="item.creation_date"></div></td>
+                    <td title="{{item.start_date}}"><div ng-bind="item.start_date"></div></td>
+                    <td title="{{item.end_date}}"><div ng-bind="item.end_date"></div></td>
+                </tr>
+            </table>
+            <div class="btn-row ml15 text-right" ng-show="DoCtrl">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)">
+                </div>
+            </div>
+            <!--<div class="btn-row ml15 text-right" ng-show="DoCtrl2">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct2(page)"
+                        >
+                </div>
+            </div>-->
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="emptyData">No results found. </div>
+    </div>
+</div>
+

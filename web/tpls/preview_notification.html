@@ -1,0 +1,31 @@
+<div id="container" ng-controller="PreviewNotificationCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1><span>Notification</span></h1>
+        <div class="base-box mt10">
+            <div class="flexbox">
+                <div class="text-center fex1"><span style="font-size:20px;">{{title}}</span></div>
+            </div>
+            <div class="flexbox">
+                <div class="fex1 ml150">
+                    <span ng-bind-html="content"></span>
+                </div>
+            </div>
+        </div>
+        <div class="base-box">
+            <div class="ml150"><span>Attachment:</span></div>
+            <div class="ml170">
+                <div ng-repeat="item in attachment">
+                    <p style="margin-bottom: 2px"><a
+                            href="{{dowUrl}}?filename={{item.file_name}}&filetype={{item.file_type}}"
+                            style="text-decoration: none"><i class="icon-cloud-download fts16 mr10"
+                                                             style="color: #48bbc2;"></i><span style="color: #6d6d6d">{{item.original_name}}</span></a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

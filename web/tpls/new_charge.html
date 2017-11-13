@@ -1,0 +1,223 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="NewChargeCtrl" >
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <section id="main-content">
+        <form class="form-validate form-validate" method="get" name="charge_form" novalidate
+              ng-submit="submitForm(charge_form)" dirty-form="">
+            <h1 ng-bind="'CHARGE.Title' | translate"></h1>
+            <div class="base-box sr-box pt10">
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && charge_form.transaction_type.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l" >
+                            <label class="red">*{{'CHARGE.ServiceActivity' | translate}}</label>
+                            <i class="icon-search add-btn icon-color" ng-click="activityLov(1)"></i>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    readonly
+                                    required=""
+                                    ng-model="transaction_type"
+                                     name="transaction_type" select3=""
+                                     ng-class="{'bd-red':submitted && charge_form.transaction_type.$invalid}"
+                                     ng-change="transaction_type_id='';line_category_code='';business_process_id=''">
+
+                            <formtips title="This field is required"
+                                      ng-show="submitted && charge_form.transaction_type.$invalid">
+                             </formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox ml-l">
+                        <label  ng-bind="'CHARGE.Status' | translate"></label>
+                        <input type="text" class="form-control"  value="NEW" readonly>
+                            </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && charge_form.item_number.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="red">*{{'CHARGE.Item' | translate}}</label>
+                            <i class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    readonly
+                                    ng-model="item_number"
+                                    name="item_number"
+                                    required=""
+                                    select3=""
+                                    ng-class="{'bd-red':submitted && charge_form.item_number.$invalid}">
+                            <formtips title="This field is required" ng-show="submitted && charge_form.item_number.$invalid"></formtips>
+
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox ml-l">
+                            <label ng-bind="'CHARGE.ItemDesc' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="item_desc">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && charge_form.Qty.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'CHARGE.UOMCode' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="product_uom_code">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox ml-l">
+                            <label ng-bind="'CHARGE.BillingType' | translate"></label>
+
+                            <input type="text"  class="form-control"  readonly ng-model="billing_type">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="!showpricecurr">
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="" ng-bind="'CHARGE.PriceList' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="Pricelist">
+                        </div>
+                        <div class="flexbox mr-l" ng-hide="billing_type == 'material' || !billing_type">
+                            <label ng-bind="'CHARGE.Price' | translate"></label>
+                            <!--ng-readonly="priceIsReadonly"-->
+                            <input type="text" ng-change="changePrice(price)"  class="form-control"  ng-model="$parent.price">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox ml-l">
+                            <label class="" ng-bind="'CHARGE.CurrencyCode' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="currency_code">
+                        </div>
+                        <div class="flexbox ml-l">
+                            <label class="red">*{{'CHARGE.Qty' | translate}}</label>
+                            <input type="number"  class="form-control"  ng-model="Qty" ng-change="changeQty(Qty)"  name="Qty" required ng-class="{'bd-red':submitted && charge_form.Qty.$invalid}" />
+                            <formtips title="This field is required" ng-show="submitted && charge_form.Qty.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50" ng-hide="instance_code=='MAC'">
+                       <!-- <div class="flexbox mr-l">
+                            <label class="red">*{{'CHARGE.Qty' | translate}}</label>
+                            <input type="number"  class="form-control"  ng-model="Qty"  name="Qty" required ng-class="{'bd-red':submitted && charge_form.Qty.$invalid}" />
+                            <formtips title="This field is required" ng-show="submitted && charge_form.Qty.$invalid"></formtips>
+                        </div>-->
+                        <div class="flexbox mr-l">
+                            <label  ng-bind="'CHARGE.Amount' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="Amount">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <!--<div class="flexbox ml-l">
+                            <label  ng-bind="'CHARGE.Amount' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="Amount">
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+
+                <div ng-if="showpricecurr">
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="red">*{{'CHARGE.PriceList' | translate}}</label>
+                            <select select2 class="form-control" required=""
+                                    ng-change="getPrice(priceListNameSel)" ng-model="priceListNameSel"
+                                    ng-class="{'bd-red':submitted && charge_form.priceListNameSel.$invalid}" name="priceListNameSel">
+                                <option value="" ng-if="priceListName.length"></option>
+                                <option  ng-repeat="item in priceListName"  value="{{item.price_list_id}}">{{item.pricelist_name}}</option><!--ng-if="F_ID_SR_CHARGE=='Y'"-->
+                            </select>
+                            <formtips title="This field is required" ng-show="submitted && charge_form.priceListNameSel.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox ml-l">
+                            <label ng-bind="'CHARGE.Price' | translate"></label>
+                            <!--ng-readonly="priceIsReadonly"-->
+                            <input type="text" ng-change="changePrice(price)"  class="form-control"  ng-model="$parent.price">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="" ng-bind="'CHARGE.CurrencyCode' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="currency_code">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox ml-l">
+                            <label class="red">*{{'CHARGE.Qty' | translate}}</label>
+                            <input type="number"  class="form-control" ng-change="changeQty(Qty)" ng-model="Qty"  name="Qty" required  ng-class="{'bd-red':submitted && charge_form.Qty.$invalid}" />
+                            <formtips title="This field is required" ng-show="submitted && charge_form.Qty.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label  ng-bind="'CHARGE.Amount' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="Amount">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox ml-l">
+                            <label  ng-bind="'CHARGE.Reference' | translate"></label>
+                            <input type="text"  class="form-control" ng-change="changeReference(Reference)"  ng-model="Reference">
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && charge_form.subinventory.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l" ng-if="billing_type_code=='M'" >
+                            <label class="red">*<span ng-bind="'CHARGE.Subinventory' | translate"></span></label>
+                            <select   select2="" class="form-control" ng-model="$parent.subinventory"  name="subinventory" required=""  ng-class="{'bd-red':submitted && charge_form.subinventory.$invalid}">
+                                <option ng-repeat="item in inventory" value="{{item.subinventory_code}}"  >{{item.subinventory_code}}</option>
+                            </select>
+
+                            <formtips title="This field is required"
+                                      ng-show="submitted && charge_form.subinventory.$invalid"></formtips>
+
+                        </div>
+                    </div>
+                    <style>
+                        .Reason .form-tips{
+
+                            margin-left: 141px!important;
+
+                        }
+                        .select2-container.form-control{height: 28px!important;}
+                    </style>
+                    <div class="fex1">
+                        <div class="flexbox ml-l Reason" ng-if="line_category_code=='RETURN'" ng-class="{'mb30':submitted && charge_form.desc.$invalid}">
+                            <label class="red" >*<span ng-bind="'CHARGE.ReturnReason' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="reasonLov(1)"></i>
+                            <input type="text"  class="form-control"  readonly  ng-model="desc"  name="desc" required="" select3="" ng-class="{'bd-red':submitted && charge_form.desc.$invalid}">
+                            <input type="hidden"  class="form-control"  readonly  ng-model="$parent.looup_code"  name="looup_code">
+
+                            <formtips title="This field is required"
+                                      ng-show="submitted && charge_form.desc.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="flexbox  footer-btn mt10">
+                    <div class="fex1" ></div>
+                    <div class="mr15 mt20">
+                        <button type="submit" class="btn btn-primary mr5 fts16  btn-large" ng-bind="'PUBLIC.Submit' | translate"></button>
+                        <a class="btn btn-default2 btn-large " back-button=""><span ng-bind="'PUBLIC.Cancel' | translate"  ng-bind="'PUBLIC.Cancel'"></span></a>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </form>
+    </section>
+</section>

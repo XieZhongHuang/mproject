@@ -1,0 +1,23 @@
+
+<div ng-controller="tableCtrl">
+    <button ng-click="exportData()">Export</button>
+    <br />
+    <div id="exportable">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>DoB</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in items">
+                <td>{{item.name}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.dob | date:'MM/dd/yy'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

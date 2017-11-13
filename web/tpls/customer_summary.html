@@ -1,0 +1,116 @@
+<div id="container" ng-controller="CustomerSummaryCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'customer.CustomerSummary'|translate"></h1>
+        <div class="base-box base-box-search">
+            <form>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'customer.CustomerName' | translate"></label>
+
+                            <input id="customer_name" type="text"  ng-keypress="enter($event)"   class="form-control fex1" ng-change="saveCustomerName()" ng-model="customer_name" value="{{customer_name}}">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'customer.CustomerType' | translate"></label>
+                            <select select2 class="form-control" ng-model="customer_type" ng-keypress="enter($event)"  get-focus="">
+                                <option value="PERSON">PERSON</option>
+                                <option value="ORGANIZATION">ORGANIZATION</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'customer.Phone' | translate"></label>
+                            <input type="text" class="form-control fex1" ng-model="phone" ng-keypress="enter($event)"  >
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'customer.PostalCode' | translate"></label>
+                            <input type="text" class="form-control fex1" ng-model="postal_code" ng-keypress="enter($event)" >
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'customer.Email' | translate"></label>
+                            <input type="text" class="form-control fex1" ng-model="email" ng-keypress="enter($event)"  >
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label><span ng-bind="'customer.Country' | translate"></span></label>
+                            <select select2="" class="form-control long-select2" ng-model="country_name" ng-change="countrychange(country_name)">
+                                <option value="{{item.country_code}}" ng-repeat="item in countrys">{{item.country_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="text-right mr15 cust-searBtn-wrap" >
+                <button type="submit" class="btn btn-primary" id="sub" ng-click="DoCtrlPagingAct2(1)"> <span ng-bind="'PUBLIC.Search' | translate" class="ng-binding">Search</span>
+                </button>
+                <button type="button" class="btn btn-default btn-small mr50" ng-click="Rest()">
+                    <span ng-bind="'PUBLIC.Reset' | translate" class="ng-binding ">Reset</span>
+                </button>
+            </div>
+
+        </div>
+        <div class="ml15 mr15"  ng-show="!loadingFlag">
+            <table class="table table-striped table-bordered table-hover text-center table-search table-condensed table-summary" >
+                <tr  role="row" class="active">
+                    <th class="sorting" role="columnheader" ng-bind="'customer.Action' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'customer.CustomerNumber' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'customer.Accountnumber' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'customer.CustomerType' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'customer.CustomerName' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'customer.CustomerAddress' | translate"></th>
+                </tr>
+                <tr ng-repeat=" item in summaryList">
+                    <td>
+                        <a ui-sref="UpdateCustomer({party_id:'{{item.party_id | urlFilter}}'})">
+                            <i class="icon-edit" ng-if="item.update_flag=='Y'"></i>
+                            <i class="icon-edit" ng-if="item.update_flag=='N'"></i>
+                        </a>
+                    </td>
+                    <td title="{{item.customer_number}}"><div ng-bind="item.customer_number"></div></td>
+                    <td title="{{item.account_number}}"><div ng-bind="item.account_number"></div></td>
+                    <td title="{{item.customer_type}}"><div ng-bind="item.customer_type"></div></td>
+                    <td title="{{item.customer_name}}"><div ng-bind="item.customer_name"></div></td>
+                    <td title="{{item.customer_address}}"><div ng-bind="item.customer_address"></div></td>
+                </tr>
+            </table>
+        <div class="btn-row ml15 text-right" ng-show="DoCtrl && summaryList.length>0">
+            <div paging
+                 page="currentPage"
+                 page-size="10"
+                 total="totalPage*10"
+                 show-prev-next="{{showPrevNext}}"
+                 paging-action="DoCtrlPagingAct(page)">
+                               </div>
+            </div>
+            <div class="btn-row ml15 text-right" ng-show="DoCtrl2 && summaryList.length>0">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct2(page)"
+                        >
+                </div>
+            </div>
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="emptyData&&summaryList.length==0">No results found. </div>
+    </div>
+</div>
+

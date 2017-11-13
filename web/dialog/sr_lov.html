@@ -1,0 +1,362 @@
+<style>.ajax-tip{margin-left: 0;margin-top:-120px;}
+.ngdialog.datatable-theme .ngdialog-close {
+    top: -57px;
+    right: -15px;
+}
+</style>
+<div class="datatable" drag-drop>
+<div class="modal-header" >
+    <h4 class="modal-title" ng-bind="'SR.LOV.{{title}}' | translate"></h4>
+</div>
+
+<div class="search-box2 flexbox" ng-hide="is_status||is_printDo">
+    <div class="fex1 pos-relative mr15">
+        <div class="flexbox">
+            <label ng-bind="'PUBLIC.SearchBy' | translate"></label>
+            <div class="btn-group search-type">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false" but-width="">
+                    <span class="search-init">{{seaTypeValue}}</span><span class="caret" style="margin-left: 10px"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="item in searchtype" get-value="">
+                        <a href="javascript:void(0)" class="pos-relative">
+                            {{item.name}}
+                            <input type="radio" name="pp" value="{{item.value}}" ng-model="obj_select.value"
+                                   class="ipt-hide" ng-click="searFuc(item.name)">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="fex1 pos-relative">
+                <input type="text" class="form-control" ng-model="obj_name2" lov-keypress>
+            </div>
+        </div>
+        <span ng-click="DoCtrlPagingAct(1)" class="icon-search lov-search"></span>
+    </div>
+</div>
+
+<section class="panel tableBodyScroll" style="height: 332px; width:800px;overflow: hidden">
+
+<!--sr_cminfo_table start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="sr_cminfo_table"
+       style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+    <thead>
+    <tr>
+        <th style="width: 10px" ng-bind="'SR.LOV.Select' | translate"></th>
+        <th style="width: 100px" ng-bind="'SR.LOV.Name' | translate"></th>
+        <th ng-bind="'SR.LOV.AccountNumber' | translate"></th>
+        <th style="width: 50px" ng-bind="'customer.Country' |translate"></th>
+        <th ng-bind="'SR.LOV.Address' |translate"></th>
+        <th ng-bind="'SR.LOV.Email' | translate"></th>
+        <th ng-bind="'SR.LOV.Phone' | translate"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value ng-show="!loadingFlag">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+        </td>
+        <td title="{{item.customer_name}}"><div ng-bind="item.customer_name"></div> </td>
+        <td title="{{item.account_number}}" class="text-center"><div ng-bind="item.account_number"></div> </td>
+        <td title="{{item.country}}"><div ng-bind="item.country"></div> </td>
+        <td title="{{item.address}}"><div ng-bind="item.address"></div> </td>
+        <td title="{{item.email}}"><div ng-bind="item.email"></div> </td>
+        <td title="{{item.phone}}"><div ng-bind="item.phone"></div> </td>
+    </tr>
+</table>
+<!--sr_cminfo_table end-->
+
+<!--Category start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="Category" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+    <thead>
+    <tr>
+        <th style="width: 20px" ng-bind="'SR.LOV.Select' | translate"></th>
+        <!--<th ng-bind="'SR.LOV.CategoryType' | translate"></th>-->
+        <th ng-bind="'SR.LOV.Category' | translate" width="50%"></th>
+        <th ng-bind="'SR.LOV.Desc' | translate"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value="">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+        </td>
+        <!--<td title="{{item.category_type}}"><div ng-bind="item.category_type"></div> </td>-->
+        <td title="{{item.category}}"><div ng-bind="item.category"></div></td>
+        <td title="{{item.desc}}"><div ng-bind="item.desc"></div> </td>
+    </tr>
+</table>
+<!--Category  end-->
+
+<!--SR Group start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="Group" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+    <thead>
+    <tr>
+        <th style="width: 20px" ng-bind="'SR.LOV.Select' | translate"></th>
+        <th ng-bind="'SR.LOV.sr_group' | translate" width="90%"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value="">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+        </td>
+        <td title="{{item.group_name}}"><div ng-bind="item.group_name"></div></td>
+    </tr>
+</table>
+<!--SR Group  end-->
+
+<!--Problem Code start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="Problem" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+    <thead>
+    <tr>
+        <th style="width: 20px" ng-bind="'SR.LOV.Select' | translate"></th>
+        <th ng-bind="'SR.problem_code' |translate"></th>
+        <th style="" ng-bind="'SR.LOV.Meaning' | translate"></th>
+        <th style="" ng-bind="'SR.LOV.Desc' | translate"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value="">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+        </td>
+        <td title="item.looup_code"><div ng-bind="item.looup_code"></div> </td>
+        <td title="item.meaning"><div ng-bind="item.meaning"></div> </td>
+        <td title="item.desc"><div ng-bind="item.desc"></div> </td>
+    </tr>
+</table>
+<!--Problem Code end-->
+
+<!--Resolution start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="Resolution"
+       style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+    <thead>
+    <tr>
+        <th style="width: 20px" ng-bind="'SR.LOV.Select' | translate"></th>
+        <th ng-bind="'SR.reso_code' | translate"></th>
+        <th style="" ng-bind="'SR.LOV.Meaning' | translate"></th>
+        <th style="" ng-bind="'SR.LOV.Desc' | translate"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value="">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+        </td>
+        <td title="{{item.looup_code}}"><div ng-bind="item.looup_code"></div> </td>
+        <td title="{{item.meaning}}"><div ng-bind="item.meaning"></div> </td>
+        <td title="{{item.desc}}"><div ng-bind="item.desc"></div> </td>
+    </tr>
+</table>
+<!--Resolution end-->
+
+<!--sr_item start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="sr_item" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+    <thead>
+    <tr>
+        <th style="width: 20px" ng-bind="'SR.LOV.Select' | translate"></th>
+        <th ng-bind="'SR.LOV.ItemNumber' | translate"></th>
+        <th ng-bind="'SR.LOV.ItemDesc' | translate"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value="">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+        </td>
+        <td title="{{item.item_number}}" class="text-center"><div ng-bind="item.item_number"></div> </td>
+        <td title="{{item.item_desc}}" class="text-center"><div ng-bind-html="item.item_desc"></div> </td>
+    </tr>
+</table>
+<!--sr_item end-->
+
+<!--sr_owner start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="sr_owner" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+    <thead>
+    <tr>
+        <th style="width: 20px" ng-bind="'SR.LOV.Select' | translate"></th>
+        <th ng-bind="'SR.LOV.ResCategory' | translate"></th>
+        <th ng-bind="'SR.LOV.ResName' | translate"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value="">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />e='{{item}}'
+                    >
+        </td>
+        <td title="{{item.resource_category}}"><div ng-bind="item.resource_category"></div> </td>
+        <td title="{{item.resource_name}}"><div ng-bind="item.resource_name"></div> </td>
+    </tr>
+</table>
+<!--sr_owner end-->
+
+<!--status start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="is_status" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;">
+    <thead>
+    <tr>
+        <th style="width: 20px" ng-bind="'PUBLIC.Select' | translate"></th>
+        <th ng-bind="'SR.statusname' | translate"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value="">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+        </td>
+        <td title="{{item.status_name}}" class="text-center"><div ng-bind="item.status_name"></div> </td>
+    </tr>
+
+</table>
+<!--status end-->
+
+<!--Serial start-->
+<table class="table table-bordered table-hover table-search table-condensed" ng-if="is_Serial" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd; width: 1500px">
+
+    <thead>
+    <tr>
+        <th style="width: 20px" ng-bind="'SR.LOV.Select' | translate"></th>
+        <th ng-bind="'SR.LOV.InstanceNumber' | translate"></th>
+        <th ng-bind="'SR.LOV.SerialNumber' | translate"></th>
+        <th ng-bind="'IB.LotNumber' | translate"></th>
+        <th ng-bind="'SR.LOV.CustomerName' | translate"></th>
+        <th ng-bind="'SR.LOV.InstanceDate' | translate"></th>
+        <th ng-bind="'SR.LOV.ItemNumber' |translate"></th>
+        <th ng-bind="'SR.LOV.ItemDesc' | translate"></th>
+        <th ng-bind="'SR.LOV.warStartDate ' | translate"></th>
+        <th ng-bind="'SR.LOV.warEndDate ' | translate"></th>
+    </tr>
+    </thead>
+    <tr ng-repeat=" item in data" get-value="" class="text-center">
+        <td class="text-center">
+            <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+        </td>
+        <td title="{{item.instance_number}}"><div ng-bind="item.instance_number"></div> </td>
+        <td title="{{item.serial_number}}"><div ng-bind="item.serial_number"></div> </td>
+        <td title="{{item.lot_number}}"><div ng-bind="item.lot_number"></div> </td>
+        <td title="{{item.customer_name}}"><div ng-bind="item.customer_name"></div> </td>
+        <td title="{{item.instance_date}}"><div ng-bind="item.instance_date"></div> </td>
+        <td title="{{item.item_number}}"><div ng-bind="item.item_number"></div> </td>
+        <td title="{{item.item_desc}}"><div style="width:100%;white-space:nowrap;" ng-bind="item.item_desc"></div> </td>
+        <td title="{{item.warranty_start_date}}"><div ng-bind="item.warranty_start_date"></div> </td>
+        <td title="{{item.warranty_end_date}}"><div ng-bind="item.warranty_end_date"></div> </td>
+    </tr>
+</table>
+<!--Serial end-->
+
+    <!--Reference  start-->
+    <table class="table table-bordered table-hover table-search table-condensed" ng-if="sr_reference" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd; width: 1500px">
+
+        <thead>
+        <tr>
+            <th style="width: 20px" ng-bind="'SR.LOV.Select' | translate"></th>
+            <th ng-bind="'SR.SrNumber' | translate" style="width: 80px"></th>
+            <th ng-bind="'SR.RequestType' | translate"></th>
+            <th ng-bind="'SR.Status' | translate"></th>
+            <th ng-bind="'SR.Item' | translate" ></th>
+            <th ng-bind="'SR.ItemDesc' | translate" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"></th>
+            <th  ng-bind="'SR.Owner' | translate"></th>
+            <th  ng-bind="'SR.Subject' | translate"></th>
+            <th  ng-bind="'SR.ReportDate' | translate"></th>
+            <th  ng-bind="'SR.ClosedDate' | translate"></th>
+        </tr>
+        </thead>
+        <tr ng-repeat=" item in data" get-value="" class="text-center">
+            <td class="text-center">
+                <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+            </td>
+            <td title="{{item.sr_number}}" style="width: 80px">
+                <div ng-bind="item.sr_number"></div>
+            </td>
+            <td title="{{item.sr_type}}" style="height:40px; line-height:30px;">
+                <div ng-bind="item.sr_type" class="text-left "></div>
+            </td>
+            <td class=" " title="{{item.sr_status}}" >
+                <div ng-bind="item.sr_status" class="text-left "></div>
+            </td>
+            <td title="{{item.sr_item}}" >
+                <div ng-bind="item.sr_item" class="text-left" ></div>
+            </td>
+            <td title="{{item.sr_item_desc}}">
+                <div ng-bind="item.sr_item_desc" class="text-left"></div>
+            </td>
+            <td class=" " title="{{item.sr_owner}}" >
+                <div ng-bind="item.sr_owner" class="text-left"></div>
+            </td>
+            <td title="{{item.sr_subject}}">
+                <div ng-bind="item.sr_subject"></div>
+            </td>
+            <td title="{{item.sr_report_date}}">
+                <div  ng-bind="item.sr_report_date"></div>
+            </td>
+            <td title="{{item.sr_close_date}}" >
+                <div ng-bind="item.sr_close_date"></div>
+            </td>
+        </tr>
+    </table>
+    <!--Reference  end-->
+
+<!--print do start-->
+    <table class="table table-bordered table-hover table-search table-condensed" ng-if="is_printDo" style="border-top: 1px solid #ddd;border-bottom: 1px solid #ddd; width: 1500px">
+
+        <thead>
+        <tr>
+            <th style="width:50px !important;"><input type="checkbox" ng-click="choiceAll(!checkAll)" ng-model="checkAll"/></th>
+            <th ng-bind="'SR.CHARGE.ServiceAct' | translate"></th>
+            <th ng-bind="'SR.CHARGE.Status' | translate"></th>
+            <th ng-bind="'SR.CHARGE.OrderStatus' | translate"></th>
+            <th ng-bind="'SR.CHARGE.Item' | translate"></th>
+            <th style="width:290px;" ng-bind="'SR.CHARGE.ItemDesc' | translate"></th>
+            <th ng-bind="'SR.CHARGE.BillType' | translate"></th>
+            <th ng-bind="'SR.CHARGE.QTY' | translate"></th>
+            <th ng-bind="'SR.CHARGE.Price' | translate"></th>
+            <th ng-bind="'SR.CHARGE.Amount' | translate"></th>
+        </tr>
+        </thead>
+
+        <tr ng-repeat="item in chargeSummaryPrint" class="text-center">
+            <td class="text-center">
+                <input type="checkbox" ng-click="choicePrint(item,item.checked,$index)" ng-model="item.checked">
+            </td>
+            <td title="{{item.activity}}"><div ng-bind="item.activity"></div> </td>
+            <td title="{{item.status_code}}"><div ng-bind="item.status_code"></div> </td>
+            <td title="{{item.oe_status}}"><div ng-bind="item.oe_status"></div> </td>
+            <td title="{{item.item_name}}"><div ng-bind="item.item_name"></div></td>
+            <td title="{{item.item_desc}}"><div style="width: 290px;word-break: break-all; word-wrap:break-word;" ng-bind="item.item_desc"></div></td>
+            <td title="{{item.bill_type}}"><div ng-bind="item.bill_type"></div> </td>
+            <td title="{{item.qty}}" class="text-center"><div ng-bind="item.qty"></div> </td>
+            <td title="{{item.price}}"><div class="text-right" ng-bind="item.price"></div> </td>
+            <td title="{{item.amount}}"><div class="text-right" ng-bind="item.amount"></div> </td>
+        </tr>
+    </table>
+    <!--print do end-->
+</section>
+
+    <div class="mr15 text-right" ng-if="is_printDo">
+        <a class="btn btn-primary btn-large select" type="button"
+           ng-click="PrintDo()">Print
+        </a>
+    </div>
+<div class="btn-row" ng-hide="is_printDo">
+    <div class="form-group mt15" style="border-bottom: 1px solid #f5f5f5;border-top: 1px solid #f5f5f5;margin-bottom: 5px;">
+        <div class="flexbox text-center">
+            <div paging
+                 page="currentPage"
+                 page-size="10"
+                 total="totalPage*10"
+                 show-prev-next="{{showPrevNext}}"
+                 paging-action="DoCtrlPagingAct(page)"
+                 class="page-list mr15 fex1 ml15"
+                    >
+            </div>
+        </div>
+    </div>
+    <div class="mr15 text-right" ng-if="!noData">
+        <button class="btn btn-primary btn-large select" type="button"
+                ng-click="closeThisDialog(2)" ng-bind="'PUBLIC.Select' | translate">
+        </button>
+        <button class="btn btn-default btn-large btn-small" type="button" ng-click="closeThisDialog(0)" ng-bind="'PUBLIC.Cancel' | translate"></button>
+    </div>
+</div>
+
+<!-- noData-->
+<div class="noData" ng-if="noData">
+    <span class="icon-warning-sign fts48"></span>
+    <p class="fts14" ng-bind="'PUBLIC.noData' | translate"></p>
+</div>
+</div>
+<!-- noData-->

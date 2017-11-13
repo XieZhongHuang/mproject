@@ -1,0 +1,163 @@
+<section id="container" ng-controller="NewClaimCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'CLAIM.NewClaim' | translate"></h1>
+        <form class="form-validate form-validate" name="claim_form" method="get" novalidate ng-submit="submitForm(claim_form)" dirty-form>
+        <div class="base-box">
+            <h2 ng-bind="'CLAIM.ClaimHeader' | translate"></h2>
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'CLAIM.ClaimNumber' | translate"></label>
+                        <input type="text" ng-model="claim_number" requied class="form-control fex1" not-allow>
+                        <input type="hidden" value="dirty">
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'CLAIM.ClaimType' | translate"></label>
+                        <select class="form-control fex1" ng-model="claim_type"  select2>
+                            <option ng-repeat="item in ClaimType"  value="{{item.sr_type_name}}">{{item.sr_type_name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'CLAIM.ClaimSubmissionDate' | translate"></label>
+                        <input type="text" ng-model="submited_date" class="form-control fex1" not-allow>
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'CLAIM.ClaimStatus' | translate"></label>
+                        <select class="form-control fex1" ng-model="claim_default_type" not-allow select2>
+                            <option ng-repeat="item in claimTypeData"  value="{{item.status_code}}">{{item.status_name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'CLAIM.ASPcomments' | translate"></label>
+                        <input type="text" ng-model="asp_comments" class="form-control fex1">
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'CLAIM.ApprovedDate' | translate"></label>
+                        <input type="text" ng-model="approved_data" class="form-control fex1" not-allow>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'CLAIM.HQAPinvoice' | translate"></label>
+                        <input type="text" ng-model="hq_ap_invoice" class="form-control fex1" not-allow>
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'CLAIM.ASPInvoiceNo' | translate"></label>
+                        <input type="text" ng-model="invoice_num" class="form-control fex1" >
+                    </div>
+                </div>
+            </div>
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'CLAIM.TaxAmount' | translate"></label>
+                        <input type="text" ng-model="tax_amount" class="form-control fex1" not-allow>
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pos-relative mt20">
+                <h2 style="margin-bottom: 0;" ng-bind="'CLAIM.ClaimLines' | translate"></h2>
+                <span class="icon-plus" ng-click="addClaimLines(1)" style="position: absolute;right: 15px;top: 4px;cursor: pointer;font-size: 16px;"></span>
+            </div>
+
+            <div class="mb12">
+                <table class="table table-bordered table-hover table-striped table-search table-summary table-condensed" style="border: 0">
+                    <tr class="active">
+                        <th width="7%" style="border-left: 0" ng-bind="'PUBLIC.Delete' | translate"></th>
+                        <th width="7%" ng-bind="'CLAIM.ClaimLineStatus' | translate"></th>
+                        <th width="7%" ng-bind="'CLAIM.SRNumber' | translate"></th>
+                        <th width="7%" ng-bind="'CLAIM.SRCloseDate' | translate"></th>
+                        <th width="7%" ng-bind="'CLAIM.ProblemSummary' | translate"></th>
+                        <th width="7%" ng-bind="'CLAIM.ProductCategory' | translate"></th>
+                        <th width="7%" ng-bind="'CLAIM.Material' | translate"></th>
+                        <th width="7%" ng-show="instance_code == 'MAC'" ng-bind="'CLAIM.TaxM' | translate"></th>
+                        <th width="7%" ng-bind="'CLAIM.Labor' | translate"></th>
+                        <th width="7%" ng-show="instance_code == 'MAC'" ng-bind="'CLAIM.TaxL' | translate"></th>
+                        <th width="7%" style="border-right: 0" ng-bind="'CLAIM.Expense' | translate"></th>
+                        <th width="7%" ng-show="instance_code == 'MAC'" style="border-right: 0" ng-bind="'CLAIM.TaxE' | translate"></th>
+                        <th width="7%" ng-show="instance_code == 'MAC'" style="border-right: 0" ng-bind="'CLAIM.Amount' | translate"></th>
+                    </tr>
+                    <tr ng-repeat="item in resData" class="text-center">
+                        <td class="pos-relative" style="border-left: 0">
+                            <span class="icon-minus-sign red"></span>
+                            <input style="display: block;position:absolute;left:0;top:0;width:100%;height:100%;opacity: 0;cursor:pointer;" type="checkbox"
+                                   ng-click="removeResData($index)" ng-model="$parent.delModValue[$index]" ng-true-value='{{item}}'>
+                        </td>
+                        <td title="{{item.claim_line_status}}" width="10%"><div ng-bind="item.claim_line_status"></div></td>
+                        <td title="{{item.sr_number}}" width="10%"><div ng-bind="item.sr_number"></div></td>
+                        <td title="{{item.close_date}}" width="10%"><div ng-bind="item.close_date"></div></td>
+                        <td title="{{item.summary}}" width="15%"><div ng-bind="item.summary"></div></td>
+                        <td title="{{item.category}}" width="15%"><div ng-bind="item.category"></div></td>
+                        <td title="{{item.meterial}}" width="10%"><div ng-bind="item.meterial | number:2"></div></td>
+                        <td ng-show="instance_code == 'MAC'" class="newpricedatepickerwrap" style="padding: 0px;" >
+                            <ng-form name="mform">
+                                <input data-index="{{$index}}" type="text"
+                                        style="height:45px !important;" class="form-control fex1"
+                                       ng-model="item.tax_m"   name="tax_m"  ng-disabled="item.meterial <= 0">
+                            </ng-form>
+                        </td>
+                        <td title="{{item.labor}}" width="10%"><div ng-bind="item.labor | number:2"></div></td>
+                        <td ng-show="instance_code == 'MAC'" class="newpricedatepickerwrap" style="padding: 0px;" >
+                            <ng-form name="lform">
+                                <input data-index="{{$index}}" type="text"
+                                       style="height:45px !important;" class="form-control fex1"
+                                       ng-model="item.tax_l"   name="tax_l"  ng-disabled="item.labor <= 0">
+                            </ng-form>
+                        </td>
+                        <td title="{{item.expense}}" width="10%" style="border-right: 0"><div ng-bind="item.expense | number:2"></div></td>
+                        <td ng-show="instance_code == 'MAC'" class="newpricedatepickerwrap" style="padding: 0px;" >
+                            <ng-form name="eform">
+                                <input data-index="{{$index}}" type="text"
+                                       style="height:45px !important;" class="form-control fex1"
+                                       ng-model="item.tax_e"   name="tax_e"  ng-disabled="item.expense <= 0">
+                            </ng-form>
+                        </td>
+                        <!--<td ng-show="instance_code == 'MAC'" title="{{item.amount}}" width="10%" style="border-right: 0"><div ng-bind="item.amount | number:2"></div></td>-->
+                        <td ng-show="instance_code == 'MAC'" title="{{item.amount}}" width="10%" style="border-right: 0"><div ng-bind="item.amount | getCount :[item.meterial,item.labor,item.expense ,item.tax_m,item.tax_l, item.tax_e ]"></div></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="flexbox">
+            <div class="fex1"></div>
+            <div class="mr15 mt10 mb10">
+                <button type="submit" class="btn btn-primary btn-large mr100 fts16">
+                    <span ng-bind="'PUBLIC.SAVE' | translate"></span>
+                </button>
+            </div>
+        </div>
+        </form>
+    </div>
+</section>
+

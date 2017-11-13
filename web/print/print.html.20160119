@@ -1,0 +1,692 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Print</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #f2f2f2;
+    color: #333;
+    font-family: 'Times';
+    font-size: 13px;
+}
+h1 {
+    margin: 0 200px;
+    padding: 10px 0;
+}
+.tc {
+    text-align: center;
+}
+
+.fs24 {
+    font-size: 24px;
+}
+.fs12 {
+    font-size: 12px;
+}
+.color-999 {
+    color: #999;
+}
+.print-logo {
+    position: absolute;
+    left: 0
+}
+img {
+    border: 0;
+}
+.print-container {
+    position: relative;
+    width: 794px;
+    height: 1123px;
+    background: #fff;
+    margin: 0 auto;
+}
+.print-time {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.print-head {
+    height: 73px;
+    overflow: hidden;
+}
+table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+tr th {
+    background: #f2f2f2;
+    border: 1px solid #999;
+    width: 50%;
+    text-align: center;
+}
+tr th.bort0, tr td.bort0 {
+    border-top: 0;
+}
+tr td {
+    border: 1px solid #999;
+    vertical-align: top;
+}
+tr td.borb0 {
+    border-bottom: 0;
+}
+.mb10 {
+    margin-bottom: 10px;
+}
+.ml10 {
+    margin-left: 10px;
+}
+table tr td p strong {
+    color: #666;
+    /*margin-right: 15px;*/
+}
+table tr td p {
+    color: #666;
+    padding: 0 15px;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom:0;
+}
+table tr td p.last {
+    border-bottom: 0;
+}
+.write-table tr td {
+    border-left: 0;
+    height: 43px;
+    border-bottom: 0;
+}
+.write-area {
+    height: 120px;
+}
+.write-table tr th {
+    border-left: 0;
+}
+.Parts-table tr td {
+    height: 30px;
+    line-height: 30px;
+}
+.report-table input {
+    height: 28px;
+    width: 70px;
+    border: 1px solid #a9a9a9;
+    border-radius:3px ;
+}
+.report-tip-l input {
+    height: 28px;
+    width: 40px;
+    border: 1px solid #a9a9a9;
+    border-radius:3px ;
+}
+table tr td .report-table tr th, table tr td .report-table tr td {
+    border: 0;
+    line-height: 30px;
+}
+tr .report-l {
+    width: 551px;
+    border: 0;
+    border-bottom: 1px solid #999;
+}
+tr .report-r {
+    border: 0;
+    border-bottom: 1px solid #999
+}
+.report-r table tr td {
+    height: 39px;
+    line-height: 39px;
+    border-left: 0;
+}
+.report-r table tr td.item{
+    width:90px;
+    *width:92px;
+}
+.report-tip {
+    height: 35px;
+    line-height: 35px;
+}
+.mt10 {
+    margin-top: 10px;
+}
+.report-table tr td {
+    text-align: center
+}
+.pl5 {
+    padding-left: 5px;
+}
+.report-r tr th.bort0 {
+    border: 0;
+}
+.flexbox {
+    display: -moz-box; /* Firefox */
+    display: -ms-flexbox; /* IE10 */
+    display: -webkit-box; /* Safari */
+    display: -webkit-flex; /* Chrome, WebKit */
+    display: -webkit-box;
+    -webkit-display: flexbox;
+    display: flex;
+    /*max-width: 1200px;*/
+}
+
+.fex1 {
+    /* -webkit-box-flex:1; */
+    flex: 1;
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1; /* flex:1 1 0; */
+}
+
+.fex2 {
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    box-flex: 2;
+}
+
+.printOutBtn{
+    width:60px;
+    height:30px;
+    cursor:pointer;
+    position:fixed;
+    right:0;
+    top:10px;
+}
+.dashedLine{
+    border:0;
+    border-bottom:1px dashed #999;
+    height:26px;
+    width:365px;
+}
+.dashedLine1{
+    border:0;
+    border-bottom:1px dashed #999;
+    height:26px;
+    width:249px;
+}
+.dashedLine2{
+    border:0;
+    border-bottom:1px dashed #999;
+    height:26px;
+    width:120px;
+}
+.solidLine{
+    border:0;
+    border-bottom:1px solid #999;
+    height:24px;
+    font-family: Arial;
+    width:257px;
+}
+@-moz-document url-prefix() {
+    .solidLine{
+        border:0;
+        border-bottom:1px solid #999;
+        height:24px;
+        font-family: Arial;
+        width:257px;
+        font-size: 13px;
+    }
+}
+.solidLine2{
+    border:0;
+    border-bottom:1px solid #999;
+    height:26px;
+    width:200px;
+}
+.print-footer td{
+    height: 50px;
+    border-top:0;
+}
+input{
+    *line-height: 25px;
+}
+.mask{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #fff;
+    opacity: 0.5;
+    filter:alpha(opacity=50);
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+}
+.load{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1001;
+    margin-top: -18px;
+    margin-left: -18px;
+    display: none;
+}
+.w-box{
+    float: left;height: 50px;
+}
+#expiry{
+    position: absolute;left: 112px
+}
+.expiry_strong{
+    position: absolute;
+    width: 86px;
+    line-height: 17px;
+    display: block;
+}
+#phone{
+    position: absolute;
+    top: 1px;
+    left: 71px;
+    top:5px\0;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
+    .moz-phone{
+        position: relative;
+        top:-32px;
+        left: 25px;
+    }
+
+
+}
+@-moz-document url-prefix() {
+
+    .moz-phone{
+        position: relative;
+        top:-32px;
+        left: 25px;
+    }
+
+}
+@-moz-document url-prefix() {
+    .ala{
+        position: relative;top: -25px!important;left: 49px;
+    }
+}
+.ala{
+    position: relative;top: -8px;left: 49px;
+}
+#address{
+    margin-left: 15px;position: relative;left: 42px;width: 256px;resize: none;height: auto;
+}
+#phone{
+    position: relative;left: 31px
+}
+#mobile{
+    position: relative;left: 37px
+}
+#sr_number{
+    position: relative;left: 10px
+}
+#sr_type{
+    position: relative;left: 24px
+}
+#sr_create_date{
+    position: relative;left: 2px
+}
+#model_type{
+    position: relative;left: 34px
+}
+#model_number{
+    position: relative;left: 23px;
+}
+#serial_number{
+    position: relative;left: 34px
+}
+#date_purchase{
+    position: relative;left: -1px
+}
+</style>
+</head>
+<body>
+
+<div class="print-container">
+<div class="print-head">
+    <div class="print-logo">
+        <img src="logo.jpg">
+        <p class="fs12 tc">Midea Planet Indonesia</p>
+    </div>
+    <h1 class="fs24 tc">Midea Service Job Sheet</h1>
+    <p class="fs12 print-time color-999">Print Date:<span id="print-date">15-Apr-2015 16:34:22</span></p>
+</div>
+<table>
+    <tr>
+        <th>data konsumen</th>
+        <th>Informasi Permintaan Service</th>
+    </tr>
+    <tr>
+        <td>
+            <p><strong style="margin-right: 0px">Nama Konsumen</strong><input id="name" class="solidLine" type="text" style="margin-left:9px;margin-left:8px\0;*margin-left:5px; width: 251px"></p>
+            <p><strong class="ala">Alamat</strong>
+                <textarea id="address" class="solidLine" type="text" value="" ></textarea>
+
+            </p>
+            <p style="position: relative"><strong style="position: relative;right: -22px">Nomor Telp</strong>
+                <input id="phone"  class="solidLine moz-phone" type="text" value="">
+            </p>
+            <p class="last mb10" style="margin-bottom:12px\0;"><strong  style="position: relative;right: -26px">Nomor HP</strong>
+                <input id="mobile" class="solidLine" type="text" value="" >
+            </p>
+        </td>
+        <td>
+            <p><strong  style="position: relative;right: 5px">Nomor SR</strong><input id="sr_number" class="solidLine2" type="text" value="17115"></p>
+            <p><strong  style="position: relative;right: -11px">SR Tipe</strong><input id="sr_type"  class="solidLine2" type="text" value=""></p>
+            <p>
+                <strong style="position: relative;right: 7px">Tanggal SR</strong>
+                <input id="sr_create_date"  class="solidLine2" type="text" value="15-Jul-2015 16:33:15">
+            </p>
+            <p class="last"></p>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th class="bort0">Informasi Produk</th>
+        <th class="bort0">Deskripsi Kerusakan</th>
+    </tr>
+    <tr>
+        <td>
+            <p><strong style="position: relative;right: -26px">Tipe Model</strong>
+                <input id="model_type"  class="solidLine" type="text" value="">
+            </p>
+            <p><strong style="position: relative;right: -11px">Nomor Model</strong><input id="model_number" style="" class="solidLine" type="text" value=""></p>
+            <p><strong style="position: relative;right: -25px">Nomer Seri</strong><input id="serial_number"  class="solidLine" type="text" value=""></p>
+            <p><strong style="position: relative;right: 8px">Date Of Purchase</strong><input id='date_purchase' class="solidLine" type="text" value=""></p>
+            <p><strong  class="expiry_strong">Tanggal Akhir Garansi</strong><input id='expiry' class="solidLine" type="text" value="" ></p>
+            <p class="last"><strong>Status Garansi</strong>
+                <input class="warranty_Flag" type="checkbox"> Garansi
+                <input class="warranty_Flag" class="ml10" type="checkbox" style="margin-left:10px;"> Tidak Garansi
+            </p>
+        </td>
+        <td>
+            <p><strong>Kerusakan:</strong></p>
+            <div style="padding: 0 10px;"><input style="width:362px;margin-left:5px;" id="summary" class="solidLine2" type="text" value=""></div>
+            <div class="write-area">
+                <p><input class="dashedLine" type="text" value=""></p>
+                <p><input class="dashedLine" type="text" value=""></p>
+                <p><input class="dashedLine" type="text" value=""></p>
+            </div>
+            <table class="write-table">
+                <tr>
+                    <th>Setuju Untuk Diperbaiki</th>
+                    <th style="border-right:0;">Tanda Tangan Konsumen</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="border-right:0;"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <th class="bort0">Penjelasan</th>
+        <th class="bort0">Estimasi Biaya</th>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td>
+            <p><strong>Jasa</strong><input style="margin-left:62px;" class="dashedLine1" type="text" value=""></p>
+            <p><strong>Transportasi</strong><input class="dashedLine1" style="margin-left:12px;" type="text" value=""></p>
+            <p><strong>Spare Part</strong><input style="margin-left:31px;" class="dashedLine1" type="text"
+                                                 value=""></p>
+            <p><strong>Pajak</strong><input style="margin-left:63px;" class="dashedLine1" type="text" value=""></p>
+            <p class="last mb10"><strong>Total Biaya</strong><input style="margin-left:17px;" class="dashedLine1" type="text" value=""></p>
+        </td>
+    </tr>
+</table>
+<table class="Parts-table">
+    <tr>
+        <th class="bort0" colspan="5">Pemakaian Part</th>
+    </tr>
+    <tr class="tc">
+        <td>No</td>
+        <td>Nomor Spare Part</td>
+        <td style="width:120px\0;*width:155px;text-align:center;">Deskripsi Spare Part</td>
+        <td>Qty</td>
+        <td>Harga</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td class="report-l" style="height: 200px;">
+            <table>
+                <tr>
+                    <th class="bort0" style="width:549px;">Pemeriksaan Teknisi</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px 5px 13px 5px;padding: 10px 5px 15px 5px\0;border-bottom:0;">
+                        <table class="report-table">
+                            <tr>
+                                <td style="padding-bottom: 10px;">Kondisi</td>
+                                <td><input type="text"></td>
+                                <td class="pl5">Komplain</td>
+                                <td colspan="2" ><input type="text" style="width: 175px;"></td>
+                                <td></td>
+                                <td >
+                                    <!--                                        <div>Yes <span style="margin-left:20px;">No</span></div>
+                                                                            <input type="text"> <input type="text">-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pada Bagian</td>
+                                <td><input type="text"></td>
+                                <td>Kode Kerusakan</td>
+                                <td><input type="text"></td>
+                                <td class="pl5">Kode Perbaikan</td>
+                                <td>
+                                    <input type="text">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="report-tip" style="margin-top: 8px;">
+                            <div style="float: left">
+                                <strong style="margin-left:5px;">Tanggal Awal Perbaikan:</strong>
+                                <input style="" class="dashedLine2" type="text" value="">
+                            </div>
+                            <div class="report-tip-l" style="float: left">
+                                <span style="margin-left:50px;display: block;float: left;width: 115px;">Garansi</span>
+                                <div class="w-box" style="line-height: 0">
+                                    <span style="display: block;height: 15px;line-height: 15px; text-align: center">Ya</span><input type="text">
+                                </div>
+                                <div style="margin-left: 3px;line-height: 0" class="w-box">
+                                    <span style="display: block;height: 15px;line-height: 15px;text-align: center">Tidak</span><input type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="report-tip">
+                            <div style="float: left">
+                                <strong style="margin-left:5px;">Tanggal Akhir Perbaikan:</strong>
+                                <input style="" class="dashedLine2" type="text" value="">
+                            </div>
+                            <div class="report-tip-l" style="float: left">
+                                <span style="margin-left:50px;width: 120px;display: block;float: left;line-height: 17px;position: relative;right: 5px">Disebabkan Kelalaian Konsumen</span>
+                                <input style=""  type="text" value="">
+                                <input style=""  type="text" value="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="report-r" style="height: 200px;">
+            <table>
+                <tr>
+                    <td class="tc bort0 item">Spare Part</td>
+                    <td class="bort0" style="width: 100px;width: 128px\0;"></td>
+                </tr>
+                <tr>
+                    <td class="tc">Jasa</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="tc">Transportasi</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="tc">Pajak</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="tc borb0">Total Biaya</td>
+                    <td class="borb0" style="height:47px;"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr class="print-footer">
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+</div>
+<button class="printOutBtn">Print</button>
+<!--loading-->
+<div class="mask"></div>
+<div class="load"><img src="load.gif"></div>
+<script src="../api/apiconfig.js"></script>
+<script src="../framework/jquery-1.8.3.min.js"></script>
+<script>
+    $(function(){
+
+        //日期
+        var date =  new Date();
+        var mon=date.getMonth()
+        switch(mon)
+        {
+            case 0:
+                var mon_en='Jan';
+                break;
+            case 1:
+                var mon_en='Feb';
+                break;
+            case 2:
+                var mon_en='Mar';
+                break;
+            case 3:
+                var mon_en='Apr';
+                break;
+            case 4:
+                var mon_en='May';
+                break;
+            case 5:
+                var mon_en='Jun';
+                break;
+            case 6:
+                var mon_en='Jul';
+                break;
+            case 7:
+                var mon_en='Aug';
+                break;
+            case 8:
+                var mon_en='Sept';
+                break;
+            case 9:
+                var mon_en='Oct';
+                break;
+            case 10:
+                var mon_en='Nov';
+                break;
+            case 11:
+                var mon_en='Dec';
+                break;
+
+        }
+        $('#print-date').html(date.getDate()+'-'+mon_en+'-'+date.getFullYear()+'  '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds())
+
+
+        var sendData=window.location.href;
+        if(sendData.indexOf('=')>-1){
+            sendData=sendData.substring(sendData.indexOf('=')+1);
+        }else{
+            alert('Can not get SR ID!');
+            return false;
+        }
+        $.ajax({
+            type: "get",
+            async: false,
+            url: partalConfig+"jobsheet?sr_id="+sendData,
+            dataType: "jsonp",
+            jsonp: "callback",
+            beforeSend:loading,
+            success: function(res){
+                $('.load,.mask').hide();
+                var response=(JSON.stringify(res));
+                response= JSON.parse(response).job_sheet_info;
+                $('#name').val(response.customer_name);
+                $('#address').val(response.customer_address);
+                $('#phone').val(response.customer_phone);
+                $('#mobile').val(response.customer_phone2);
+                $('#sr_number').val(response.incident_number);
+                $('#sr_type').val(response.incident_type);
+                $('#sr_create_date').val(response.incident_date);
+                $('#model_type').val(response.category);
+                $('#model_number').val(response.item);
+                $('#date_purchase').val(response.instance_date);
+                $('#expiry').val(response.warranty_end_date);
+                $('#serial_number').val(response.serial_number);
+                if(response.Warranty_Flag=='Y'){
+                    $('.warranty_Flag').eq(0).prop('checked',true);
+                }
+                if(response.Warranty_Flag=='N'){
+                    $('.warranty_Flag').eq(1).prop('checked',true);
+                }
+                $('#summary').val(response.summary);
+            },
+            error: function(){
+                console.log('error');
+            }
+        });
+    });
+
+    function loading(){
+        $('.load,.mask').show();
+    }
+    //print
+    $('.printOutBtn').bind('click',function(){
+
+        $('.printOutBtn').hide();
+        window.print();
+
+    });
+</script>
+</body>
+</html>

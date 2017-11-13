@@ -1,0 +1,215 @@
+<style>.ajax-tip{margin-left:110px;}</style>
+<div id="container" ng-controller="IbExChangeCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <form class="form-validate" method="get" name="ex_change_form" novalidate ng-submit="submitForm(ex_change_form)" ng-show="!loadingFlag" dirty-form>
+            <h1><span ng-bind="'IB.UpdateInstallBase' | translate"></span></h1>
+            <div class="base-box" style="padding-bottom: 0;">
+                <h2 ng-bind="'IB.CustomerInformation' | translate" style="margin-top: 0;"></h2>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.CustomerType' | translate"></label>
+                            <input type="text" ng-model="customer_type" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label><span ng-bind="'IB.Name' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="addCustomerInfo(1)" ng-if="F_ID_IB_EXCHANGE=='Y'"></i>
+                            <i class="icon-search add-btn icon-color" ng-if="F_ID_IB_EXCHANGE!='Y'"></i>
+                            <i class="icon-remove-sign icon-color" ng-if="F_ID_IB_EXCHANGE=='Y'"></i>
+                            <input type="text" name="customer_name" ng-model="customer_name"  class="form-control fex1"  required select3 not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'IB.Address' | translate"></label>
+                            <input type="text" ng-model="address" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'IB.Email' | translate"></label>
+                            <input type="text" ng-model="email" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.Phone' | translate"></label>
+                            <input type="text" ng-model="phone" class="form-control fex1 not-allow">
+                        </div>
+                    </div>
+                    <div class="fex1"></div>
+                </div>
+            </div>
+            <div class="base-box" style="padding-bottom: 0;">
+                <h2 ng-bind="'IB.ProductInformation' | translate"></h2>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.Category' | translate"></label>
+                            <i class="icon-search add-btn icon-color"></i>
+                            <input type="text" ng-model="category" class="form-control fex1" select3 not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label><span ng-bind="'IB.Installed_Date' | translate"></span></label>
+                            <input type="text" datetimepicker value="{{install_date}}" ng-model="install_date" class="form-control fex1"
+                                   ng-disabled="F_ID_IB_EXCHANGE!='Y'">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label><span ng-bind="'IB.Item' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color"></i>
+                            <input type="text" ng-model="item_number" ng-change="clearRelative('item')"
+                                   class="form-control fex1" select3 not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'IB.ItemDesc' | translate"></label>
+                            <input type="text" ng-model="item_desc" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.Uom' | translate"></label>
+                            <input type="text" ng-model="uom_code" class="form-control fex1 not-allow">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'IB.Quanlity' | translate"></label>
+                            <input type="text" ng-model="quanlity" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50" ng-if="serDom">
+                        <div class="flexbox mr-l">
+                            <label ng-if="modData.serial_control_flag=='Y'"><span ng-bind="'IB.SerialNumber' | translate"></span></label>
+                            <label ng-if="modData.serial_control_flag=='N'"><span ng-bind="'IB.lotNumber' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="newSrNumLov(1)" ng-if="F_ID_IB_EXCHANGE=='Y'"></i>
+                            <i class="icon-search add-btn icon-color"  ng-if="F_ID_IB_EXCHANGE!='Y'"></i>
+                            <i class="icon-remove-sign icon-color" ng-if="F_ID_IB_EXCHANGE=='Y'"></i>
+                            <input type="text" name="serial_number" ng-model="$parent.serial_number" ng-disabled="F_ID_IB_EXCHANGE!='Y'" class="form-control fex1"  select3 ng-if="modData.serial_control_flag=='Y'">
+                            <input type="text" name="lot_number" ng-model="$parent.lot_number" not-allow="" class="form-control fex1"  select3 ng-if="modData.serial_control_flag=='N'">
+                        </div>
+                    </div>
+                    <div class="fex1 mr50" ng-if="lotDom">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.lotNumber' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ></i>
+                            <input type="text" name="lov_number" ng-model="lov_number" class="form-control fex1" select3 not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'IB.InstanceNumber' | translate"></label>
+                            <input type="text" ng-model="instance_number" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.warranty_start_date' | translate"></label>
+                            <input type="text" ng-model="warranty_start_date"  class="form-control fex1 not-allow">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'IB.warranty_end_date' | translate"></label>
+                            <input type="text" ng-model="warranty_end_date" class="form-control fex1 not-allow">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.PlaceOfPurchase' | translate"></label>
+                            <input type="text" ng-model="storename"  class="form-control fex1" ng-disabled="F_ID_IB_EXCHANGE!='Y'">
+                        </div>
+                    </div>
+                    <div class="fex1"></div>
+                </div>
+            </div>
+            <div class="base-box" style="padding-bottom: 0;">
+                <h2 ng-bind="'IB.InstallerInformation' | translate"></h2>
+                <div class="ipt-item flexbox " style="margin-bottom: 25px; border-bottom: 1px #dddddd solid; padding-bottom: 20px;">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'IB.Installer' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="installerLov(1)" ng-if="F_ID_IB_EXCHANGE=='Y'"></i>
+                            <i class="icon-search add-btn icon-color" ng-if="F_ID_IB_EXCHANGE!='Y'"></i>
+                            <i class="icon-remove-sign icon-color" ng-if="F_ID_IB_EXCHANGE=='Y'"></i>
+                            <input type="text" ng-model="installer_name" class="form-control fex1" select3 not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label><span  ng-bind="'IB.Technician' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="technicianLov(1)" ng-if="F_ID_IB_EXCHANGE=='Y'"></i>
+                            <i class="icon-search add-btn icon-color" ng-if="F_ID_IB_EXCHANGE!='Y'"></i>
+                            <i class="icon-remove-sign icon-color" ng-if="F_ID_IB_EXCHANGE=='Y'"></i>
+                            <input type="text" ng-model="technician_name" class="form-control fex1" select3 not-allow>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="red" ng-if="modData.serial_control_flag=='Y'">*<span ng-bind="'IB.NewSerialNumber' | translate"></span></label>
+                            <label class="red" ng-if="modData.serial_control_flag=='N'">*<span ng-bind="'IB.lotNumber' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-if="modData.serial_control_flag=='Y'" ng-click="newSrNumLov(1)"></i>
+                            <i class="icon-search add-btn icon-color" ng-if="modData.serial_control_flag=='N'" ng-click="newLotNumLov(1)"></i>
+                            <i class="icon-remove-sign icon-color"></i>
+                            <input type="text" name="new_sr_num" ng-model="$parent.new_sr_num"  class="form-control fex1"  select3 ng-if="modData.serial_control_flag=='Y'" ng-class="{'bd-red':submitted && ex_change_form.new_sr_num.$invalid}" required=>
+                            <input type="text" name="new_lot_num" ng-model="$parent.new_lot_num" class="form-control fex1"  select3 ng-if="modData.serial_control_flag=='N'" ng-class="{'bd-red':submitted && ex_change_form.new_lot_num.$invalid}" required>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="red">*<span ng-bind="'IB.Party' | translate"></span></label>
+                            <!--<i class="icon-search add-btn icon-color" ng-click="partyLov(1)"></i>-->
+                            <input type="text" name="party_name" ng-model="party_name" class="form-control fex1" disabled ng-class="{'bd-red':submitted && ex_change_form.party_name.$invalid}" required>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label class="red">*<span ng-bind="'IB.Address' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="addressLov(1)"></i>
+                            <input type="text" name="new_address" ng-model="new_address"  class="form-control fex1" required ng-class="{'bd-red':submitted && ex_change_form.new_address.$invalid}">
+                        </div>
+                    </div>
+                </div>
+                <div class="flexbox  mt10 mb20">
+                    <div class="fex1" ></div>
+                    <div class="mr115 mt20">
+
+                        <button type="submit" class="btn btn-primary btn-large mr5 fts16" ng-bind="'PUBLIC.Submit' | translate"></button>
+                        <a class="btn btn-default btn-large" back-button=""><span ng-bind="'PUBLIC.Cancel' | translate"></span></a>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- mask-->
+        <!--<div class="mask" ng-if="modData.update_flag=='N'"></div>-->
+    </div>
+</div>

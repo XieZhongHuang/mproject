@@ -1,0 +1,92 @@
+<div id="container" ng-controller="WarrantyListCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'WARRANTY.SEARCH_WARRANTY_BOM'|translate"></h1>
+        <div class="base-box base-box-search">
+            <form>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'WARRANTY.ITEM_NUMBER' | translate"></label>
+
+                            <input id="item_bumber" type="text"  ng-keypress="enter($event)"   class="form-control fex1" ng-change="saveCustomerName()" ng-model="item_number" value="{{customer_name}}">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'WARRANTY.ITEM_DESCRIPTION' | translate"></label>
+                            <input type="text" ng-model="description" requied class="form-control fex1" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'WARRANTY.UOM' | translate"></label>
+                            <input type="text" class="form-control fex1" ng-model="uom" ng-keypress="enter($event)"  readonly>
+                        </div>
+                    </div>
+                    <div class="fex1">
+
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="text-right mr15" >
+                <button type="submit" class="btn btn-primary" ng-click="DoCtrlPagingAct2(1)"> <span ng-bind="'PUBLIC.Search' | translate" class="ng-binding">Search</span>
+                </button>
+                <button type="button" class="btn btn-default btn-small mr50" ng-click="reset()">
+                    <span ng-bind="'PUBLIC.Reset' | translate" class="ng-binding " ng-click="Rest()">Reset</span></button>
+            </div>
+
+        </div>
+        <div class="ml15 mr15"  ng-show="!loadingFlag">
+            <table class="table table-striped table-bordered table-hover text-center table-search table-condensed table-summary" >
+                <tr  role="row" class="active">
+                    <th class="sorting" role="columnheader" ng-bind="'WARRANTY.LEVEL' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'WARRANTY.COMPONENT' | translate" style="width: 250px"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'WARRANTY.DESCRIPTION' | translate" style="width: 250px"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'WARRANTY.TYPE' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'WARRANTY.STATUS' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'WARRANTY.UOM' | translate"></th>
+                    <th class="sorting" role="columnheader" ng-bind="'WARRANTY.QUANTITY' | translate"></th>
+                </tr>
+                <tr>
+                    <td>
+
+                    </td>
+                    <td title="{{item.customer_number}}"><div ng-bind="item.customer_number"></div></td>
+                    <td title="{{item.account_number}}"><div ng-bind="item.account_number"></div></td>
+                    <td title="{{item.customer_type}}"><div ng-bind="item.customer_type"></div></td>
+                    <td title="{{item.customer_name}}"><div ng-bind="item.customer_name"></div></td>
+                    <td title="{{item.customer_name}}"><div ng-bind="item.customer_name"></div></td>
+                    <td title="{{item.customer_name}}"><div ng-bind="item.customer_name"></div></td>
+                </tr>
+            </table>
+            <div class="btn-row ml15 text-right" ng-show="DoCtrl && summaryList.length>0">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)">
+                </div>
+            </div>
+            <div class="btn-row ml15 text-right" ng-show="DoCtrl2 && summaryList.length>0">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct2(page)"
+                        >
+                </div>
+            </div>
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="emptyData">No results found. </div>
+    </div>
+</div>
+

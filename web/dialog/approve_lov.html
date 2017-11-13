@@ -1,0 +1,33 @@
+<style>.ajax-tip{margin-left: 0;margin-top:-120px;}</style>
+<div class="datatable" drag-drop>
+    <div class="modal-header">
+        <h4 class="modal-title" ng-bind="'CLAIM.{{title}}' | translate"></h4>
+    </div>
+    <section class="panel tableBodyScroll" style="height: 350px; width:800px;overflow: hidden">
+        <!--serial number start-->
+        <table class="table table-bordered table-hover table-search table-condensed">
+            <thead>
+            <tr>
+                <th ng-bind="'CLAIM.NO' | translate"></th>
+                <th ng-bind="'CLAIM.Approver' | translate"></th>
+                <th ng-bind="'CLAIM.Action' | translate"></th>
+                <th ng-bind="'CLAIM.ApprovalComments' | translate"></th>
+                <th ng-bind="'CLAIM.ApprovedDate' | translate"></th>
+
+            </tr>
+            <tr class="text-center" ng-repeat="item in approveData">
+                <td title="{{item.NO}}"><div ng-bind="item.NO"></div></td>
+                <td title="{{item.approver}}"><div ng-bind="item.approver"></div></td>
+                <td title="{{item.action}}"><div ng-bind="item.action"></div> </td>
+                <td title="{{item.approval_comments}}"><div ng-bind="item.approval_comments"></div></td>
+                <td title="{{item.approved_date}}"><div ng-bind="item.approved_date"></div></td>
+            </tr>
+        </table>
+    </section>
+</div>
+<!-- 无数据提示-->
+<div class="noData" ng-if="noData">
+    <span class="icon-warning-sign fts48"></span>
+    <p class="fts14" ng-bind="'PUBLIC.noData' | translate"></p>
+</div>
+<!-- 无数据提示-->

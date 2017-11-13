@@ -1,0 +1,111 @@
+<section id="container" ng-controller="OrderListCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'NPR.Consign Fulfillment Order Summary' | translate"></h1>
+
+        <form class="form-validate form-validate" name="claim_form" method="get" novalidate
+              ng-submit="submitForm(claim_form)">
+            <div class="base-box">
+
+                <div class="base-box base-box-search mt10" style="padding-right: 50px;overflow: hidden">
+                    <div class="ipt-item flexbox">
+                        <div class="flexbox " style="width: 30%">
+                            <label ng-bind="'NPR.Order Number' | translate" style="min-width: 100px"></label>
+                            <input type="text" ng-keypress="enter($event)" ng-model="request_number"
+                                   class="form-control fex1">
+                        </div>
+
+                        <div class="flexbox " style="width:70%">
+                            <label ng-bind="'NPR.Order Date' | translate" class="text-center"></label>
+                            <span class="ml10 mr10" style="position: relative;top: 3px;color: #999;"
+                                  ng-bind="'CLAIM.From' | translate"></span>
+                            <input datetimepicker2 ng-model="date_fr" value="{{date_fr}}" ng-keypress="enter($event)"
+                                   class="form-control fex1" name="instance_date" placeholder="start date"
+                                   style="cursor: pointer;z-index:999;position:relative;">
+                            <input type="text" style="opacity: 0;position: absolute" ng-keypress="enter($event)">
+                            <span class="ml10 mr10" style="position: relative;top: 3px;color: #999;"
+                                  ng-bind="'CLAIM.To' | translate"></span> <input
+                                datetimepicker-end
+                                ng-model="date_to"
+                                ng-keypress="enter($event)"
+                                class="form-control fex1"
+                                name="date_to" placeholder="end date"
+                                style="cursor: pointer;z-index:999;position:relative;" value="{{date_to}}">
+                            <input type="text" style="opacity: 0;position: absolute" ng-keypress="enter($event)">
+                        </div>
+                    </div>
+
+
+                    <div class="text-right mt20 mr15">
+                        <button type="button" id="sub" class="btn btn-primary" ng-click="DoCtrlPagingAct(1)"><span
+                                ng-bind="'PUBLIC.Search' | translate"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-small "
+                                ng-click="request_number='';date_fr='';date_to=''">
+                            <span ng-bind="'PUBLIC.Reset' | translate"></span>
+                        </button>
+                    </div>
+
+                </div>
+                <div class="ml15 mr15">
+                    <table class="table table-striped table-bordered table-hover text-center table-search table-summary table-condensed"
+                           ng-show="orderList.length>0">
+                        <tr role="row" class="active">
+                            <th class="sorting" role="columnheader" ng-bind="'IB.Action' | translate"></th>
+                            <th class="sorting" role="columnheader"><span ng-bind="'NPR.Order' | translate"></span></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.Description' | translate"></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.Need by Date' | translate"></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.Status' | translate"></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.Order Date' | translate"></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.Source Inventory' | translate"></th>
+                            <th class="sorting" role="columnheader"
+                                ng-bind="'NPR.Destination Inventory' | translate"></th>
+                        </tr>
+                        <tr ng-repeat=" item in orderList">
+                            <td class=" sorting_1">
+                                <a ui-sref="CheckOrder({orderNumId:'{{item.header_id | urlFilter}}',scrollFlag:'2'})">
+                                    <i class="icon-edit"></i>
+                                </a>
+                            </td>
+                            <td title="{{item.request_number}}">
+                                <div ng-bind="item.request_number"></div>
+                            </td>
+                            <td title="{{item.description}}">
+                                <div ng-bind="item.description"></div>
+                            </td>
+                            <td title="{{item.date_required}}">
+                                <div ng-bind="item.date_required"></div>
+                            </td>
+                            <td title="{{item.header_status}}">
+                                <div ng-bind="item.header_status"></div>
+                            </td>
+                            <td title="{{item.order_date}}">
+                                <div ng-bind="item.order_date"></div>
+                            </td>
+                            <td title="{{item.source_subinv}}">
+                                <div ng-bind="item.source_subinv"></div>
+                            </td>
+                            <td title="{{item.destination_subinv}}">
+                                <div ng-bind="item.destination_subinv"></div>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <div class="btn-row ml15 text-center page-list" ng-show="orderList.length>0">
+                        <div paging page="currentPage" page-size="10" total="totalPage*10"
+                             show-prev-next="{{showPrevNext}}"
+                             paging-action="DoCtrlPagingAct(page)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--无数据提示-->
+            <div class="emptyData" ng-if="emptyData">No results found.</div>
+
+
+        </form>
+    </div>
+</section>
+

@@ -1,0 +1,146 @@
+<div id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="PoSummaryCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1  ng-bind="'PO.SearchPo' | translate"></h1>
+        <div class="base-box base-box-search">
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'PO.MideaSN' | translate"></label>
+                        <!--<select  select2="" class="form-control mb15-1024" ng-model="sr_type" ng-keypress="enter($event)"  get-focus="">-->
+                            <!--<option value=" "></option>-->
+                            <!--<option ng-repeat="item in srData.sr_type" value="{{item.type_id}}">{{item.type_name}}</option>-->
+                        <!--</select>-->
+                        <input type="text" ng-keypress="enter($event)"  ng-model="sr_number" class="form-control fex1">
+                    </div>
+                </div>
+
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label><span ng-bind="'PO.PONO' | translate"></span></label>
+                        <input id="po_number" type="text" ng-keypress="enter($event)"  ng-model="po_number"  class="form-control fex1">
+                    </div>
+                </div>
+            </div>
+            <div class="ipt-item flexbox">
+                <div class="fex1 mr50">
+                    <div class="flexbox mr-l">
+                        <label ng-bind="'PO.MideaSRStatus' | translate"></label>
+                        <select  select2="" ng-change="changeStatus(status_id)" class="form-control mb15-1024" ng-model="status_id" ng-keypress="enter($event)"  get-focus="">
+                            <option ng-repeat="item in srStatus" value="{{item.status_id}}">{{item.status_name}}</option>
+                        </select>
+                        <!--<input type="text" ng-keypress="enter($event)"  ng-model="sr_status" class="form-control fex1">-->
+                    </div>
+                </div>
+                <div class="fex1">
+                    <div class="flexbox mr50">
+                        <label ng-bind="'PO.CreationDate' | translate "></label>
+                        <input type="text" datetimepicker ng-model="start_date" class="form-control input-small fex1" ng-keypress="enter($event)" >
+                        <label style="min-width:0px;margin:0 5px;">----</label>
+                        <input  type="text" datetimepicker ng-model="end_date"  class="form-control input-small fex1" ng-keypress="enter($event)" >
+                    </div>
+                </div>
+            </div>
+            <div class="text-right mr15">
+                <button type="button" id="sub" class="btn btn-primary" ng-click="DoCtrlPagingAct(1)"><span ng-bind="'PUBLIC.Search' | translate"></span>
+                </button>
+                <button type="button" class="btn btn-default btn-small" ng-click="reset()">
+                    <span ng-bind="'PUBLIC.Reset' | translate"></span>
+                </button>
+                <a class="btn btn-default btn-large mr50"  style="background-color:#4F97F4; " href="#F_ID_PO_CREATE">
+                    <span style="color:#fff;font-size:12px;" ng-bind="'PUBLIC.Create' | translate" ></span>
+                </a>
+            </div>
+
+
+        </div>
+        <div class="ml15 mr15" ng-show="totalPage>0" >
+            <table class="table table-striped table-bordered table-hover text-center data-list table-search table-condensed table-summary" ng-show="!loadingFlag">
+                <tr role="row">
+                    <th ng-bind="'PO.Action' | translate" style="width: 60px">
+                    </th>
+                    <th ng-bind="'PO.MideaSN' | translate" >
+                    </th>
+                    <th ng-bind="'PO.PONO' | translate">
+                    </th>
+                    <th ng-bind="'PO.MideaSRStatus' | translate" >
+                    </th>
+                    <th ng-bind="'PO.CreationDate' | translate" >
+                    </th>
+                    <th ng-bind="'PO.TotalAmount' | translate">
+                    </th>
+                    <th  ng-bind="'PO.Item' | translate" style="width: 200px;">
+                    </th>
+                    <th  ng-bind="'PO.UOM' | translate">
+                    </th>
+                    <th  ng-bind="'PO.PurchaseQty' | translate">
+                    </th>
+                    <th  ng-bind="'PO.LineStatus' | translate">
+                    </th>
+                    <th  ng-bind="'PO.OrderStatus' | translate">
+                    </th>
+                </tr>
+
+                <tbody role="alert" aria-live="polite" aria-relevant="all">
+                <tr class="sr-height" ng-repeat=" item in summaryList">
+                    <td class=" sorting_1" style="width: 100px">
+                        <a ui-sref="po_update({sr_id:'{{item.incident_id | urlFilter}}',po_sn:'2'})">
+                            <i class="icon-edit"></i>
+                        </a>
+                    </td>
+                    <td title="{{item.sr_number}}" style="width: 80px">
+                        <div ng-bind="item.sr_number">
+                        </div>
+                    </td>
+                    <td title="{{item.po_number}}" style="height:40px; line-height:30px;">
+                        <div ng-bind="item.po_number" >
+                        </div>
+                    </td>
+                    <td class=" " title="{{item.sr_status}}" >
+                        <div ng-bind="item.sr_status" >
+                        </div>
+                    </td>
+                    <td title="{{item.incident_date}}" >
+                        <div ng-bind="item.incident_date"  ></div>
+                    </td>
+                    <td title="{{item.amount}}">
+                        <div ng-bind="item.amount" >
+                        </div>
+                    </td>
+                    <td class=" " title="{{item.item_code}}" >
+                        <div ng-bind="item.item_code" >
+                        </div>
+                    </td>
+                    <td title="{{item.UOM}}">
+                        <div ng-bind="item.UOM">
+                        </div>
+
+                    </td>
+                    <td title="{{item.quantity}}">
+                        <div  ng-bind="item.quantity">
+                        </div>
+
+                    </td>
+                    <td title="{{item.line_status}}" >
+                        <div ng-bind="item.line_status">
+                        </div>
+                    </td>
+                    <td title="{{item.header_status}}" >
+                        <div ng-bind="item.header_status">
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="btn-row ml15 text-center page-list" ng-show="!loadingFlag">
+                <div paging page="currentPage" page-size="10" total="totalPage*10" show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)">
+                </div>
+            </div>
+
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="emptyData&&summaryList.length==0">No results found. </div>
+    </div>
+</div>

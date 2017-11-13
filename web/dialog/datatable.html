@@ -1,0 +1,99 @@
+<style>.ajax-tip{margin-left: 0;margin-top:-120px;}</style>
+<div class="datatable" drag-drop>
+    <div class="modal-header">
+        <h4 class="modal-title" ng-bind="'customer.{{title}}' | translate"></h4>
+    </div>
+    <div class="search-box2 flexbox" ng-hide="is_status">
+        <div class="fex1 pos-relative mr15">
+            <div class="flexbox">
+                <label ng-bind="'PUBLIC.SearchBy' | translate"></label>
+                <div class="btn-group search-type">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  but-width="">
+                        <span class="search-init">{{seaTypeValue}}</span><span class="caret" style="margin-left: 10px"></span>
+                    </button>
+                    <ul class="dropdown-menu"  >
+                        <li ng-repeat="item in searchtype"  >
+                            <a href="javascript:void(0)" class="pos-relative">
+                                {{item.name}}
+                                <input type="radio"  name="pp" value="{{item.value}}" ng-model="obj_select.value"  class="ipt-hide"  ng-click="searFuc(item.name)">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="fex1 pos-relative">
+                    <input type="text" class="form-control"  ng-model="obj_name2" lov-keypress>
+                </div>
+            </div>
+            <span ng-click="DoCtrlPagingAct(1)" class="icon-search lov-search"></span>
+        </div>
+    </div>
+
+    <section class="panel tableBodyScroll" style="height: 350px; width:800px;overflow: hidden">
+        <div>
+            <!--state start-->
+            <table ng-if="!state_table" class="table table-bordered table-hover table-search table-condensed" style="border: #DDDDDD solid 1px">
+                <thead>
+                <tr>
+                    <th  ng-bind="'PUBLIC.Select' | translate">
+                    <th ng-bind="'PUBLIC.English' | translate"></th>
+                    <th  ng-bind="'PUBLIC.Thai' | translate"></th>
+                </tr>
+                </thead>
+                <tr ng-repeat=" item in data"  get-value>
+                    <td class="text-center">
+                        <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+                    </td>
+                    <td title="{{item.obj_code}}"><div ng-bind="item.obj_code"></div></td>
+                    <td title="{{item.obj_name}}"><div ng-bind="item.obj_name"></div></td>
+                </tr>
+            </table>
+
+            <table ng-if="state_table" class="table table-bordered table-hover table-search table-condensed" style="border: #DDDDDD solid 1px">
+                <thead>
+                <tr>
+                    <th  ng-bind="'PUBLIC.Select' | translate">
+                    <th ng-bind="'PUBLIC.State' | translate"></th>
+                    <th  ng-bind="'PUBLIC.Description' | translate"></th>
+                </tr>
+                </thead>
+                <tr ng-repeat=" item in data"  get-value>
+                    <td class="text-center">
+                        <input type="radio" id="radio-1-{{$index}}" name="radio-1-set" class="regular-radio"  ng-model="lov_data.radioValue" value='{{item}}'><label for="radio-1-{{$index}}"></label><br />
+                    </td>
+                    <td title="{{item.obj_code}}"><div ng-bind="item.obj_code"></div></td>
+                    <td title="{{item.obj_name}}"><div ng-bind="item.obj_name"></div></td>
+                </tr>
+            </table>
+            <!--state end-->
+
+        </div>
+    </section>
+
+    <div class="btn-row">
+        <div class="form-group mt15" style="border-bottom: 1px solid #f5f5f5;border-top: 1px solid #f5f5f5;margin-bottom: 5px;">
+            <div class="flexbox text-center">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)"
+                     class="page-list mr15 fex1 ml15"
+                        >
+                </div>
+            </div>
+        </div>
+        <div class="mr15 text-right" ng-show="!noData">
+            <button class="btn btn-primary btn-large select" type="button"
+                    ng-click="closeThisDialog(2)" ng-bind="'PUBLIC.Select' | translate">
+            </button>
+            <button class="btn btn-default btn-large btn-small" type="button" ng-click="closeThisDialog(0)" ng-bind="'PUBLIC.Cancel' | translate"></button>
+        </div>
+    </div>
+</div>
+<!-- noData-->
+<div class="noData" ng-if="noData">
+    <span class="icon-warning-sign fts48"></span>
+    <p class="fts14" ng-bind="'PUBLIC.noData' | translate"></p>
+</div>
+<!-- noData-->

@@ -1,0 +1,117 @@
+<section id="container" ng-controller="OrderConfirmCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'NPR.Consign Fulfillment Confirmation' | translate"></h1>
+
+        <form class="form-validate form-validate" name="confirm_form" method="get" novalidate
+              ng-submit="submitForm(confirm_form,1)">
+            <div class="base-box">
+                <h2 ng-bind="'NPR.Requirement Information' | translate"></h2>
+
+                <div class="base-box base-box-search">
+
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox mr-l">
+                                <label class="red">*<span ng-bind="'NPR.Order Number' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="order_num_lov(1)"></i>
+                                <i class="icon-remove-sign icon-color"></i>
+                                <input type="text" required name="order_number" class="form-control"
+                                       ng-model="order_number" readonly select3=""
+                                       ng-class="{'bd-red':submitted && confirm_form.order_number.$invalid}">
+
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="fex1">
+                                <div class="text-left">
+                                    <button type="submit" id="sub" class="btn btn-primary"><span
+                                            ng-bind="'PUBLIC.Search' | translate"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="pos-relative mt20">
+                    <h2 style="margin-bottom: 0;" ng-bind="'NPR.Item Information' | translate"></h2>
+                </div>
+                <div class="mb12 ml15 mr15" ng-if="confirmData">
+                    <table class="table table-striped table-bordered table-hover text-center table-search table-summary table-condensed "
+                           ng-show="!loadingFlag">
+                        <tr role="row">
+                            <th ng-bind="'IB.Action' | translate"></th>
+                            <th><span ng-bind="'NPR.Item' | translate"></span></th>
+                            <th ng-bind="'NPR.UOM' | translate"></th>
+                            <th ng-bind="'NPR.Description' | translate"></th>
+                            <th ng-bind="'NPR.Requested QTY' | translate" style="max-width: 80px;"></th>
+                            <th ng-bind="'NPR.Deliveried Qty' | translate" style="max-width: 80px;"></th>
+                            <th ng-bind="'NPR.Received INV' | translate" ></th>
+                            <th ng-bind="'NPR.Transaction Qty' | translate"></th>
+                        </tr>
+
+
+                        <tr ng-repeat=" item in confirmData">
+                            <td class="text-center">
+                                <input type="checkbox" name="selected_order"
+                                       ng-model="selected_order" ng-click="selectedStatus($event,$index)"><label
+                                    ></label><br/>
+
+                            </td>
+                            <td title="{{item.item_num}}">
+                                <div ng-bind="item.item_num" class="text-left"></div>
+                            </td>
+                            <td title="{{item.unit_code}}">
+                                <div ng-bind="item.unit_code"></div>
+                            </td>
+                            <td title="{{item.item_desc}}">
+                                <div ng-bind="item.item_desc"></div>
+                            </td>
+                            <td title="{{item.requested_qty}}">
+                                <div ng-bind="item.requested_qty" style="max-width: 80px;"></div>
+                            </td>
+                            <td title="{{item.deliveried_qty}}">
+                                <div ng-bind="item.deliveried_qty"  style="max-width: 80px;"></div>
+                            </td>
+                            <td title="{{item.dest_subinv}}">
+                                <div ng-bind="item.dest_subinv"></div>
+                            </td>
+                            <td title="{{item.transaction_qty}}">
+                                <ng-form name="ts-from">
+                                    <input ng-focus="setV(confirmData,$index)" type="number" class="form-control fex1" ng-model="$parent.confirmData[$index].transaction_qty"
+                                           ng-blur="getV(confirmData,$index)" name="transaction_qty" required  valid-num
+                                           >
+                                </ng-form>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="btn-row ml15 text-center page-list mr15" ng-show="confirmData">
+                    <div paging page="currentPage" page-size="10" total="totalPage*10"
+                         show-prev-next="{{showPrevNext}}"
+                         paging-action="DoCtrlPagingAct(page)">
+                    </div>
+                </div>
+            </div>
+            <div class="flexbox  footer-btn " style="border-top:none ">
+                <div class="fex1"></div>
+                <div class="mr15">
+
+                    <a class="btn btn-primary btn-mini btn-large mr5" type="submit" ng-if="confirmData"
+                       ng-disabled="!is_confirm" ng-click="confirm_submit_order()"
+                       ng-bind="'SR.Confirm' | translate"></a>
+                    <a class="btn btn-default btn-large btn-mini" back-button=""><span
+                            ng-bind="'PUBLIC.Cancel' | translate" ng-bind="'PUBLIC.Cancel'"></span></a>
+                </div>
+            </div>
+            <!--无数据提示-->
+            <div class="emptyData" ng-if="confirmData.length == 0">No results found.</div>
+        </form>
+    </div>
+</section>
+

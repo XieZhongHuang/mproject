@@ -1,0 +1,360 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="NewServiceCtrl" >
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+
+    <section id="main-content" style="overflow-x: hidden;">
+        <form class="form-validate form-validate" method="get" name="sr_form" novalidate  dirty-form=""
+              ng-click="resetDirty(false)"  ng-submit="submitForm(sr_form)" ng-show="!loadingFlag">
+
+            <h1 ng-bind="'SR.title' | translate"></h1>
+
+            <div class="base-box sr-box">
+
+                <!--SR Header start-->
+                <h2 class="sr-header" ng-bind="'SR.sr_header' | translate"></h2>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'SR.sr_number' | translate"></label>
+                            <input type="text" class="form-control fex1 mr-l" not-allow="">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.incident_date' | translate"></label>
+                            <input type="text" class="form-control fex1" ng-model="srData.date" not-allow="" >
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="red">*<span ng-bind="'SR.sr_type' | translate"></span></label>
+                            <select select2="" ng-model="sr_type_item" class="form-control" id="sr_type" name="sr_type" required  ng-class="{'bd-red':submitted && sr_form.sr_type.$invalid}"
+                                    ng-change="sr_type(sr_type_item)">
+                                <option value="{{item.type_id}}" ng-repeat="item in srData.sr_type">{{item.type_name}}
+                                </option>
+                            </select>
+                            <formtips title="This field is required"
+                                      ng-show="submitted && sr_form.sr_type.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.Status' | translate"></label>
+                            <select select2 class="form-control" ng-model="statusSelect">
+                                <option value="{{item.status_id}}" ng-repeat="item in status">{{item.status_name }}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'SR.Urgency' | translate"></label>
+                            <select select2 class="form-control" ng-model="urgency_id">
+                                <option value="{{item.urgency_id }}" ng-repeat="item in srData.urgency">
+                                    {{item.urgency_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.Severity' | translate"></label>
+                            <select class="form-control" select2="" ng-model="severity_id">
+                                <option value="{{item.severity_id}}" ng-repeat="item in srData.severity">
+                                    {{item.severity_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'SR.sr_group' | translate"></label>
+                            <!--<i class="icon-search add-btn icon-color" ng-click="groupLov(1)"></i>-->
+                            <!--<i class="icon-remove-sign icon-color"></i>-->
+                            <input type="text" style="background-color: #eee;" class="form-control" ng-model="group_name" disabled not-allow="" readonly="readonly"  select3="" >
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.closed_date' | translate"></label>
+                            <input type="text" class="form-control ng-pristine ng-valid" not-allow="">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'SR.sr_owner' | translate"></label>
+                            <input ng-model="resource_name" class="form-control fex1 mr-l" type="text" not-allow="">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.ReferenceSR' | translate"></label>
+                            <i class="icon-search add-btn  icon-color" ng-click="referenceLov(1)"></i>
+                            <i class="icon-remove-sign icon-color"></i>
+                            <input type="text" class="form-control" readonly ng-model="reference" select3="" >
+                        </div>
+                    </div>
+                </div>
+                <!--SR Header end-->
+
+                <h2 ng-bind="'SR.customer_info' | translate"></h2>
+
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && sr_form.customer_name.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'SR.customer_type' | translate"></label>
+                            <select select2="" class="form-control" ng-model="CustomerType"
+                                    ng-change="CustomerTypeChange()">
+                                <option value="PERSON">Person</option>
+                                <option value="ORGANIZATION">Organization</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label class="red">*<span ng-bind="'SR.Name' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="custInfo(1)"></i>
+                            <i class="icon-remove-sign icon-color"></i>
+                            <input type="text" class="form-control" ng-model="customer_name"   readonly required=""
+                                   name="customer_name" select3="" ng-change="customer_c()"
+                                   ng-class="{'bd-red':submitted && sr_form.customer_name.$invalid}">
+
+                            <input type="hidden" ng-model="customer_id" name="customer_id" >
+                            <formtips title="This field is required"
+                                      ng-show="submitted && sr_form.customer_name.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'SR.account_number' | translate"></label>
+                            <input type="text" class="form-control mr-l" not-allow="" ng-model="account_number">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.Email' | translate"></label>
+                            <input type="text" class="form-control" not-allow="" ng-model="email">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox">
+                            <label ng-bind="'SR.Address' | translate"></label>
+                            <input type="text" class="form-control" not-allow="" ng-model="address">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.Phone' | translate"></label>
+                            <input type="text" class="form-control" value="" not-allow="" ng-model="phone">
+                        </div>
+                    </div>
+                </div>
+                <h2 ng-bind="'SR.product_info' | translate"></h2>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'SR.Category' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="categoryLov(1)"></i>
+                            <i class="icon-remove-sign icon-color"></i>
+                            <input type="text" class="form-control" ng-model="category" readonly  select3=""  ng-change="category_id='';looup_code='';meaning=''">
+                            <input type="hidden" ng-model="category_id" name="category_id" >
+                            <input type="hidden" ng-model="category_set_id"
+                                   style="right: -170px; position: relative;top: -30px;"
+                                >
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.installed_date' | translate"></label>
+                            <input ng-model="instance_date" type="text" class="form-control" not-allow="" name="date">
+                            <input type="hidden" ng-model="instance_id">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-class="{'red':false}"><span ng-if="false">*</span><span ng-bind="'SR.Item' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                            <i class="icon-remove-sign icon-color" ng-click="removeItemRelative()"></i><!--sn_required=='YES'-->
+                            <input type="text" class="form-control" ng-required="false" name="item_number"
+                                   ng-class="{'bd-red':submitted && sr_form.item_number.$invalid}"
+                                   ng-model="item_number" readonly select3="" ng-change="item_desc='';category_id='';category='';">
+                            <input type="hidden" class="form-control" readonly ng-model="inventory_item_id" name="inventory_item_id">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.item_desc' | translate"></label>
+                            <input type="text" class="form-control" ng-model='item_desc' not-allow="">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && sr_form.instance_number.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l" ng-if="sr_select_arr=='N'">
+                            <label ng-bind="'SR.instance_number' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="SerialLov('install_number')"></i>
+                            <i class="icon-remove-sign icon-color" ng-click="removeInstallNumber()"></i>
+                            <input type="text" class="form-control" ng-model="formData.instance_number" readonly select3="" ng-change="instance_id='';contract_id='';contract_service_id='';">
+                        </div>
+                        <div class="flexbox mr-l"  ng-if="sr_select_arr=='Y'">
+                            <label ng-bind="'SR.instance_number' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="SerialLov('install_number')"></i>
+                            <i class="icon-remove-sign icon-color" ng-click="removeInstallNumber()"></i>
+                            <input type="text" class="form-control" ng-model="formData.instance_number"  name="instance_number" readonly select3=""  ng-required="sn_required=='YES'" ng-class="{'bd-red':submitted && sr_form.instance_number.$invalid}" ng-change="instance_id='';contract_id='';contract_service_id=''">
+                            <formtips  title="This field is required" ng-show="submitted && sr_form.instance_number.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.w_start_date' | translate"></label>
+                            <input type="text" class="form-control" ng-model="warranty_start_date" not-allow="">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && (sr_form.serial_number.$invalid || sr_form.lot_number.$invalid)}">
+                    <div class="fex1 mr50" ng-if="sr_select_arr=='N'">
+                        <div class="flexbox mr-l" ng-if="serial_number_control_code == 'Y'">
+                            <label ng-class="{'red':false}"> <span ng-if="false">*</span><span ng-bind="'SR.serial_number' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-if="serial_number_control_code == 'Y'&& trackable_flag=='Y'" ng-click="SerialLov('serial_number')"></i><!--serial_number_control_code == 'Y'&& sn_required=='YES'-->
+                            <input type="text" class="form-control" ng-required="false" name="serial_number" ng-model="formData.serial_number" ng-readonly="serial_number_control_code == 'Y'&& trackable_flag=='Y'" select3="" ng-class="{'bd-red':submitted && sr_form.serial_number.$invalid}">
+                            <formtips  title="This field is required" ng-show="submitted && sr_form.serial_number.$invalid"></formtips>
+
+                        </div>
+                        <div class="flexbox mr-l" ng-if="lot_control_code == 'Y'">
+                            <label ng-class="{'red':false}"><span ng-if="false">*</span><span ng-bind="'IB.LotNumber' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-if="lot_control_code == 'Y'&& trackable_flag=='Y'" ng-click="SerialLov('lot_number')"></i>
+                            <input type="text" class="form-control" ng-required="false" name="lot_number" ng-model="formData.lot_number" ng-readonly="lot_control_code == 'Y'&& trackable_flag=='Y'" select3="" ng-class="{'bd-red':submitted && sr_form.lot_number.$invalid}">
+                            <formtips  title="This field is required" ng-show="submitted && sr_form.lot_number.$invalid"></formtips>
+                        </div>
+                    </div>
+
+                    <div class="fex1 mr50"  ng-if="sr_select_arr=='Y'">
+                        <div class="flexbox mr-l" ng-if="serial_number_control_code == 'Y'">
+                            <label ng-class="{'red':false}"> <span ng-if="false">*</span><span ng-bind="'SR.serial_number' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-if="trackable_flag=='Y'" ng-click="SerialLov('serial_number')"></i>
+                            <input type="text" class="form-control" ng-model="formData.serial_number"  name="serial_number" ng-required="false" ng-readonly=" trackable_flag=='Y'" select3="" ng-class="{'bd-red':submitted && sr_form.serial_number.$invalid}">
+
+                            <p class="red form-tips" style="margin-left: 140px !important; margin-top:-10px;"  ng-show="submitted && sr_form.serial_number.$invalid"><i class="icon_error-circle_alt"></i><span class="ml5 ng-binding">This field is required</span></p>
+
+                        </div>
+                        <div class="flexbox mr-l" ng-if="lot_control_code =='Y'">
+                            <label ng-class="{'red':false}"><span ng-if="false">*</span><span ng-bind="'IB.LotNumber' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-if="trackable_flag=='Y'" ng-click="SerialLov('lot_number')"></i>
+                            <input type="text" class="form-control" ng-model="formData.lot_number"  name="lot_number" ng-required="false" ng-readonly="trackable_flag=='Y'" adonly select3="" ng-class="{'bd-red':submitted && sr_form.lot_number.$invalid}">
+                            <p class="red form-tips" style="margin-left: 140px !important; margin-top:-10px;"  ng-show="submitted && sr_form.lot_number.$invalid"><i class="icon_error-circle_alt"></i><span class="ml5 ng-binding">This field is required</span></p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'SR.w_end_date' | translate"></label>
+                            <input type="text" class="form-control" ng-model="warranty_end_dat" not-allow="">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-if="checkCurchase_date">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'SR.PurchaseDate' | translate"></label>
+                            <input datetimepicker2 type="text" options="{type:'date'}" class="form-control ng-pristine ng-valid" ng-model="formData.purchase_date">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                        </div>
+                    </div>
+                </div>
+                <h2 class="mt15" ng-bind="'SR.Problem_desc' | translate"></h2>
+
+                <div class="flexbox problem-box ipt-item">
+                    <div class="fex1 mr50">
+                        <div class="flexbox" ng-class="{'mb30':submitted && sr_form.summary.$invalid}">
+                            <label class="red">*<span ng-bind="'SR.Summary' | translate"></span></label>
+                            <input type="text" class="form-control fex1" ng-model="summary" name="summary" required=""
+                                   ng-class="{'bd-red':submitted && sr_form.summary.$invalid}">
+
+                            <formtips title="This field is required"
+                                      ng-show="submitted && sr_form.summary.$invalid"></formtips>
+                        </div>
+                        <div class="flexbox mt10">
+                            <label ng-bind="'SR.Notes' | translate"></label>
+                                <textarea type="text" class="form-control" ng-model="note" placeholder="input your reply here..."></textarea>
+                        </div>
+                        <a class="btn btn-primary btn-large pull-right mt10" ng-click="upload(fileList)"
+                           ng-bind="'PUBLIC.Upload' | translate"></a>
+                    </div>
+                    <div class="fex1">
+
+                        <div class="flexbox">
+                            <div class="upload-btn" ngf-select ng-model="files" ngf-multiple="true"
+                                 ngf-accept="validate($file)" ngf-allow-dir="true" ng-click="addFile(files)"
+                                 ngf-change="fileSelected($files, $event)">
+                                <i class="icon-cloud-upload fts18"></i>
+
+                                <p class="fts16" ng-bind="'SR.add_file' | translate"></p>
+                            </div>
+                            <div class="upload-list fex1">
+                                <div class="file_item{{$index}}" ng-repeat="item in fileList">
+                                    <div class="file-name">
+                                        <i  class="icon_folder_upload"></i><span class="ml5" ng-bind="item.name"></span>
+                                    </div>
+                                    <div class="flexbox">
+                                        <div class="progress progress-xs" style="height: 6px">
+
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="60"
+                                                 aria-valuemin="0" ng-show="item.is_upload"
+                                                 aria-valuemax="100" ng-style="{'width': progressPercentage}">
+
+                                            </div>
+
+                                        </div>
+                                        <div class="progress-right"><span
+                                                class="progress-num">{{progressPercentage}}</span><span
+                                                class="icon_close delete-btn" ng-class="{'icon_close': !item.is_upload }"
+                                                ng-click="del($index)"></span></div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <p class="mt10 red " ng-bind="'SR.file_tips' | translate" style="width: 70%">
+                        </p>
+
+                    </div>
+
+                </div>
+                <div class="flexbox footer-btn mt10">
+                    <div class="fex1" ></div>
+                    <div class="mr15 mt20">
+                    <button type="submit" class="btn btn-primary mr5 fts16  btn-large" ng-bind="'PUBLIC.Submit' | translate"></button>
+                    <a class="btn btn-default btn-large mr50" back-button=""><span ng-bind="'PUBLIC.Cancel' | translate"  ng-bind="'PUBLIC.Cancel'"></span></a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</section>
+

@@ -1,0 +1,47 @@
+<div class="login-box" ng-controller="loginCtrl">
+    <img src="./img/login-logo.png" class="login-logo">
+    <form class="login-form" autocomplete="off" name="loginForm" ng-submit="processForm()" novalidate >
+        <div id="login-wrap" class="pos-relative">
+        <div class="form-group login-wrap error-tips" >
+            <h2 class="title" ng-bind="'login.title' | translate"></h2>
+            <div class="pos-relative">
+                <input type="text" class="form-control mb15" placeholder="Username" autofocus name="username" ng-model="username" required value="{{username}}" ng-class="{form_error:isError}">
+                <span class="icon-user username-icon"></span>
+            </div>
+            <div class="pos-relative">
+                <input type="password" ng-focus="toPsw($event)" test-dir="{{testDir}}" autocomplete="off" class="form-control" placeholder="Password" name="password" ng-model="password" required value="{{password}}">
+                <span class="icon-lock username-icon"></span>
+            </div>
+            <label class="checkbox login-remember">
+                <input type="checkbox" value="" name="rememberpas" ng-checked="checked" ng-model="isstroepwd" ng-change="rememberpas()">{{'login.isRemember' | translate}}
+            </label>
+            <a href="https://globalid.midea.com/ess/carriermidea/resetpwd" style="color:#c3c3c3;">{{'login.ForgetPassword' | translate}}</a>
+            <!--<a href="javascript:;" style="color:#c3c3c3;margin-left:80px;" ng-click="contactUSLov()">Contact US</a>-->
+            <button class="btn btn-primary btn-block login-btn" type="submit" ng-bind="'login.login-btn' | translate"></button>
+        </div>
+            </div>
+    </form>
+    <div class="login-footer">
+        <p class="copy-right pull-left ml10" ng-bind="'PUBLIC.copyright' | translate"></p>
+        <div class="btn-group pull-right mr10" ng-controller="TranslateController">
+            <a class="pull-left dropdown-toggle" data-toggle="dropdown" href="">
+                <!--<span ng-if="countryFlagen" class="flag pull-left"></span>-->
+                <!--<span ng-if="countryFlagba" class="flag flag-ba pull-left"></span>-->
+                <span class="pull-left">{{changeName}}</span>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="" title="English" ng-click="changeLanguage('English')" ng-bind="'PUBLIC.English' | translate"></a></li>
+                <li ng-repeat="item in lanData" ><a href="" title="{{item.name}}" ng-click="changeLanguage(item.name)" ng-bind="'PUBLIC.{{item.name}}' | translate">{{item.name}}</a></li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="login-description">
+        <h2>Pink Shoes<br>
+            2013 Collection</h2>
+        <p>Nunc non fermentum nunc. Sed ut ante<br>
+            eget leo tempor consequat sit amet eu orci.<br>
+            Donec dignissim dolor eget..</p>
+    </div>
+</div>

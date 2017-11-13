@@ -1,0 +1,89 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="PartsCycleCoutingCtrl">
+    <div ng-include="'tpls/header.html'" ></div>
+    <div ng-include="'tpls/menu.html'" ></div>
+    <form class="form-horizontal form-validate " method="get"  name="newform" novalidate ng-submit="submitForm(addcustform.$valid)">
+        <section id="main-content"  >
+            <h1 ng-bind="'NPR.PartsCycleCounting' | translate"></h1>
+            <div class="base-box" >
+                <h2 ng-bind="'NPR.Adjustmentinfo' | translate"></h2>
+                <form>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox">
+                                <label ng-bind="'NPR.CountingNumber' | translate"></label>
+                                <input type="text" red class="form-control fex1"  required ng-model="ASP" name="ASP" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox">
+                                <label  ng-bind="'NPR.Subinventory' | translate"></label>
+                                <input type="text" red class="form-control fex1"  required ng-model="Address" name="Address" maxlength="100">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox">
+                        <div class="fex1 mr50">
+                            <div class="flexbox">
+                                <label  ng-bind="'NPR.Status' | translate"></label>
+                                <input type="text" red class="form-control fex1"  required ng-model="Address" name="Address" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="fex1 ">
+                            <div class="flexbox">
+                                <label  ng-bind="'NPR.Date' | translate"></label>
+                                <input type="text" red class="form-control fex1"  required ng-model="Address" name="Address" maxlength="100">
+                                </div>
+                        </div>
+                    </div>
+                </form>
+
+                <h2 ng-bind="'NPR.ItemInformation' | translate"></h2>
+                <div >
+                    <table class="table table-striped table-bordered table-hover text-center">
+                        <tr class="active">
+                            <th class="sorting" role="columnheader"ng-bind="'NPR.Action' | translate"></th>
+                            <th class="sorting" role="columnheader"ng-bind="'NPR.Item' | translate" ></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.Description' | translate"></th>
+                            <th class="sorting" role="columnheader" ng-bind="'NPR.QTY' | translate"></th>
+
+                        </tr>
+                        <tr ng-repeat=" item in summaryList">
+                            <td>
+                                <a ui-sref="UpdateCustomer({party_id:{{item.party_id}},customer_type:'{{item.customer_type}}',user_id:{{user_id}},update_flag:'{{item.update_flag}}'})">
+                                    <i class="icon-edit-sign" ng-if="item.update_flag=='Y'"></i>
+                                    <i class="icon-edit" ng-if="item.update_flag=='N'"></i>
+                                </a>
+                            </td>
+                            <td><p ng-bind="item.customer_number"></p></td>
+                            <td><p ng-bind="item.account_number"></p></td>
+                            <td><p ng-bind="item.customer_type"></p></td>
+                            <td><p ng-bind="item.customer_name"></p></td>
+                            <td><p ng-bind="item.customer_address"></p></td>
+                        </tr>
+                    </table>
+
+                    <div class="btn-row ml15 text-center">
+                        <div paging
+                             page="currentPage"
+                             page-size="10"
+                             total="totalPage*10"
+                             show-prev-next="{{showPrevNext}}"
+                             paging-action="DoCtrlPagingAct(page)"
+                             ng-show="totalPage>0"
+                                >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flexbox   mt10">
+                    <div class="fex1" ></div>
+                    <div class="mr15 mt20">
+                        <button type="submit" class="btn btn-primary mr5 fts16" ng-bind="'PUBLIC.Draft' | translate"></button><button type="submit" class="btn btn-primary mr5 fts16" ng-bind="'PUBLIC.Submit' | translate"></button>
+                        <a class="btn btn-default"><span ng-bind="'PUBLIC.Export' | translate" ui-sref="F_ID_CUST_SUMMARY" ng-bind="'PUBLIC.Cancel'"></span></a>
+                        <button type="button" class="btn btn-primary mr5 fts16" ng-bind="'PUBLIC.Import' | translate"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</section>

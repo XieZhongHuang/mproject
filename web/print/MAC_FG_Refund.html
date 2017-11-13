@@ -1,0 +1,405 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Print</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        @font-face {
+            font-family: DeliciousRoman;
+            src: url('timesbd.ttf'), url('TimesLTStd-Roman.otf');
+        }
+
+        body {
+            background-color: #ffffff;
+            /*color: #000 !important;*/
+            font-family: Microsoft YaHei, Geneva, "sans-serif", SimSun;
+            font-size: 12px;
+        }
+
+        .mask {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background-color: #fff;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: none;
+        }
+
+        .load {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1001;
+            margin-top: -18px;
+            margin-left: -18px;
+            display: none;
+        }
+
+        h1 {
+            margin: 0 200px;
+            padding: 10px 0;
+        }
+
+        .tc {
+            text-align: center;
+        }
+
+        .fs24 {
+            font-size: 24px;
+        }
+
+        .fs12 {
+            font-size: 12px;
+        }
+
+
+        .print-logo {
+            position: absolute;
+            top:50px;
+            left: 0;
+            color:#000;
+        }
+
+        img {
+            border: 0;
+        }
+
+        .print-container {
+            position: relative;
+            /*width: 900px;*/
+            width:100%;
+            height: auto;
+            background: #fff;
+            margin: 0 auto;
+        }
+
+        .print-time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .print-head {
+            height: 73px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        tr th {
+            height: 20px;
+            background: #fcfcfc;
+            border: 1px solid #e8e8e8;
+            /*width: 50%;*/
+            text-align: center;
+        }
+
+        tr th.bort0, tr td.bort0 {
+            border-top: 0;
+        }
+
+        tr td {
+            border: 1px solid #e8e8e8;
+            vertical-align: top;
+        }
+
+        tr td.borb0 {
+            border-bottom: 0;
+        }
+
+        .mb10 {
+            margin-bottom: 10px;
+        }
+
+        .ml10 {
+            margin-left: 10px;
+        }
+
+        table tr td p strong {
+            color: #000;
+            margin-right: 10px;
+        }
+
+        table tr td p {
+            color: #000;
+            padding: 0 10px;
+            height: 33px;
+            line-height: 30px;
+            margin-bottom: 0;
+        }
+
+        table tr td p.last {
+            border-bottom: 0;
+        }
+
+        .write-table tr td {
+            border-left: 0;
+            height: 35px;
+            border-bottom: 0;
+        }
+
+        .write-area {
+            height: 120px;
+        }
+
+        .write-table tr th {
+            border-left: 0;
+        }
+
+        .Parts-table tr td {
+            height: 28px;
+            line-height: 30px;
+        }
+
+        .report-table input {
+            height: 28px;
+            width: 80px;
+            border: 1px solid #666;
+            border-radius: 3px;
+        }
+
+        table tr td .report-table tr th, table tr td .report-table tr td {
+            border: 0;
+        }
+
+        table tr td .report-table tr th, table tr td .report-table tr td {
+            border: 0;
+            line-height: 30px;
+        }
+
+        tr .report-l {
+            width: 50%;
+            border: 0;
+        }
+
+        tr .report-r {
+            border: 0;
+        }
+
+        .report-r table tr td {
+            line-height: 39px;
+            border-left: 0;
+        }
+
+        .report-r table tr td.item {
+            width: 90px;
+            *width: 92px;
+        }
+
+        .report-tip {
+            margin-top: 10px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .mt10 {
+            margin-top: 10px;
+        }
+        tr td {
+            text-align: center;
+        }
+
+        .pl5 {
+            padding-left: 5px;
+        }
+
+        .report-r tr th.bort0 {
+            border: 0;
+        }
+
+        .print-footer td p {
+            text-align: center;
+            border-top: 0;
+        }
+
+        input {
+            *line-height: 25px;
+        }
+
+        .tab-content{
+            width: 100%;
+
+        }
+        .tab-content ul{
+            list-style: none;
+        }
+
+        .left-content{
+            float: left;
+        }
+
+        .middle-content{
+            float:left ;
+
+
+        }
+
+        .right-content{
+            float:left ;
+            margin-top: 10px;
+        }
+
+        .info-l {
+            float: left;
+        }
+
+        .info-r {
+            float: left;
+        }
+        .flex{
+            display: flex;
+            margin-bottom: 5px;
+        }
+        .flex1{
+            flex: 1;
+        }
+        .flex input{
+            height:26px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: #fcfcfc;
+        }
+        lable{
+            color: #000;
+            font-weight: bold;
+            min-width:120px;
+            display: inline-block;
+            margin-left: 100px;
+        }
+        .boxflex{
+            width:40%;
+        }
+    </style>
+</head>
+<body>
+<div class="print-container">
+    <div class="print-head" style=" border-left: 1px solid #e8e8e8; border-right: 1px solid #e8e8e8;border-top: 1px solid #e8e8e8">
+        <h1 class="fs24 tc"></h1>
+    </div>
+    <table class="Parts-table">
+        <tr>
+            <th class="bort0">DOC Number</th>
+            <th class="bort0">Status</th>
+            <th class="bort0">Remark</th>
+        </tr>
+        <tr class="tc srdata">
+            <td></td>
+            <td></td>
+            <td ></td>
+        </tr>
+    </table>
+   <!--<div class="header">-->
+       <!--<div class="flex">-->
+           <!--<div class="flex1 boxflex">-->
+               <!--<lable>Doc Number</lable>-->
+               <!--<input disabled type="text"/>-->
+           <!--</div>-->
+           <!--<div style="margin-left:-620px;" class="flex1">-->
+               <!--<lable>Status</lable>-->
+               <!--<input disabled type="text"/>-->
+           <!--</div>-->
+       <!--</div>-->
+      <!--<div class="flex">-->
+            <!--<div class="flex1 boxflex">-->
+                <!--<lable>Remark</lable>-->
+                <!--<input disabled style="width:500px;" type="text"/>-->
+            <!--</div>-->
+      <!--</div>-->
+   <!--</div>-->
+    <div style="height:40px;border-right: 1px solid #e8e8e8;border-left: 1px solid #e8e8e8;"></div>
+    <table class="Parts-table chargedata">
+        <tr>
+            <th class="bort0">SR Number</th>
+            <th class="bort0">Charge Line</th>
+            <th class="bort0">Customer Name</th>
+            <th class="bort0">Model</th>
+            <th class="bort0">Serial Number</th>
+            <th class="bort0">Reason</th>
+            <th class="bort0">Product</th>
+            <th class="bort0">Refund</th>
+        </tr>
+    </table>
+</div>
+<div class="mask"></div>
+<div class="load"><img src="load.gif"></div>
+<script src="../api/apiconfig.js"></script>
+<script src="../framework/jquery-1.8.3.min.js"></script>
+<script>
+    $(function () {
+        var sendData = window.location.href;
+        if (sendData.indexOf('=') > -1) {
+            sendData = sendData.substring(sendData.indexOf('=') + 1);
+        } else {
+            alert('Can not get document ID!');
+            return false;
+        }
+
+        //http://10.16.24.83:8080/sit2/mipCharge
+        //partalConfig.getMipDetail
+        $.ajax({
+            type: "get",
+            async: false,
+            url: partalConfig+'mipCharge?document_id='+sendData+'&doc_type=FG_REFUND',
+            dataType: "jsonp",
+            jsonp: "callback",
+            success: function (res) {
+                console.log(res);
+                var response = res.approval_info;
+                $('.srdata td').eq(0).html(response.doc_number);
+                $('.srdata td').eq(1).html(response.doc_status);
+                $('.srdata td').eq(2).html(response.doc_desc);
+//                $('.srdata td').eq(3).html(response.creation_date);
+
+                var $table = $('.chargedata');
+
+                for(var k=0;k<response.Lines.length;k++){
+                    var $tr = $('<tr>');
+                    for(var i=0;i<8;i++){
+                        var $td = $('<td>');
+                        if(i==0){
+                            $td.html(response.Lines[k].SR_number);
+                        }else if(i==1){
+                            $td.html(response.Lines[k].line_number);
+                        }else if(i==2){
+                            $td.html(response.Lines[k].customer_name);
+                        }else if(i==3){
+                            $td.html(response.Lines[k].model);
+                        }else if(i==4){
+                            $td.html(response.Lines[k].serial_num);
+                        }else if(i==5){
+                            $td.html(response.Lines[k].return_reason);
+                        }else if(i==6){
+                            $td.html(response.Lines[k].item_num);
+                        }else if(i==7){
+                            $td.html(response.Lines[k].Refund);
+                        }
+                        $tr.append($td);
+                    }
+                    $table.append($tr);
+                }
+
+            },
+            error: function (err) {
+//                console.log(err)
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

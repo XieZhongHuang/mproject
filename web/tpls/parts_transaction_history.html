@@ -1,0 +1,138 @@
+<div id="container" ng-controller="PartsTransactionHistoryCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'NPR.TransactionHistory'|translate"></h1>
+        <div class="base-box pt10">
+            <form  name="hisForm" novalidate="" ng-submit="submitForm(hisForm)">
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50 ">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.TranxType' | translate"></label>
+                            <select select2 class="form-control" ng-model="transaction_type_id_index" ng-change="choiceTranxType(transaction_type_id_index)"  ng-keypress="enter($event)" get-focus="">
+                                <option value=""></option>
+                                <option value="{{$index}}" ng-repeat="item in TranxType">{{item.transaction_type_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1 ">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NPR.Reference' | translate" ></label>
+                            <input type="text" class="form-control fex1" ng-model="Reference"  ng-keypress="enter($event)">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.ItemCategory' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="categoryLov(1)"></i>
+                            <i class="icon-remove-sign icon-color" style="display: none;" ng-click="categoryem()"></i>
+                            <input type="text" ng-model="category"ng-keypress="enter($event)"  class="form-control fex1 ng-isolate-scope ng-pristine ng-valid notAllow" select3="" not-allow="" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="fex1 ">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NPR.Item' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                            <i class="icon-remove-sign icon-color" style="display: none;" ng-click="itemem()"></i>
+                            <input type="text" ng-model="item_number" ng-keypress="enter($event)"  class="form-control fex1 ng-isolate-scope ng-pristine ng-valid notAllow" select3="" not-allow="" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50 ">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'NPR.ItemDescription' | translate" ></label>
+                            <input type="text" class="form-control fex1 notAllow" ng-model="item_desc" ng-keypress="enter($event)">
+                        </div>
+                    </div>
+                    <div class="fex1 ">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NPR.Subinventory' | translate"></label>
+                            <select select2 class="form-control" ng-model="subinventory" ng-change="changeSubinventory()" ng-keypress="enter($event)" get-focus="">
+                                <option value=""></option>
+                                <option value="{{item.subinventory_code}}" ng-repeat="item in inventory">{{item.subinventory_code}}</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50 ">
+                        <div class="flexbox mr-l">
+                            <label translate="NPR.Location"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="locationLov(1, subinventory)"></i>
+                            <i class="icon-remove-sign icon-color"></i>
+                            <input type="text" ng-model="formData.location_code"  class="form-control fex1 notAllow" select3="" not-allow="" readonly>
+                        </div>
+                    </div>
+                    <div class="fex1 ">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'NPR.TranxDate' | translate"></label>
+                            <input type="text" class="form-control fex1 " ng-model="date_to" ng-keypress="enter($event)" datetimepicker />
+                            <input type="text"  style="opacity: 0;position: absolute">
+                            <label style="min-width: auto;margin:0px 2px">----</label>
+                            <input type="text" class="form-control fex1 " ng-model="date_from"  ng-keypress="enter($event)" datetimepicker-end/>
+                            <input type="text"  style="opacity: 0;position: absolute">
+                        </div>
+                    </div>
+
+                    </div>
+                <div class="text-right mr20" style="margin-right: 65px">
+                    <button type="submit" class="btn btn-primary mr5 fts16  btn-large" id="sub" ng-click="DoCtrlPagingAct2(1)">
+                        <span ng-bind="'PUBLIC.Search' | translate" class="ng-binding">Search</span>
+                    </button>
+                    <button type="button" class="btn btn-large btn-default ng-binding mr50" ng-click="reset()">
+                        <span ng-bind="'PUBLIC.Reset' | translate" class="ng-binding " ng-click="">Reset</span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+        <div class="ml15 mr15">
+            <table class="table table-striped table-bordered table-hover text-center table-search table-condensed" ng-show="!loadingFlag">
+                <tr  role="row" class="active">
+                    <!--<th class="sorting" role="columnheader" ng-bind="'NPR.ModelNo' | translate"></th>-->
+                    <th style="width:100px;" class="sorting" role="columnheader" ng-bind="'NPR.ItemNo' | translate"></th>
+                    <th style="width:200px;" class="sorting" role="columnheader" ng-bind="'NPR.ItemDescription' | translate"></th>
+                    <th style="width:40px;" class="sorting" role="columnheader" ng-bind="'NPR.PrimaryUOM' | translate"></th>
+                    <th style="width:80px;" class="sorting" role="columnheader" ng-bind="'NPR.TranxType' | translate"></th>
+                    <th style="width:80px;" class="sorting" role="columnheader" ng-bind="'NPR.TranxDate' | translate"></th>
+                    <th style="width: 5%;" class="sorting" role="columnheader" ng-bind="'NPR.TranxQTY' | translate"></th>
+                    <th style="width:5%;" class="sorting" role="columnheader" ng-bind="'NPR.Subinventory' | translate"></th>
+                    <th style="width:5%;" class="sorting" role="columnheader" ng-bind="'NPR.Location' | translate"></th>
+                    <th style="width:5%;" class="sorting" role="columnheader" ng-bind="'NPR.TransferSubInventory' | translate"></th>
+                    <th style="width:5%;" class="sorting" role="columnheader" ng-bind="'NPR.TransferLocator' | translate"></th>
+                    <th style="width:5%;" class="sorting tq" role="columnheader" ng-bind="'NPR.Reference' | translate" style="width: 150px"></th>
+                    <th style="width:5%;" class="sorting" role="columnheader" ng-bind="'NPR.ServiceRequest' | translate"></th>
+                    <th style="width:5%;" class="sorting" role="columnheader" ng-bind="'NPR.TranxOwner' | translate"></th>
+                </tr>
+                <tr ng-repeat=" item in List" class="trtd">
+                    <!--<td><p ng-bind="item.model_no"></p></td>-->
+                    <td><p ng-bind="item.item_no"></p></td>
+                    <td><p style="word-break: break-all; word-wrap:break-word;" ng-bind="item.item_desc"></p></td>
+                    <td><p ng-bind="item.uom"></p></td>
+                    <td><p ng-bind="item.tranx_type"></p></td>
+                    <td><p ng-bind="item.tranx_date"></p></td>
+                    <td><p ng-bind="item.tranx_qty"></p></td>
+                    <td><p ng-bind="item.from_subinventory"></p></td>
+                    <td><p ng-bind="item.from_locations"></p></td>
+                    <td><p ng-bind="item.to_subinventory"></p></td>
+                    <td><p ng-bind="item.to_locations"></p></td>
+                    <td><p ng-bind="item.transaction_reference"></p></td>
+                    <td><p ng-bind="item.sr_num"></p></td>
+                    <td><p ng-bind="item.Tranx_Owner"></p></td>
+                </tr>
+            </table>
+            <div class="btn-row ml15 mt10 text-center page-list" ng-show="!loadingFlag">
+                <div paging page="currentPage" page-size="10" total="totalPage*10" show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct2(page)">
+                </div>
+            </div>
+        </div>
+        <!--无数据提示-->
+        <div class="emptyData" ng-if="emptyData&&List.lenght==0" style="top:300px!important;">No results found. </div>
+    </div>
+</div>
+

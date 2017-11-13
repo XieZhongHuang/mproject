@@ -1,0 +1,79 @@
+<div id="container" ng-controller="PartsAjustmentCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <form class="form-horizontal form-validate "  name="partsForm" novalidate="" ng-submit="submitForm(partsForm)" >
+
+    <div id="main-content"  >
+
+        <h1 ng-bind="'NPR.SparePartsAdjustment'|translate"></h1>
+        <div class="ml15 mr15 mt20" ng-show="!loadingFlag">
+            <table id="parts-table" class="table table-striped table-bordered table-hover text-center table-search table-condensed" >
+                <tr  role="row" class="active">
+                    <th class="sorting" role="columnheader" style="width: 30px" ng-bind="'PUBLIC.Option' | translate"></th>
+                    <th class="sorting it" role="columnheader" ng-bind="'NPR.Item' | translate"></th>
+                    <th class="sorting id" role="columnheader" ng-bind="'NPR.ItemDescription' | translate"style="width: 216px"></th>
+                    <th class="sorting su" role="columnheader" ng-bind="'NPR.Subinventory' | translate"style="width: 153px"></th>
+                    <th class="sorting oh" role="columnheader" ng-bind="'NPR.On-HandQTY' | translate" style="width: 105px"></th>
+                    <th class="sorting tt" role="columnheader" ng-bind="'NPR.TransationType' | translate" style="width: 200px"></th>
+                    <th class="sorting tq" role="columnheader" ng-bind="'NPR.TransactQTY' | translate" style="width: 150px"></th>
+                </tr>
+
+                <tr class="trtd" ng-repeat="item in arr">
+                    <td class="ted" ng-click="del($index)"><span class="icon-minus-sign red" ></span></td>
+                    <td>
+                        <ng-form name="lform">
+                        <div class="ipt-item flexbox zz">
+                            <div class="fex1 zz">
+                                <div class="flexbox zz">
+                                    <i class="icon-search add-btn icon-color" ng-click="itemLov(1,$index)"></i>
+                                    {{lov}}
+                                    <input type="text" ng-model="$parent.arr[$index].item_number" name="lov"   class="form-control fex1 ng-isolate-scope ng-pristine ng-valid notAllow" select3=""
+                                           not-allow="" readonly="readonly" required ng-class="{'bd-red':submitted && lform.lov.$invalid}">
+                                </div>
+                            </div>
+                        </div>
+                        </ng-form>
+                    </td>
+                    <td><input type="text" class="form-control fex1 notAllow bno" ng-model="arr[$index].item_desc"></td>
+                    <td>
+                        <ng-form name="sform">
+                        <select select2 class="form-control" ng-model="$parent.arr[$index].subinventory" ng-change="getV(arr,$index)" name="subinventory" required ng-class="{'bd-red':submitted && sform.subinventory.$invalid}">
+                            <option value="{{item.subinventory_code}}" ng-repeat="item in inventory">{{item.subinventory_code}}</option>
+                        </select>
+                        </ng-form>
+                    </td>
+                    <td ><input type="text" class="form-control fex1 notAllow bno" ng-model="$parent.arr[$index].qty" ></td>
+                    <td>
+                        <ng-form name="tform">
+                        <input ng-model="tran" name="tran" type="hidden" required>
+                        <select select2 class="form-control" ng-model="$parent.arr[$index].transaction" ng-change="getV1(arr,$index);tran=item.transaction_type_name"  ng-class="{'bd-red':submitted && tform.tran.$invalid}">
+                            <option value="{{item}}" ng-repeat="item in transtype">{{item.transaction_type_name}}</option>
+                        </select>
+                        </ng-form>
+                    </td>
+                    <td>
+                        <ng-form name="wform">
+                        <input type="text" class="form-control fex1" ng-model="$parent.arr[$index].quantity" ng-blur="getV2(arr,$index)" name="quantity" required ng-class="{'bd-red':submitted && wform.quantity.$invalid}">
+                    </ng-form>
+                    </td>
+                </tr>
+            </table>
+            <div class="text-right mt20">
+
+                <button type="button" class="btn btn-primary mr5 fts16  btn-large" ng-click="newItem()">
+                    <span ng-bind="'PUBLIC.Add' | translate" class="ng-binding">Add</span>
+                </button>
+                <button type="submit" class="btn btn-primary mr5 fts16  btn-large">
+                    <span ng-bind="'PUBLIC.Submit' | translate" class="ng-binding">Submit</span>
+                </button>
+                <button type="button" class="btn btn-large btn-default ng-binding" ng-click="reset()">
+                    <span ng-bind="'PUBLIC.Cancel' | translate" class="ng-binding " ng-click="">Cancel</span>
+                </button>
+            </div>
+        </div>
+     <!--  &lt;!&ndash;无数据提示&ndash;&gt;
+        <div class="emptyData" ng-if="emptyData">This request has no response available!</div>-->
+    </div>
+
+    </form>
+</div>

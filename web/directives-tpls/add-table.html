@@ -1,0 +1,32 @@
+<tr class="trtd"  item-part=""  data-name="{{objIndex}}" ng-init="num=0" >
+    <input type="text" value="{transaction_type_id:}">
+    <td class="ted"><span class="icon-minus-sign red" ng-click="del()"></span></td>
+    <td>
+        <div class="ipt-item flexbox zz">
+            <div class="fex1 zz">
+                <div class="flexbox zz">
+                    <i class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                    <input type="text" ng-model="item_number"
+                           class=" bno form-control fex1 ng-isolate-scope ng-pristine ng-valid notAllow" select3=""
+                           not-allow="" readonly="readonly">
+                </div>
+            </div>
+        </div>
+    </td>
+    <td><input type="text" class="form-control fex1 notAllow bno" ng-model="item_desc"></td>
+    <td>
+        <select select2 class="form-control bno" ng-model="subinventory" ng-change="subch()">
+            <option value="{{item.subinventory_code}}" ng-repeat="item in inventory">{{item.subinventory_code}}</option>
+            </option>
+        </select>
+    </td>
+    <td><p ng-bind="ohqty"></p></td>
+    <td>
+
+        <select select2 class="form-control bno" ng-model="transtypeValue">
+            <option value="{{item}}" ng-repeat="item in transtype">{{item.transaction_type_name}}</option>
+
+        </select>
+    </td>
+    <td><input type="text" ng-bind="" class="form-control fex1 bno" ng-model="quantity"/></td>
+</tr>

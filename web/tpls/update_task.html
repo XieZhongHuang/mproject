@@ -1,0 +1,223 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="TaskUpdateCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <section id="main-content">
+        <!--<div class="mask" ng-if="task_info.update_flag=='N'"></div>-->
+
+        <form class="form-validate form-validate" method="get" name="task_form" novalidate
+              ng-submit="submitForm(task_form)" dirty-form="">
+
+            <h1 ng-bind="'TASK.Title' | translate"></h1>
+
+            <div class="base-box sr-box pt10">
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'TASK.TaskNumber' | translate"></label>
+                            <input type="text" class="form-control fex1" not-allow="" ng-model="task_info.task_number">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'TASK.Type' | translate"></label>
+                            <select select2  class="form-control" ng-model="$parent.taskType" ng-if="task_info.update_flag=='Y'">
+                                <option value="{{item.task_type_id}}" ng-repeat="item in task_type">
+                                    {{item.task_type_name}}
+                                </option>
+                            </select>
+                            <select select2  class="form-control" ng-model="$parent.taskType" disabled ng-if="task_info.update_flag=='N'">
+                                <option value="{{item.task_type_id}}" ng-repeat="item in task_type">
+                                    {{item.task_type_name}}
+
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+
+                            <label ng-bind="'TASK.OwnerType' | translate"></label>
+
+                            <select select2  class="form-control" ng-model="OwnerType"  disabled>
+                                <option value="{{item.task_resource_code}}" ng-repeat="item in task_resource_type">
+                                    {{item.task_resource_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label class="red">*<span  ng-bind="'TASK.Owner' | translate"></span></label>
+                            <!--<input type="text" class="form-control" value="{{task_info.owner}}" ng-class="{'disabled':task_info.level_1=='N' || task_info.level_2=='Y'}">
+                            <input type="hidden" ng-model="owner_id" >-->
+                            <i class="icon-search add-btn icon-color" ng-click="OwnerLov(1)" ng-hide="task_info.level_1=='N' || task_info.level_2=='Y'"></i>
+                            <i class="icon-remove-sign icon-color"></i>
+                            <input type="text" class="form-control" ng-model="owner" name="owner" required  select3="" readonly ng-class="{'bd-red':submitted && task_form.owner.$invalid}">
+                            <formtips title="This field is required"
+                                      ng-show="submitted && task_form.owner.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'TASK.AssigneeType' | translate"></label>
+
+                            <select select2 class="form-control"   ng-model="AssigneeType" ng-disabled="task_info.level_1=='N' || task_info.level_2=='Y'">
+                                <option value="{{item.task_resource_code}}" ng-repeat="item in task_resource_type">
+                                    {{item.task_resource_name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'TASK.Assignee' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="assigneeLov(1)"></i>
+                            <!--<i class="icon-search add-btn icon-color" ng-if="task_info.F_ID_SR_UPDATE_TASK_S!='Y'"></i>-->
+                            <i class="icon-remove-sign icon-color" ng-click="assigneeRemove()" ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'"></i>
+                            <input type="text" class="form-control" ng-model="asignee_name" select3="" readonly ng-change="assignee_id=''" >
+                            <input type="hidden" ng-model="asignee_id"  >
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && task_form.task_name.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'TASK.Priority' | translate"></label>
+
+                            <select select2="" class="form-control"  ng-model="$parent.priority_id" ng-if="task_info.update_flag=='Y'">
+                                <option value="{{item.task_priority_id}}" ng-repeat="item in taskInit">
+                                    {{item.task_priority_name }}
+                                </option>
+                            </select>
+
+                            <select select2="" class="form-control"  ng-model="$parent.priority_id" disabled ng-if="task_info.update_flag=='N'">
+                                <option value="{{item.task_priority_id}}" ng-repeat="item in taskInit">
+                                    {{item.task_priority_name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label class="red">*<span ng-bind="'TASK.Subject' | translate"></span></label>
+                            <input type="text" class="form-control" ng-model="Subject" name="Subject" required=""  ng-class="{'bd-red':submitted && task_form.Subject.$invalid}" ><!--ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'"-->
+                            <!--<input type="text" class="form-control" ng-model="$parent.Subject" name="Subject" required=""  ng-class="{'bd-red':submitted && task_form.task_name.$invalid}" readonly ng-if="task_info.F_ID_SR_UPDATE_TASK_S!='Y'">-->
+                            <formtips title="This field is required"
+                                      ng-show="submitted && task_form.Subject.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'TASK.Status' | translate"></label>
+                            <i class="icon-search add-btn icon-color" ng-click="statusLov()" ><!--ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'"--></i>
+                            <!--<i class="icon-remove-sign icon-color"  ng-click="remove('task_status_name')">&lt;!&ndash;ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'"&ndash;&gt;</i>-->
+                            <!--<i class="icon-search add-btn icon-color" ng-if="task_info.F_ID_SR_UPDATE_TASK_S!='Y'"></i>-->
+                            <input type="text" class="form-control" readonly ng-model="task_status_name" select3="">
+                            <input type="hidden" ng-model="incident_status_id" >
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'TASK.Description' | translate"></label>
+                            <input type="text" class="form-control"  ng-model="task_desc" ><!--ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'"-->
+                            <!--<input type="text" class="form-control"  ng-model="$parent.task_desc" readonly ng-if="task_info.F_ID_SR_UPDATE_TASK_S!='Y'">-->
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item mr100">
+                    <style>
+                        .ui-datepicker{z-index: 1000!important;}
+                    </style>
+                    <table class="table table-bordered task-date-box" style="margin-top: 10px">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th ng-bind="'TASK.Planned' | translate"></th>
+                            <th ng-bind="'TASK.Scheduled' | translate"></th>
+                            <th ng-bind="'TASK.Actual' | translate"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Start date</td>
+                            <td>
+                                <div class="form-group" >
+
+                                    <div class="col-xs-12">
+                                        <input  datetimepicker ng-model="plan_start_date"  value="{{plan_start_date}}"  class="form-control" ng-disabled="task_info.F_ID_SR_UPDATE_TASK_N=='Y'||task_info.F_ID_SR_UPDATE_TASK_N=='N'"  ><!--ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'"-->
+                                        <!--<input  datetimepicker ng-model="$parent.plan_start_date" value="{{plan_start_date}}"  class="form-control"  ng-if="task_info.F_ID_SR_UPDATE_TASK_N=='Y'||task_info.F_ID_SR_UPDATE_TASK_N=='N'" not-allow="">-->
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group" >
+                                    <div class="col-xs-12">
+                                        <input  datetimepicker2 ng-model="schedule_start_date"  value="{{schedule_start_date}}" ng-disabled="task_info.F_ID_SR_UPDATE_TASK_S=='N'"  class="form-control"><!-- ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'||task_info.F_ID_SR_UPDATE_TASK_N=='Y'-->
+                                        <!--<input  datetimepicker2 ng-model="$parent.schedule_start_date" value="{{schedule_start_date}}"   class="form-control" ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='N'" not-allow="">-->
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group" >
+                                    <div class="col-xs-12">
+                                        <input  datetimepicker2 ng-model="actual_start_date"  value="{{actual_start_date}}"  class="form-control" ng-disabled="task_info.F_ID_SR_UPDATE_TASK_S=='N'||task_info.F_ID_SR_UPDATE_TASK_N=='N'" ><!--ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'||task_info.F_ID_SR_UPDATE_TASK_N=='Y'-->
+                                        <!--<input  datetimepicker2 ng-model="$parent.actual_start_date" value="{{actual_start_date}}"  class="form-control" ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='N'||task_info.F_ID_SR_UPDATE_TASK_N=='N'" not-allow="">-->
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>End date</td>
+                            <td>
+                                <div class="form-group" >
+                                    <div class="col-xs-12"  >
+                                        <input ng-focus="resetClass(1)" name="plan_end_date"  datetimepicker ng-model="plan_end_date" value="{{plan_end_date}}" ng-disabled="task_info.F_ID_SR_UPDATE_TASK_N=='Y'||task_info.F_ID_SR_UPDATE_TASK_N=='N'" class="form-control"  ><!--ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='Y'"-->
+                                        <!--<input ng-focus="resetClass(1)" name="plan_end_date"  datetimepicker value="{{plan_end_date}}"  class="form-control" ng-if="task_info.F_ID_SR_UPDATE_TASK_S!='Y'" not-allow="">-->
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group" >
+                                    <div class="col-xs-12">
+                                        <input ng-focus="resetClass(2)" name="schedule_end_date"  datetimepicker2 ng-model="schedule_end_date" value="{{schedule_end_date}}"  class="form-control" ng-disabled="task_info.F_ID_SR_UPDATE_TASK_S=='N'||task_info.F_ID_SR_UPDATE_TASK_N=='N'">
+                                        <!--<input ng-focus="resetClass(2)" name="schedule_end_date"  datetimepicker2 ng-model="$parent.schedule_end_date" value="{{schedule_end_date}}"  class="form-control" ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='N'||task_info.F_ID_SR_UPDATE_TASK_N=='N'" not-allow="">-->
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group" >
+                                    <div class="col-xs-12">
+                                        <input ng-focus="resetClass(3)" name="actual_end_date"  datetimepicker2 ng-model="actual_end_date"  value="{{actual_end_date}}"  class="form-control" ng-disabled="task_info.F_ID_SR_UPDATE_TASK_S=='N'||task_info.F_ID_SR_UPDATE_TASK_N=='N'">
+                                        <!--<input ng-focus="resetClass(3)" name="actual_end_date"  datetimepicker2 ng-model="$parent.actual_end_date" value="{{actual_end_date}}"  class="form-control" ng-if="task_info.F_ID_SR_UPDATE_TASK_S=='N'||task_info.F_ID_SR_UPDATE_TASK_N=='N'" not-allow="">-->
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="flexbox  footer-btn mt10">
+                    <div class="fex1" ></div>
+                    <div class="mr15 mt20">
+                        <button type="submit" class="btn btn-primary mr5 fts16 btn-small" style="font-size:16px;padding:6px 20px;" ng-bind="'PUBLIC.Submit' | translate"  ng-disabled="task_info.F_ID_SR_UPDATE_TASK_S=='N'||task_status=='Closed'"></button>
+                        <a class="btn btn-default mr5" ng-click="returnBack()"><span ng-bind="'PUBLIC.Back' | translate"></span></a>
+                        <a class="btn btn-default mr50" ng-click="Cancel()"><span ng-bind="'PUBLIC.Cancel' | translate"  ng-bind="'PUBLIC.Cancel'"></span></a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+
+    </section>
+</section>

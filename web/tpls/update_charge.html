@@ -1,0 +1,154 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="ChargeUpdateCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <section id="main-content">
+
+        <form class="form-validate form-validate" method="get" name="charge_form" novalidate
+              ng-submit="submitForm(charge_form)" dirty-form="">
+            <h1 ng-bind="'CHARGE.Updatecharge' | translate"></h1>
+            <div class="base-box sr-box pt10">
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && charge_form.transaction_type.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l" >
+                            <label class="red">*{{'CHARGE.ServiceActivity' | translate}}</label>
+                            <i ng-if="status_code!='SUBMITTED'" class="icon-search add-btn icon-color" ng-click="activityLov(1)"></i>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    readonly
+                                    required=""
+                                    ng-model="transaction_type"
+                                    name="transaction_type"
+                                    select3=""
+                                    ng-class="{'bd-red':submitted && charge_form.transaction_type.$invalid}"
+                                    ng-change="transaction_type_id='';line_category_code='';business_process_id=''"
+                                    >
+
+                            <formtips title="This field is required"
+                                      ng-show="submitted && charge_form.transaction_type.$invalid">
+                            </formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'CHARGE.Status' | translate"></label>
+                            <input type="text" class="form-control"  ng-model="status_code"  readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && charge_form.item_number.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="red">*{{'CHARGE.Item' | translate}}</label>
+                            <i ng-if="status_code!='SUBMITTED'"  class="icon-search add-btn icon-color" ng-click="itemLov(1)"></i>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    readonly
+                                    ng-model="item_number"
+                                    name="item_number"
+                                    required=""
+                                    select3=""
+                                    ng-class="{'bd-red':submitted && charge_form.item_number.$invalid}">
+                            <formtips title="This field is required" ng-show="submitted && charge_form.item_name.$invalid"></formtips>
+
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'CHARGE.ItemDesc' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="item_desc">
+                        </div>
+                    </div>
+                </div>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && charge_form.Qty.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label class="red">*{{'CHARGE.Qty' | translate}}</label>
+                            <input type="number" ng-disabled="status_code=='SUBMITTED'" class="form-control"  ng-model="Qty" required="" name="Qty" required="" ng-class="{'bd-red':submitted && charge_form.Qty.$invalid}">
+                            <formtips title="This field is required" ng-show="submitted && charge_form.Qty.$invalid"></formtips>
+
+
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'CHARGE.BillingType' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="bill_type">
+                        </div>
+                    </div>
+                </div>
+                <div  class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'CHARGE.PriceList' | translate"></label>
+                            <select class="form-control" ng-disabled="status_code=='SUBMITTED'||instance_code=='MET'||instance_code=='MPI'" ng-change="getPrice(priceListNameSel)"
+                                    ng-model="priceListNameSel" name="priceListNameSel" ng-options="item.pricelist_name for item in priceListName">
+                            </select>
+                            <formtips title="This field is required" ng-show="submitted && charge_form.PriceList.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50">
+                            <label ng-bind="'CHARGE.Price' | translate"></label>
+                            <input ng-show="mask_flag && mask_flag == 'N' || instance_code != 'MAC'" type="text" ng-disabled="status_code=='SUBMITTED'" ng-change="changePrice(price)" class="form-control"  ng-readonly="priceIsReadonly" ng-model="price">
+                            <input ng-show="instance_code == 'MAC' &&  mask_flag && mask_flag != 'N'" type="password" ng-disabled="true"  class="form-control"  ng-readonly="priceIsReadonly" value="***">
+                        </div>
+                    </div>
+                </div>
+                <div ng-hide="instance_code=='MAC'" class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'CHARGE.CurrencyCode' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="currency_code">
+                        </div>
+                        <div class="flexbox mr-l">
+                            <label  ng-bind="'CHARGE.Amount' | translate"></label>
+                            <input type="text"  class="form-control"  readonly ng-model="Amount">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr50" ng-if="instance_code=='MZA'||instance_code=='MSA'">
+                            <label  ng-bind="'CHARGE.Reference' | translate"></label>
+                            <input type="text"  ng-disabled="status_code=='SUBMITTED'" class="form-control"  ng-model="Reference">
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .select2-container.form-control{height: 28px!important;}
+                </style>
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && charge_form.subinventory.$invalid}">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l" ng-if="billing_type_code=='M'">
+                            <label class="red" >*<span ng-bind="'CHARGE.Subinventory' | translate"></span></label>
+                            <select select2="" ng-disabled="status_code=='SUBMITTED'" class="form-control"  ng-model="subinventory"  name="subinventory" required="" ng-class="{'bd-red':submitted && charge_form.subinventory.$invalid}">
+                                <option ng-repeat="item in inventory" value="{{item.subinventory_code}}"  >{{item.subinventory_code}}</option>
+                            </select>
+                            <formtips title="This field is required"
+                                      ng-show="submitted && charge_form.subinventory.$invalid"></formtips>
+                        </div>
+                    </div>
+
+                    <div class="fex1">
+                        <div class="flexbox mr50"  ng-if="line_category_code=='RETURN'" ng-class="{'mb30':submitted && charge_form.reason_desc.$invalid}">
+                            <label class="control-label title red">*<span ng-bind="'CHARGE.ReturnReason' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="reasonLov(1)"></i>
+                            <input type="text"  class="form-control"  readonly  ng-model="reason_desc"  name="reason_desc" required="" select3="" ng-class="{'bd-red':submitted && charge_form.reason_desc.$invalid}">
+                            <input type="hidden"  class="form-control"  readonly  ng-model="$parent.looup_code"  name="looup_code">
+
+                            <formtips title="This field is required"
+                                      ng-show="submitted && charge_form.reason_desc.$invalid"></formtips>
+                        </div>
+                    </div>
+                </div>
+                <div class="flexbox  footer-btn mt10">
+                    <div class="fex1" ></div>
+                    <div class="mr15 mt20">
+                        <button type="submit" class="btn btn-primary mr5 fts16  btn-large" ng-disabled="status_code=='SUBMITTED'" ng-bind="'PUBLIC.Submit' | translate"></button>
+                        <a class="btn btn-default2 btn-large mr50" back-button=""><span ng-bind="'PUBLIC.Cancel' | translate"  ng-bind="'PUBLIC.Cancel'"></span></a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</section>

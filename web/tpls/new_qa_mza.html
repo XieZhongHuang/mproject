@@ -1,0 +1,159 @@
+<section id="container" ng-class="{'sidebar-closed':isclose}" ng-controller="NewQaMzaCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <section id="main-content" class="mt30">
+        <style>
+            .ui-datepicker{
+                z-index: 1000!important;
+            }
+            body{
+                overflow-x:hidden ;
+            }
+            @media (max-width: 1212px){
+                .base-box{
+                    width: 800px!important;
+                }
+            }
+
+        </style>
+        <form class="form-validate form-validate" name="qa_form" novalidate ng-submit="submitForm(qa_form)" ng-click="resetDirty(false)"  dirty-form="">
+            <h1 ng-bind="'QA.{{QaTitle}}' | translate" class="mb10"></h1>
+            <div class="base-box sr-box " style="width: 1000px">
+                <div class="ipt-item flexbox" ng-class="{'mb30':submitted && qa_form.CATEGORY_CODE.$invalid}" >
+                    <div class="fex1 mr10">
+                        <div class="flexbox">
+                            <label class="red">*<span ng-bind="'QA.Category' | translate"></span></label>
+                            <i class="icon-search add-btn icon-color" ng-click="qa_lov('category_code')"></i>
+                            <input type="text" class="form-control fex1"  select3  not-allow=""  required="" ng-model="CATEGORY_CODE" name="CATEGORY_CODE"
+                                   ng-class="{'bd-red': submitted && qa_form.CATEGORY_CODE.$invalid}"
+                                    >
+                            <formtips title="This field is required" ng-show="submitted && qa_form.CATEGORY_CODE.$invalid"></formtips>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox">
+                            <input type="text" class="form-control fex1" ng-model="CATEGORY_DESC" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="base-box sr-box " style="width: 1000px">
+                    <div class="ipt-item flexbox"  ng-class="{'mb30':submitted && qa_form.Symptom_code.$invalid}">
+                        <div class="fex1 mr10">
+                            <div class="flexbox">
+                                <label class="red ">*<span ng-bind="'QA.Subcategory' | translate" ></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="qa_lov('Subcategory')"></i>
+                                <input type="text" class="form-control "  not-allow="" select3 ng-model="Subcategory_code" name="Subcategory_code"  required="" ng-class="{'bd-red':submitted && submitted && qa_form.Subcategory_code.$invalid}">
+                                <formtips title="This field is required" ng-show="submitted && qa_form.Subcategory_code.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox">
+                                <input type="text" class="form-control fex1" ng-model="Subcategory_desc" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ipt-item flexbox"  ng-class="{'mb30':submitted && qa_form.Symptom_code.$invalid}">
+                        <div class="fex1 mr10">
+                            <div class="flexbox">
+                                <label class="red ">*<span ng-bind="'QA.Symptom' | translate" ></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="qa_lov('Symptom')"></i>
+                                <input type="text" class="form-control "  not-allow="" select3 ng-model="Symptom_code" name="Symptom_code"  required="" ng-class="{'bd-red':submitted && submitted && qa_form.Symptom_code.$invalid}">
+                                <formtips title="This field is required" ng-show="submitted && qa_form.Symptom_code.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox">
+                                <input type="text" class="form-control fex1" ng-model="Symptom_desc" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ipt-item flexbox" ng-class="{'mb30': submitted && qa_form.Reason_code.$invalid}">
+                        <div class="fex1 mr10">
+                            <div class="flexbox">
+                                <label class="red">*<span ng-bind="'QA.Defect' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="qa_lov('Reason')"></i>
+                                <input type="text" class="form-control fex1" not-allow="" select3 ng-model="Reason_code" required="" name="Reason_code" ng-class="{'bd-red':submitted && submitted && qa_form.Reason_code.$invalid}">
+                                <formtips title="This field is required" ng-show="submitted && qa_form.Reason_code.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox">
+                                <input type="text" class="form-control fex1" ng-model="Reason_desc" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox" ng-class="{'mb30': submitted && qa_form.Defect_code.$invalid}">
+                        <div class="fex1 mr10">
+                            <div class="flexbox">
+                                <label class="red">*<span ng-bind="'QA.Solution' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="qa_lov('Solution')"></i>
+                                <input type="text" class="form-control fex1" not-allow="" select3 ng-model="Solution_code" name="Solution_code" required="" ng-class="{'bd-red': submitted && qa_form.Solution_code.$invalid}">
+                                <formtips title="This field is required" ng-show="submitted && qa_form.Solution_code.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                            <div class="flexbox">
+                                <input type="text" class="form-control fex1" ng-model="Solution_desc" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ipt-item flexbox" ng-class="{'mb30':submitted && qa_form.Diagnostic_Engineer.$invalid}">
+                        <div class="fex1 mr10">
+                            <div class="flexbox">
+                                <label class="red">*<span ng-bind="'QA.Diagnostic Engineer' | translate"></span></label>
+                                <i class="icon-search add-btn icon-color" ng-click="EngineerLov()"></i>
+                                <input type="text" class="form-control fex1" not-allow="" select3 ng-model="Diagnostic_Engineer" name="Diagnostic_Engineer" required="" ng-class="{'bd-red':submitted && qa_form.CONDITION_CODE.$invalid}">
+                                <formtips title="This field is required" ng-show="submitted && qa_form.Diagnostic_Engineer.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                        </div>
+                    </div>
+                    <!--<div class="ipt-item flexbox" ng-class="{'mb30':submitted && qa_form.Date_of_Diagnostics.$invalid}">
+                        <div class="fex1 mr10">
+                            <div class="flexbox">
+                                <label class="red">*<span ng-bind="'QA.Date of Diagnostics' | translate"></span></label>
+                                <input type="text" class="form-control fex1"  datetimepicker ng-model="Date_of_Diagnostics" required=""  name="Date_of_Diagnostics" ng-class="{'bd-red': submitted && qa_form.Date_of_Diagnostics.$invalid}">
+                                <formtips title="This field is required" ng-show="submitted && qa_form.Date_of_Diagnostics.$invalid"></formtips>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                        </div>
+                    </div>-->
+                    <div class="ipt-item flexbox mb10" >
+                        <div class="fex1 mr10">
+                            <div class="flexbox">
+                                <label><span ng-bind="'QA.Diagnostic Comments' | translate"></span></label>
+                                <textarea class="form-control fex1"   ng-model="Diagnostic_Comments" style="min-height:40px" ></textarea>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                        </div>
+                    </div>
+                    <div class="ipt-item flexbox" >
+                        <div class="fex1 mr10">
+                            <div class="flexbox">
+                                <label><span ng-bind="'QA.Resolution Comments' | translate"></span></label>
+                                <textarea type="text" class="form-control fex1" select3 ng-model="Resolution_Comments" style="min-height:40px"></textarea>
+                            </div>
+                        </div>
+                        <div class="fex1">
+                        </div>
+                    </div>
+                </div>
+                <div class="flexbox  footer-btn ">
+                    <div class="fex1"></div>
+                    <div class="mr15 mt20">
+                        <button type="submit" class="btn btn-primary mr5 fts16 btn-small" style="font-size: 14px;"
+                                ng-bind="'PUBLIC.Submit' | translate"></button>
+                        <a class="btn btn-default  btn-mini" back-button=""><span ng-bind="'PUBLIC.Cancel' | translate" ng-bind="'PUBLIC.Cancel'"></span></a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </section>
+</section>

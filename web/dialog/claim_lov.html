@@ -1,0 +1,133 @@
+<style>.ajax-tip{margin-left: 0;margin-top:-50px;}</style>
+<div class="datatable" drag-drop>
+    <div class="modal-header">
+        <h4 class="modal-title" ng-bind="'CLAIM.{{title}}' | translate"></h4>
+    </div>
+    <div class="ipt-item mt5 flexbox ml15 mr15">
+        <div class="fex1" >
+            <div class="flexbox" >
+                <div>
+                    <label class="mr10" ng-bind="'CLAIM.ClaimLineStatus' | translate"></label>
+                </div>
+                <div class="fex1" >
+                    <div class="btn-group search-type" ng-init="ClaimLineType='Entered';search.radioValue='ENTERED'">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="width:
+                        230px;height: 26px;padding: 0 10px!important; text-align: left; text-indent: 5px">
+                            <span class="search-init">{{ClaimLineType}}</span>
+                            <span class="caret" style="position:absolute;right:10px;top:50%;margin-top:-3px;"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="width: 230px;top: 23px;">
+                            <li ng-click="searFuc('empty')">&nbsp;</li>
+                            <li ng-repeat="item in claimLineStatusData"  >
+                                <a href="javascript:void(0)" class="pos-relative" ng-hide="item.status_code=='APPROVED' || item.status_code=='APPROVING'">
+                                    {{item.status_name}}
+                                    <input type="radio" checked name="radioValue" value="{{item.status_code}}" ng-model="search.radioValue"
+                                           class="ipt-hide" ng-click="searFuc(item.status_name)">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fex1">
+            <div class="flexbox">
+                <div>
+                    <label class="mr10" ng-bind="'CLAIM.Incident_number' | translate"></label>
+                </div>
+                <div class="fex1">
+                    <input type="text" style="height: 26px!important;" ng-model="incident_number" class="form-control fex1">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ipt-item flexbox mt5 ml15 mr15 mb5">
+        <div class="fex1">
+            <div class="flexbox">
+                <label class="control-label title" style="margin-right: 22px;" ng-bind="'CLAIM.SRCloseDate' | translate"></label>
+                <div class="fex1" style="padding:0">
+                    <input datetimepicker ng-model="close_date_from" style="display: inline-block;width: 40%;" class="form-control">
+                    <span>-</span>
+                    <input datetimepicker ng-model="close_date_to" style="display: inline-block;width: 40%;" class="form-control">
+                </div>
+
+                <button style="padding-top: 3px;padding-bottom: 3px;" class="btn btn-primary btn-large" type="button" ng-click="DoCtrlPagingAct(1)" ng-bind="'PUBLIC.Search' | translate"></button>
+
+            </div>
+        </div>
+    </div>
+
+    <section style="min-height: 350px;">
+        <div class="panel tableBodyScroll" style="height: 350px; width:800px;overflow: hidden">
+            <!--serial number start-->
+            <table class="table table-bordered claimTable table-search table-condensed" style="border-top: 1px solid #ddd;;border-bottom:
+             1px solid #ddd;width: 1000px">
+                <thead>
+                <tr>
+                    <th width="7%" ng-bind="'PUBLIC.Select' | translate"></th>
+                    <th width="10%" ng-bind="'CLAIM.ClaimLineStatus' | translate"></th>
+                    <th width="7%" ng-bind="'CLAIM.SRNumber' | translate"></th>
+                    <th width="15%" ng-bind="'CLAIM.SRCloseDate' | translate"></th>
+                    <th ng-bind="'CLAIM.ProblemSummary' | translate"></th>
+                    <th ng-bind="'CLAIM.ProductCategory' | translate"></th>
+                    <th width="7%" ng-bind="'CLAIM.Material' | translate"></th>
+                    <th width="7%" ng-bind="'CLAIM.Labor' | translate"></th>
+                    <th width="7%" ng-bind="'CLAIM.Expense' | translate"></th>
+                    <th width="7%" ng-bind="'CLAIM.Amount' | translate"></th>
+
+
+
+                </tr>
+                </thead>
+                <tr ng-repeat=" item in data" class="text-center" ng-show="!loadingFlag">
+                    <td>
+                        <input name="claimInput" type="checkbox" id="checkbox-1-{{$index}}" class="regular-checkbox" ng-click="getClaimData()" get-currentvalue style="margin-left: 15px"
+                               ng-model="$parent.selectClaimValue[$index]"
+                               ng-true-value='{{item}}'><label for="checkbox-1-{{$index}}"></label>
+                    </td>
+                    <td title="{{item.claim_line_status}}"><div ng-bind="item.claim_line_status"></div></td>
+                    <td title="{{item.sr_number}}"><div ng-bind="item.sr_number"></div></td>
+                    <td title="{{item.close_date}}"><div ng-bind="item.close_date"></div></td>
+                    <td title="{{item.summary}}"><div ng-bind="item.summary"></div></td>
+                    <td title="{{item.category}}"><div ng-bind="item.category"></div></td>
+                    <td title="{{item.meterial}}"><div ng-bind="item.meterial | number"></div></td>
+                    <td title="{{item.labor}}"><div ng-bind="item.labor | number"></div></td>
+                    <td title="{{item.expense}}"><div ng-bind="item.expense | number"></div></td>
+                    <td title="{{item.amount}}"><div ng-bind="item.amount | number"></div></td>
+
+
+
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <div class="btn-row">
+        <div class="form-group mt15" style="border-bottom: 1px solid #f5f5f5;border-top: 1px solid #f5f5f5;margin-bottom: 5px;">
+            <div class="flexbox text-center">
+                <div paging
+                     page="currentPage"
+                     page-size="10"
+                     total="totalPage*10"
+                     show-prev-next="{{showPrevNext}}"
+                     paging-action="DoCtrlPagingAct(page)"
+                     class="page-list mr15 fex1 ml15"
+                        >
+                </div>
+            </div>
+        </div>
+        <div class="mr15 text-right" ng-show="!noData">
+            <button class="btn btn-primary btn-large select" type="button"
+                    ng-click="closeThisDialog(2)" ng-bind="'PUBLIC.Select' | translate">
+            </button>
+            <button class="btn btn-default btn-large btn-small" type="button" ng-click="closeThisDialog(0)" ng-bind="'PUBLIC.Cancel' | translate"></button>
+        </div>
+    </div>
+</div>
+<!-- noData-->
+<div class="noData" ng-if="noData" style="margin-top: 50px;">
+    <span class="icon-warning-sign fts48"></span>
+    <p class="fts14" ng-bind="'PUBLIC.noData' | translate"></p>
+</div>
+<!-- noData-->

@@ -1,0 +1,150 @@
+<section id="container" ng-controller="CreateItemCtrl">
+    <div ng-include="'tpls/header.html'"></div>
+    <div ng-include="'tpls/menu.html'"></div>
+    <div id="main-content">
+        <h1 ng-bind="'ITEM.CREATE_ITEM' | translate"></h1>
+        <form class="form-validate form-validate" name="add_item_form" method="get" novalidate
+              ng-submit="submitForm(add_item_form)" dirty-form>
+            <div class="base-box">
+                <h2 ng-bind="'ITEM.COMMON_ATTRIBUTES' | translate"></h2>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'ITEM.CUSTOMER_MODEL' | translate"></label>
+                            <input type="text" ng-model="customer_model" requied class="form-control fex1">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'ITEM.PRODUCT/SP_CODE' | translate"></label>
+                            <select select2="" ng-model="pro_code" class="form-control" id="sr_type" name="sr_type" required  ng-class="{'bd-red':submitted && sr_form.sr_type.$invalid}"
+                                    ng-change="sr_type(sr_type_item)">
+                                <option value="{{item.type_id}}" ng-repeat="item in srData.sr_type">{{item.type_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'ITEM.ITEM_NUMBER' | translate"></label>
+                            <input type="text" ng-model="item_number" class="form-control fex1" not-allow>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'ITEM.ITEM_STATUS' | translate"></label>
+                            <select select2="" ng-model="item_status" class="form-control" id="item_status" name="item_status" required  ng-class="{'bd-red':submitted && sr_form.sr_type.$invalid}"
+                                    ng-change="sr_type(sr_type_item)">
+                                <option value="{{item.type_id}}" ng-repeat="item in srData.sr_type">{{item.type_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'ITEM.ITEM_DESCRIPTION' | translate"></label>
+                            <input type="text" ng-model="description" requied class="form-control fex1">
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'ITEM.UOM' | translate"></label>
+                            <select select2="" ng-model="uom" class="form-control" id="uom" name="uom" required  ng-class="{'bd-red':submitted && sr_form.sr_type.$invalid}"
+                                    ng-change="sr_type(sr_type_item)">
+                                <option value="{{item.type_id}}" ng-repeat="item in srData.sr_type">{{item.type_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ipt-item flexbox">
+                    <div class="fex1 mr50">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'ITEM.ITEM_TYPE' | translate"></label>
+                            <select select2="" ng-model="item_type" class="form-control" id="type" name="type" required  ng-class="{'bd-red':submitted && sr_form.sr_type.$invalid}"
+                                    ng-change="sr_type(sr_type_item)">
+                                <option value="{{item.type_id}}" ng-repeat="item in srData.sr_type">{{item.type_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fex1">
+                        <div class="flexbox mr-l">
+                            <label ng-bind="'ITEM.SERIAL_GENERATION' | translate"></label>
+                            <select select2="" ng-model="serial" class="form-control" id="serial" name="serial" required  ng-class="{'bd-red':submitted && sr_form.sr_type.$invalid}"
+                                    ng-change="sr_type(sr_type_item)">
+                                <option value="{{item.type_id}}" ng-repeat="item in srData.sr_type">{{item.type_name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pos-relative mt20">
+                    <h2 style="margin-bottom: 0;" ng-bind="'ITEM.ADDITIONAL_INFORMATION' | translate"></h2>
+                </div>
+
+                <div class="mb12 ml15 mr15">
+                    <table id="parts-table" style="width: 600px;"
+                           class="table table-striped table-bordered table-hover text-center table-search table-condensed">
+                        <tr role="row" class="active">
+                            <th class="sorting id" role="columnheader" style="width: 330px;"><span
+                                    ng-bind="'ITEM.CATEGORY_SET' | translate"></span></th>
+                            <th class="sorting su" role="columnheader"><span
+                                    ng-bind="'ITEM.CATEGORY_VALUE' | translate"></span></th>
+                        </tr>
+                        <tr class="trtd">
+                            <td>
+                                <ng-form name="nform">
+                                    <div class="ipt-item" style="padding: 0">
+                                        <div class="fex1 zz">
+                                            <div class="flexbox zz">
+                                                <i class="icon-search add-btn icon-color"
+                                                   ng-click="itemLov(1,$index)"></i>
+                                                {{lov}}
+                                                <input type="text" ng-model="$parent.arr[$index].item_number"
+                                                       name="item_number"
+                                                       class="form-control fex1 ng-isolate-scope ng-pristine ng-valid notAllow"
+                                                       select3=""
+                                                       not-allow="" readonly="readonly" required
+                                                       ng-class="{'bd-red':submitted && nform.item_number.$invalid}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-form>
+                            </td>
+                            <td>
+                                <ng-form name="qform">
+                                    <select select2="" ng-model="serial" class="form-control" id="" name="" required  ng-class="{'bd-red':submitted && sr_form.sr_type.$invalid}"
+                                            ng-change="sr_type(sr_type_item)">
+                                        <option value="{{item.type_id}}" ng-repeat="item in srData.sr_type">{{item.type_name}}
+                                        </option>
+                                    </select>
+                                </ng-form>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="flexbox  mt10">
+                    <div class="fex1"></div>
+                    <div class="mr15 mt20">
+                        <button type="submit" class="btn btn-primary mr5 fts16  btn-large"
+                                ng-bind="'PUBLIC.Submit' | translate"></button>
+                        <a class="btn btn-default btn-large mr50" back-button=""><span
+                                ng-bind="'PUBLIC.Cancel' | translate" ng-bind="'PUBLIC.Cancel'"></span></a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
